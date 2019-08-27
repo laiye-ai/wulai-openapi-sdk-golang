@@ -9,9 +9,9 @@
 
 [![build status][travis-image]][travis-url]   
 
-[travis-image]: https://travis-ci.com/laiye-ai/wulai-openapi-sdk-golang.svg?branch=master
+[travis-image]: https://travis-ci.org/laiye-ai/wulai-openapi-sdk-golang.svg?branch=master
 
-[travis-url]: https://travis-ci.com/laiye-ai/wulai-openapi-sdk-golang
+[travis-url]: https://travis-ci.org/laiye-ai/wulai-openapi-sdk-golang
 
 
 </p>
