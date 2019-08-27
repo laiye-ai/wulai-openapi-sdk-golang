@@ -3,29 +3,84 @@ package wulai
 import (
 	"os"
 	"testing"
-	log "github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/zlog"
+
+	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/errors"
 )
 
 func Test_CreateUser(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
-	wulaiClient := NewWulaiClient(secret, pubkey)
+	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.Version = "v2"
 	wulaiClient.Debug = true
-	//credential.GetRandomString(15)
-	resp, err := wulaiClient.UserCreate("test_golang_api", "", "test_golang_api")
+	_, err := wulaiClient.UserCreate("userID", "nickname", "avatarURL")
 	if err != nil {
-		t.Fatalf("user Create test reuslt:%s", err.Error())
+		if _, ok := err.(*errors.ServerError); ok {
+
+		} else if _, ok := err.(*errors.ClientError); ok {
+			t.Error("[Test_CreateUser]=> failed.")
+		} else {
+			t.Error("[Test_CreateUser]=> failed.")
+		}
 	}
-	log.Infof("%+v\n", resp)
+}
+
+func Test_UserUpdate(t *testing.T) {
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	err := wulaiClient.UserUpdate("userID", "nickname", "avatarURL")
+	if err != nil {
+		if _, ok := err.(*errors.ServerError); ok {
+
+		} else if _, ok := err.(*errors.ClientError); ok {
+			t.Error("[Test_UserUpdate]=> failed.")
+		} else {
+			t.Error("[Test_UserUpdate]=> failed.")
+		}
+	}
 }
 
 func Test_GetUserAttribute(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
-	wulaiClient := NewWulaiClient(secret, pubkey)
+	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.Version = "v2"
-	resp, err := wulaiClient.UserAttributeGet()
+	_, err := wulaiClient.UserAttribute()
 	if err != nil {
-		t.Fatalf("user Create test reuslt:%s", err.Error())
+		if _, ok := err.(*errors.ServerError); ok {
+
+		} else if _, ok := err.(*errors.ClientError); ok {
+			t.Error("[Test_GetUserAttribute]=> failed.")
+		} else {
+			t.Error("[Test_GetUserAttribute]=> failed.")
+		}
 	}
-	log.Infof("%+v\n", resp)
+}
+
+func Test_GetUserInfo(t *testing.T) {
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	_, err := wulaiClient.UserInfo("userID")
+	if err != nil {
+		if _, ok := err.(*errors.ServerError); ok {
+
+		} else if _, ok := err.(*errors.ClientError); ok {
+			t.Error("[Test_GetUserInfo]=> failed.")
+		} else {
+			t.Error("[Test_GetUserInfo]=> failed.")
+		}
+	}
+}
+
+func Test_GetGroupMembers(t *testing.T) {
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	_, err := wulaiClient.GroupMembers(1, 10, "userID")
+	if err != nil {
+		if _, ok := err.(*errors.ServerError); ok {
+
+		} else if _, ok := err.(*errors.ClientError); ok {
+			t.Error("[Test_GetGroupMembers]=> failed.")
+		} else {
+			t.Error("[Test_GetGroupMembers]=> failed.")
+		}
+	}
 }

@@ -18,8 +18,3 @@ type HTTPResponse struct {
 func (r *HTTPResponse) ToString() string {
 	return fmt.Sprintf("%s", r.ResponseBodyBytes)
 }
-
-//ToJSON 将http body转化为json
-func (r *HTTPResponse) ToJSON() string {
-	return fmt.Sprintf("%q", r.ResponseBodyBytes)
-}

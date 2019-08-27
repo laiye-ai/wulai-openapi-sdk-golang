@@ -13,20 +13,18 @@ type User struct {
 }
 
 //UserCreate 创建用户
-func (x *WulaiClient) UserCreate(nickname, avatarURL, userID string) (*User, error) {
-
+func (x *Client) UserCreate(userID, nickname, avatarURL string) (*User, error) {
 	if strings.ToUpper(x.Version) == "V1" {
 		return x.createV1(nickname, avatarURL, userID)
 	} else if strings.ToUpper(x.Version) == "V2" {
 		return x.createV2(nickname, avatarURL, userID)
 	}
-
 	//set default
 	return x.createV2(nickname, avatarURL, userID)
 }
 
-//UserAttributeGet 获取用户属性
-func (x *WulaiClient) UserAttributeGet() ([]byte, error) {
+//UserAttribute 获取用户属性
+func (x *Client) UserAttribute() ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/user-attribute/list", x.Endpoint, x.Version)
 	input := fmt.Sprintf(`{
 		"filter": {
@@ -44,7 +42,7 @@ func (x *WulaiClient) UserAttributeGet() ([]byte, error) {
 }
 
 //createV2 创建用户(版本2)
-func (x *WulaiClient) createV2(nickname, avatarURL, userID string) (*User, error) {
+func (x *Client) createV2(nickname, avatarURL, userID string) (*User, error) {
 	url := fmt.Sprintf("%s/%s/user/create", x.Endpoint, x.Version)
 	input := fmt.Sprintf(`{
 		"nickname": "%s",

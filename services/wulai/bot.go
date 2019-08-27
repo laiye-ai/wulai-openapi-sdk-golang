@@ -14,7 +14,7 @@ type Bot struct {
 }
 
 //BotResponse 获取机器人回复
-func (x *WulaiClient) BotResponse(userID string, msgType interface{}, extra string) ([]byte, error) {
+func (x *Client) BotResponse(userID string, msgType interface{}, extra string) ([]byte, error) {
 
 	//检查消息类型是否合法
 	typeStr, ok := checkMsgType(msgType)
@@ -32,7 +32,7 @@ func (x *WulaiClient) BotResponse(userID string, msgType interface{}, extra stri
 }
 
 //GetBotResponseV2 获取机器人回复(V2)
-func (x *WulaiClient) getBotResponseV2(userID, extra, typeStr string, msgType interface{}) ([]byte, error) {
+func (x *Client) getBotResponseV2(userID, extra, typeStr string, msgType interface{}) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/msg/bot-response", x.Endpoint, x.Version)
 	var err error
 	msgBody, err := json.Marshal(msgType)

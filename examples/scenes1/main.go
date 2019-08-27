@@ -8,7 +8,7 @@ import (
 func main() {
 
 	//实例化客户端
-	wulaiClient := wulai.NewWulaiClient("secret", "pubkey")
+	wulaiClient := wulai.NewClient("secret", "pubkey")
 	wulaiClient.Version = "v2"
 	log.Infof("[wulaiClient]%+v\n", wulaiClient)
 
