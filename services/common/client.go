@@ -2,12 +2,11 @@ package common
 
 import (
 	"bytes"
-	"errors"
 	"io/ioutil"
-	"net"
 	"net/http"
 	"time"
 
+	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/errors"
 	log "github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/zlog"
 )
 
@@ -15,7 +14,6 @@ import (
 type Client struct {
 	httpClient      *http.Client
 	credential      *Credential
-	Timeout         int
 	ContentType     string
 	Version         string
 	MaxIdleConns    int
@@ -27,13 +25,13 @@ type Client struct {
 func NewClient(credential *Credential) *Client {
 	client := &Client{
 		credential:      credential,
-		Timeout:         15,
 		MaxIdleConns:    30,
 		MaxConnsPerHost: 30,
 		Debug:           false,
+		httpClient: &http.Client{
+			Timeout: 8 * time.Second, //设置HTTP超时时间
+		},
 	}
-
-	client.httpClient = client.defaultHTTPClient()
 	return client
 }
 
@@ -61,14 +59,14 @@ func (c *Client) Post(url string, input []byte) (*HTTPResponse, error) {
 	}
 
 	//设置Content-Type
-	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Content-Type", "application/json;charset=utf-8")
 	if c.ContentType != "" {
 		req.Header.Set("Content-Type", c.ContentType)
 	}
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
-		return response, err
+		return response, errors.NewClientError("Client Error", err.Error(), err)
 	}
 	if resp != nil {
 		defer func() {
@@ -87,9 +85,8 @@ func (c *Client) Post(url string, input []byte) (*HTTPResponse, error) {
 	response.ResponseBodyBytes = bytes //http 响应体
 	//如果StatusCode不等于200,则错误
 	if response.StatusCode != 200 {
-		//TODO:添加错误处理
 		response.Message = string(response.ResponseBodyBytes)
-		return response, errors.New(response.Message)
+		return response, errors.NewServerError(resp.StatusCode, "Server Error", response.Message, err)
 	}
 
 	return response, nil
@@ -115,7 +112,7 @@ func (c *Client) Get(url string) (*HTTPResponse, error) {
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
-		return response, err
+		return response, errors.NewClientError("Client Error", err.Error(), err)
 	}
 	if resp != nil {
 		defer func() {
@@ -128,7 +125,8 @@ func (c *Client) Get(url string) (*HTTPResponse, error) {
 	response.OriginHTTPResponse = resp //原始的Http Response
 	bytes, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return response, err
+		response.Message = string(response.ResponseBodyBytes)
+		return response, errors.NewServerError(resp.StatusCode, "Server Error", response.Message, err)
 	}
 
 	response.ResponseBodyBytes = bytes //http 响应体
@@ -140,24 +138,7 @@ func (c *Client) SetTransport(transport http.RoundTripper) {
 	c.httpClient.Transport = transport
 }
 
-//defaultHTTPClient 默认Transport
-func (c *Client) defaultHTTPClient() *http.Client {
-	client := &http.Client{
-		Timeout: time.Minute * time.Duration(c.Timeout), //设置超时时间,默认0不设置超时时间
-		Transport: &http.Transport{
-			Dial: (&net.Dialer{
-				Timeout:   15 * time.Second, //限制建立TCP连接的时间
-				KeepAlive: 15 * time.Second,
-			}).Dial,
-			TLSHandshakeTimeout:   10 * time.Second, //限制 TLS握手的时间
-			ResponseHeaderTimeout: 10 * time.Second, //限制读取response header的时间
-			ExpectContinueTimeout: 1 * time.Second,  //限制client在发送包含 Expect: 100-continue的header到收到继续发送body的response之间的时间等待。
-			MaxIdleConns:          c.MaxIdleConns,   //连接池对所有host的最大连接数量，默认无穷大
-			MaxConnsPerHost:       c.MaxIdleConns,   //连接池对每个host的最大连接数量。
-			IdleConnTimeout:       30 * time.Minute, //how long an idle connection is kept in the connection pool.
-			DisableKeepAlives:     false,
-		},
-	}
-
-	return client
+//SetHTTPTimeout 设置http 超时时间
+func (c *Client) SetHTTPTimeout(timeout time.Duration) {
+	c.httpClient.Timeout = timeout
 }
