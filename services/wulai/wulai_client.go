@@ -4,17 +4,17 @@ import (
 	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/common"
 )
 
-//WulaiClient 吾来平台接口统一调用入口
-type WulaiClient struct {
+//Client 吾来平台接口统一调用入口
+type Client struct {
 	HTTPClient *common.Client
 	Version    string
 	Endpoint   string
 	Debug      bool
 }
 
-//NewWulaiClient 创建 NewWulaiClient
-func NewWulaiClient(secret, pubkey string) *WulaiClient {
-	wulai := &WulaiClient{}
+//NewClient 创建 NewWulaiClient
+func NewClient(secret, pubkey string) *Client {
+	wulai := &Client{}
 	//实例化凭证
 	credential := common.NewCredential(secret, pubkey)
 	//实例化http client
@@ -27,7 +27,7 @@ func NewWulaiClient(secret, pubkey string) *WulaiClient {
 }
 
 //SetDebug 设置debug
-func (x *WulaiClient) SetDebug(debug bool) {
+func (x *Client) SetDebug(debug bool) {
 	x.Debug = debug
 	x.HTTPClient.Debug = debug
 }

@@ -1,6 +1,5 @@
 package wulai
 
-
 //Text 消息类型:文本消息
 type Text struct {
 	Content string `json:"content"` //文本消息体 [ 1 .. 2048 ] characters
@@ -38,6 +37,7 @@ type Voice struct {
 
 //Event 消息类型:事件消息
 type Event struct {
+	//TODO:待开发
 }
 
 //ShareLink 消息类型:图文消息
