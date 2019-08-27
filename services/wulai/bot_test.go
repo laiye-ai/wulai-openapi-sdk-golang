@@ -10,11 +10,6 @@ import (
 func Test_GetBotResponseWithText(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
-<<<<<<< HEAD
-=======
-	wulaiClient.Version = "v2"
->>>>>>> 561b4a3729497e098a267f5bfb21c66e24e2b5df
-
 	text := &Text{"您好!"}
 	_, err := wulaiClient.BotResponse("userID", text, "")
 	if err != nil {
