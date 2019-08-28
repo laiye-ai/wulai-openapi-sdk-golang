@@ -7,7 +7,8 @@
 
 <p align="center">
 
-[![build status][travis-image]][travis-url]   [![codecov][cov-image]][cov-url]
+[![build status][travis-image]][travis-url]   [![codecov][cov-image]][cov-url] [![GitHub license](https://img.shields.io/github/license/laiye-ai/wulai-openapi-sdk-golang?style=social)](https://github.com/laiye-ai/wulai-openapi-sdk-golang/blob/master/LICENSE)
+
 
 [travis-image]: https://travis-ci.org/laiye-ai/wulai-openapi-sdk-golang.svg?branch=master
 
