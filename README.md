@@ -7,12 +7,15 @@
 
 <p align="center">
 
-[![build status][travis-image]][travis-url]   
+[![build status][travis-image]][travis-url]   [![codecov][cov-image]][cov-url]
 
 [travis-image]: https://travis-ci.org/laiye-ai/wulai-openapi-sdk-golang.svg?branch=master
 
 [travis-url]: https://travis-ci.org/laiye-ai/wulai-openapi-sdk-golang
 
+[cov-image]: https://codecov.io/gh/laiye-ai/wulai-openapi-sdk-golang/branch/master/graph/badge.svg
+
+[cov-url]: https://codecov.io/gh/laiye-ai/wulai-openapi-sdk-golang
 
 </p>
 
