@@ -16,7 +16,7 @@ func Test_PostWithNetError(t *testing.T) {
 	credential := NewCredential(secret, pubkey)
 	client := NewClient(credential)
 	client.SetHTTPTimeout(5)
-	_, err := client.Post("http://aaabbbxxxyyyyzzzzzz.info", []byte(""))
+	_, err := client.Request("POST", "http://aaabbbxxxyyyyzzzzzz.info", []byte(""), 1)
 	if err != nil {
 		if _, ok := err.(*errors.ServerError); ok {
 			t.Error("[Test_PostWithNetError]=> failed.")
@@ -27,36 +27,16 @@ func Test_PostWithNetError(t *testing.T) {
 		}
 	}
 }
-
-func Test_GetWithNetError(t *testing.T) {
-
-	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
-	credential := NewCredential(secret, pubkey)
-	client := NewClient(credential)
-	client.SetHTTPTimeout(5)
-	_, err := client.Get("http://aaabbbxxxyyyyzzzzzz.info")
-	if err != nil {
-		if _, ok := err.(*errors.ServerError); ok {
-			t.Error("[Test_GetWithNetError]=> failed.")
-		} else if _, ok := err.(*errors.ClientError); ok {
-
-		} else {
-			t.Error("[Test_GetWithNetError]=> failed.")
-		}
-	}
-}
-
 func Test_PostWithTransport(t *testing.T) {
 
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	credential := NewCredential(secret, pubkey)
 	client := NewClient(credential)
-	client.SetHTTPTimeout(5)
 
 	transport := &http.Transport{
 		Dial: (&net.Dialer{
-			Timeout:   15 * time.Second,
-			KeepAlive: 15 * time.Second,
+			Timeout:   3 * time.Second,
+			KeepAlive: 3 * time.Second,
 		}).Dial,
 		TLSHandshakeTimeout:   10 * time.Second,
 		ResponseHeaderTimeout: 10 * time.Second,
@@ -68,7 +48,7 @@ func Test_PostWithTransport(t *testing.T) {
 	}
 
 	client.SetTransport(transport)
-	_, err := client.Post("http://aaabbbxxxyyyyzzzzzz.info", []byte(""))
+	_, err := client.Request("POST", "http://aaabbbxxxyyyyzzzzzz.info", []byte(""), 1)
 	if err != nil {
 		if _, ok := err.(*errors.ServerError); ok {
 			t.Error("[Test_PostWithTransport]=> failed.")
@@ -80,13 +60,71 @@ func Test_PostWithTransport(t *testing.T) {
 	}
 }
 
+func Test_Request1(t *testing.T) {
+
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	credential := NewCredential(secret, pubkey)
+	client := NewClient(credential)
+	client.SetHTTPTimeout(3)
+	_, err := client.Request("POST", "http://aaabbbxxxyyyyzzzzzz.info", []byte(`{"name":"request"}`), 3)
+	if err != nil {
+		if _, ok := err.(*errors.ServerError); ok {
+			t.Error("[Test_PostWithNetError]=> failed.")
+		} else if _, ok := err.(*errors.ClientError); ok {
+
+		} else {
+			t.Error("[Test_PostWithNetError]=> failed.")
+		}
+	}
+}
+
+func Test_Request2(t *testing.T) {
+
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	credential := NewCredential(secret, pubkey)
+	client := NewClient(credential)
+	_, err := client.Request("POST", "http://qq.com", []byte(`错误的json`), 3)
+	if err != nil {
+		if _, ok := err.(*errors.ServerError); ok {
+			t.Error("[Test_PostWithNetError]=> failed.")
+		} else if _, ok := err.(*errors.ClientError); ok {
+
+		} else {
+			t.Error("[Test_PostWithNetError]=> failed.")
+		}
+	}
+}
+
+func Test_IsJSONString(t *testing.T) {
+
+	if isJSONString([]byte(`{"name":"right"}`)) {
+		//正确 json string
+	} else {
+		t.Fail()
+	}
+
+	if isJSONString([]byte(`{"name":wrong"}`)) {
+		t.Fail()
+	} else {
+		//错误 json string
+	}
+}
+
+func Benchmark_isJSONString(t *testing.B) {
+	for i := 0; i < t.N; i++ {
+		if isJSONString([]byte(`{"name":"right"}`)) {
+			t.Fail()
+		}
+	}
+}
+
 func Benchmark_Post(t *testing.B) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	credential := NewCredential(secret, pubkey)
 	client := NewClient(credential)
 
 	for i := 0; i < t.N; i++ {
-		_, err := client.Post("http://baidu.com", []byte(""))
+		_, err := client.Request("POST", "http://baidu.com", []byte(""), 1)
 		if err != nil {
 			t.Error(err)
 		}

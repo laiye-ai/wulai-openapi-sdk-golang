@@ -33,7 +33,7 @@ func (x *Client) UserAttribute() ([]byte, error) {
 		"page": 1,
 		"page_size": 1
 	  }`)
-	resp, err := x.HTTPClient.Post(url, []byte(input))
+	resp, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
 		return nil, err
 	}
@@ -49,7 +49,7 @@ func (x *Client) createV2(nickname, avatarURL, userID string) (*User, error) {
 		"avatar_url": "%s",
 		"user_id": "%s"
 	  }`, nickname, avatarURL, userID)
-	_, err := x.HTTPClient.Post(url, []byte(input))
+	_, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
 		return nil, err
 	}

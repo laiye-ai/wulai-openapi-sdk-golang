@@ -12,7 +12,7 @@ func (x *Client) createV1(nickname, avatarURL, userID string) (*User, error) {
 		"nickname": "%s",
 		"imgurl": "%s"
 	  }`, userID, nickname, avatarURL)
-	_, err := x.HTTPClient.Post(url, []byte(input))
+	_, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
 		return nil, err
 	}
@@ -27,7 +27,7 @@ func (x *Client) UserUpdate(userID, nickname, avatarURL string) error {
 		"nickname": "%s",
 		"imgurl": "%s"
 	  }`, userID, nickname, avatarURL)
-	_, err := x.HTTPClient.Post(url, []byte(input))
+	_, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
 		return err
 	}
@@ -43,7 +43,7 @@ func (x *Client) GroupMembers(pageIndex, pageSize int, userID string) ([]byte, e
 		"user_id": "%s"
 	 }`, pageIndex, pageSize, userID)
 
-	respBytes, err := x.HTTPClient.Post(url, []byte(input))
+	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +56,7 @@ func (x *Client) UserInfo(userID string) ([]byte, error) {
 	input := fmt.Sprintf(`{
 		"user_id": "%s"
 		}`, userID)
-	respBytes, err := x.HTTPClient.Post(url, []byte(input))
+	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
 		return nil, err
 	}

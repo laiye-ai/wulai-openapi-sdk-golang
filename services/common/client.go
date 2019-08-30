@@ -2,8 +2,10 @@ package common
 
 import (
 	"bytes"
+	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/errors"
@@ -35,17 +37,33 @@ func NewClient(credential *Credential) *Client {
 	return client
 }
 
-//Post 发起post请求
-func (c *Client) Post(url string, input []byte) (*HTTPResponse, error) {
+//Request 发起HTTP请求
+func (c *Client) Request(action, url string, input []byte, retry int) (*HTTPResponse, error) {
 
 	var err error
 	response := &HTTPResponse{}
 
 	if c.Debug {
-		log.Debugf("[req]=>%s \n%s\n", url, string(input))
+		log.Debugf("[req]=>%s to %s \n%s\n", action, url, string(input))
 	}
 
-	req, err := http.NewRequest("POST", url, bytes.NewReader(input))
+	//处理 http action
+	if strings.ToUpper(action) == "POST" {
+		action = "POST"
+	} else if strings.ToUpper(action) == "GET" {
+		action = "GET"
+	} else {
+		//TODO:处理action错误
+		return nil, errors.NewClientError("Client Error", "action 错误", err)
+	}
+
+	//判断json是否合法
+	if !isJSONString(input) {
+		//TODO:处理action错误
+		return nil, errors.NewClientError("Client Error", "isJSONString", err)
+	}
+
+	req, err := http.NewRequest(action, url, bytes.NewReader(input))
 	if err != nil {
 		return response, err
 	}
@@ -64,7 +82,20 @@ func (c *Client) Post(url string, input []byte) (*HTTPResponse, error) {
 		req.Header.Set("Content-Type", c.ContentType)
 	}
 
-	resp, err := c.httpClient.Do(req)
+	//默认 retry
+	if retry <= 0 {
+		retry = 1
+	}
+	var resp *http.Response
+	for i := 0; i < retry; i++ {
+		resp, err = c.httpClient.Do(req)
+		if err == nil {
+			break
+		}
+
+		time.Sleep(time.Second * 1)
+	}
+
 	if err != nil {
 		return response, errors.NewClientError("Client Error", err.Error(), err)
 	}
@@ -89,47 +120,10 @@ func (c *Client) Post(url string, input []byte) (*HTTPResponse, error) {
 		return response, errors.NewServerError(resp.StatusCode, "Server Error", response.Message, err)
 	}
 
-	return response, nil
-}
-
-//Get 发起Get请求
-func (c *Client) Get(url string) (*HTTPResponse, error) {
-	var err error
-	response := &HTTPResponse{}
-
-	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-		return response, err
+	if c.Debug {
+		log.Debugf("[resp]=>%s \n", bytes)
 	}
 
-	//添加权限认证字段
-	for k, v := range c.credential.GetHeaders() {
-		req.Header.Set(k, v)
-		if c.Debug {
-			log.Debugf("[headers]=>%s:%s\n", k, v)
-		}
-	}
-
-	resp, err := c.httpClient.Do(req)
-	if err != nil {
-		return response, errors.NewClientError("Client Error", err.Error(), err)
-	}
-	if resp != nil {
-		defer func() {
-			err = resp.Body.Close()
-		}()
-	}
-
-	response.StatusCode = resp.StatusCode
-	response.Status = resp.Status
-	response.OriginHTTPResponse = resp //原始的Http Response
-	bytes, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		response.Message = string(response.ResponseBodyBytes)
-		return response, errors.NewServerError(resp.StatusCode, "Server Error", response.Message, err)
-	}
-
-	response.ResponseBodyBytes = bytes //http 响应体
 	return response, nil
 }
 
@@ -141,4 +135,13 @@ func (c *Client) SetTransport(transport http.RoundTripper) {
 //SetHTTPTimeout 设置http 超时时间
 func (c *Client) SetHTTPTimeout(timeout time.Duration) {
 	c.httpClient.Timeout = timeout
+}
+
+//isJSONString 检查json能否被正确解析
+func isJSONString(input []byte) bool {
+	var x struct{}
+	if err := json.Unmarshal(input, &x); err == nil {
+		return true
+	}
+	return false
 }

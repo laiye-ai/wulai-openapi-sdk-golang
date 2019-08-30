@@ -46,7 +46,7 @@ func (x *Client) getBotResponseV2(userID, extra, typeStr string, msgType interfa
 		"user_id": "%s"
 	  }`, extra, typeStr, string(msgBody), userID)
 
-	respBytes, err := x.HTTPClient.Post(url, []byte(input))
+	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
 		return nil, err
 	}
