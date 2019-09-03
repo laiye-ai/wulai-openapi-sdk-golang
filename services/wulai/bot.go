@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	log "github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/zlog"
+	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/log"
 )
 
 //Bot 机器人

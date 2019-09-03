@@ -61,7 +61,7 @@ func main() {
 package main
 
 import (
-	log "github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/zlog"
+	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/log"
 	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/wulai"
 )
 

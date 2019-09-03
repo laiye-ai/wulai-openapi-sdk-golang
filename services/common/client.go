@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/errors"
-	log "github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/zlog"
+	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/log"
 )
 
 //Client http 客户端
