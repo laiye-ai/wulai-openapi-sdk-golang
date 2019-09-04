@@ -10,13 +10,14 @@ import (
 func Test_GetBotResponseWithText(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
-	text := &Text{"您好!"}
-	_, err := wulaiClient.BotResponse("userID", text, "")
+	text := Text{"您好!"}
+	_, err := wulaiClient.MSGBotResponse("userID", text, "")
 	if err != nil {
 		if _, ok := err.(*errors.ServerError); ok {
 
-		} else if _, ok := err.(*errors.ClientError); ok {
-			t.Error("[Test_GetBotResponseWithText]=> failed.")
+		} else if err, ok := err.(*errors.ClientError); ok {
+			
+			t.Errorf("[Test_GetBotResponseWithText]=> %s.", err.Message())
 		} else {
 			t.Error("[Test_GetBotResponseWithText]=> failed.")
 		}
@@ -28,7 +29,7 @@ func Test_GetBotResponseWitCustom(t *testing.T) {
 	wulaiClient := NewClient(secret, pubkey)
 
 	custom := &Custom{"您好!"}
-	_, err := wulaiClient.BotResponse("userID", custom, "")
+	_, err := wulaiClient.MSGBotResponse("userID", custom, "")
 	if err != nil {
 		if _, ok := err.(*errors.ServerError); ok {
 

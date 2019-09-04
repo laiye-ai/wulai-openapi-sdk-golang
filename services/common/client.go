@@ -3,6 +3,7 @@ package common
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -53,19 +54,20 @@ func (c *Client) Request(action, url string, input []byte, retry int) (*HTTPResp
 	} else if strings.ToUpper(action) == "GET" {
 		action = "GET"
 	} else {
-		//TODO:处理action错误
-		return nil, errors.NewClientError("Client Error", "action 错误", err)
+		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, action, "POST,GET")
+		return nil, errors.NewClientError(errors.UnsupportedTypeErrorCode, errorMsg, err)
 	}
 
 	//判断json是否合法
 	if !isJSONString(input) {
-		//TODO:处理action错误
-		return nil, errors.NewClientError("Client Error", "isJSONString", err)
+		errorMsg := fmt.Sprintf(errors.InvalidFormatErrorMessage, "input is not json format")
+		return nil, errors.NewClientError(errors.InvalidParamErrorCode, errorMsg, err)
 	}
 
 	req, err := http.NewRequest(action, url, bytes.NewReader(input))
 	if err != nil {
-		return response, err
+		errMsg := fmt.Sprintf(errors.NetWorkErrorMessage, err.Error())
+		return response, errors.NewClientError(errors.NetWorkErrorCode, errMsg, err)
 	}
 
 	//添加权限认证字段
@@ -97,7 +99,8 @@ func (c *Client) Request(action, url string, input []byte, retry int) (*HTTPResp
 	}
 
 	if err != nil {
-		return response, errors.NewClientError("Client Error", err.Error(), err)
+		errMsg := fmt.Sprintf(errors.NetWorkErrorMessage, err.Error())
+		return response, errors.NewClientError(errors.NetWorkErrorCode, errMsg, err)
 	}
 	if resp != nil {
 		defer func() {
@@ -110,7 +113,8 @@ func (c *Client) Request(action, url string, input []byte, retry int) (*HTTPResp
 	response.OriginHTTPResponse = resp //原始的Http Response
 	bytes, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return response, err
+		errMsg := fmt.Sprintf(errors.NetWorkErrorMessage, err.Error())
+		return response, errors.NewClientError(errors.NetWorkErrorCode, errMsg, err)
 	}
 
 	response.ResponseBodyBytes = bytes //http 响应体
