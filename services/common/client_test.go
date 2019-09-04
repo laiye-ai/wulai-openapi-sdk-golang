@@ -105,9 +105,7 @@ func Test_IsJSONString(t *testing.T) {
 
 	if isJSONString([]byte(`{"name":wrong"}`)) {
 		t.Fail()
-	} else {
-		//错误 json string
-	}
+	} 
 }
 
 func Benchmark_isJSONString(t *testing.B) {

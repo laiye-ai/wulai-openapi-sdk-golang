@@ -3,12 +3,32 @@ package errors
 import "fmt"
 
 const (
-
-	//DefaultClientErrorStatus 默认客户端错误状态码
 	DefaultClientErrorStatus = 400
+	DefaultClientErrorCode   = "SDK.ClientError"
 
-	//DefaultClientErrorCode 默认客户端错误信息
-	DefaultClientErrorCode = "SDK.ClientError"
+	NetWorkErrorCode    = "SDK.NetWorkError"
+	NetWorkErrorMessage = "Network error %s,try using err.Message() to get detail message"
+
+	UnsupportedTypeErrorCode    = "SDK.UnsupportedType"
+	UnsupportedTypeErrorMessage = "Specified type (%s) is not supported,retry using (%s)"
+
+	UnknownRequestTypeErrorCode    = "SDK.UnknownRequestType"
+	UnknownRequestTypeErrorMessage = "Unknown Request Type: %s"
+
+	MissingParamErrorCode = "SDK.MissingParam"
+	InvalidParamErrorCode = "SDK.InvalidParam"
+
+	InvalidFormatErrorCode    = "SDK.InvalidFormat"
+	InvalidFormatErrorMessage = "Format invalid %s, try using err.Message() to get detail message"
+
+	JsonMarshalErrorCode    = "SDK.JsonMarshalError"
+	JsonMarshalErrorMessage = "Failed to marshal response, try using err.Message() to get detail message"
+
+	JsonUnmarshalErrorCode    = "SDK.JsonUnmarshalError"
+	JsonUnmarshalErrorMessage = "Failed to unmarshal response,try using err.Message() to get detail message"
+
+	TimeoutErrorCode    = "SDK.TimeoutError"
+	TimeoutErrorMessage = "The request timed out %s times(%s for retry), perhaps we should have the threshold raised a little?"
 )
 
 //ClientError 客户端错误定义
