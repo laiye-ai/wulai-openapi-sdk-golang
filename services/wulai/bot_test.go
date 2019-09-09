@@ -10,18 +10,36 @@ import (
 func Test_GetBotResponseWithText(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
-	text := Text{"您好!"}
-	_, err := wulaiClient.MSGBotResponse("userID", text, "")
+	text := &Text{"您好!"}
+	botResp, err := wulaiClient.MSGBotResponse("userID", text, "")
 	if err != nil {
 		if _, ok := err.(*errors.ServerError); ok {
 
 		} else if err, ok := err.(*errors.ClientError); ok {
-			
+
 			t.Errorf("[Test_GetBotResponseWithText]=> %s.", err.Message())
 		} else {
 			t.Error("[Test_GetBotResponseWithText]=> failed.")
 		}
 	}
+	_, _ = botResp.ToString()
+}
+
+func Test_GetBotResponseQAWithText(t *testing.T) {
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	botResp, err := wulaiClient.MSGBotResponseQa("userID", "您好!", "")
+	if err != nil {
+		if _, ok := err.(*errors.ServerError); ok {
+
+		} else if err, ok := err.(*errors.ClientError); ok {
+
+			t.Errorf("[Test_GetBotResponseWithText]=> %s.", err.Message())
+		} else {
+			t.Error("[Test_GetBotResponseWithText]=> failed.")
+		}
+	}
+	_, _ = botResp.ToString()
 }
 
 func Test_GetBotResponseWitCustom(t *testing.T) {
@@ -29,7 +47,7 @@ func Test_GetBotResponseWitCustom(t *testing.T) {
 	wulaiClient := NewClient(secret, pubkey)
 
 	custom := &Custom{"您好!"}
-	_, err := wulaiClient.MSGBotResponse("userID", custom, "")
+	botResp, err := wulaiClient.MSGBotResponse("userID", custom, "")
 	if err != nil {
 		if _, ok := err.(*errors.ServerError); ok {
 
@@ -39,6 +57,7 @@ func Test_GetBotResponseWitCustom(t *testing.T) {
 			t.Error("[Test_GetBotResponseWitCustom]=> failed.")
 		}
 	}
+	_, _ = botResp.ToString()
 }
 
 func Test_CheckMsgType(t *testing.T) {

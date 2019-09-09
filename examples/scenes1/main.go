@@ -27,7 +27,7 @@ func main() {
 	//发起问答
 	botResp, err := wulaiClient.MSGBotResponse(user.UserID, textMsg, "预留信息")
 	if err != nil {
-		log.Fatalf("user Create test reuslt:%s", err.Error())
+		log.Fatalf("bot response reuslt:%s", err.Error())
 	}
-	log.Infof("[机器人回复]%s\n", botResp)
+	log.Infof("[机器人回复]%v\n", botResp)
 }

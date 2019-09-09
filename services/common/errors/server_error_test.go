@@ -5,7 +5,7 @@ import (
 )
 
 func Test_ServerError(t *testing.T) {
-	err := NewServerError(500, "error code", "error message", nil)
+	err := NewServerError(500, "error message", nil)
 
 	if err.Error() != "[error code] error message" {
 		t.Errorf("[Test_ServerError]=>Error() failed\n")

@@ -43,7 +43,7 @@ func Test_GetUserAttribute(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.Version = "v2"
-	_, err := wulaiClient.UserAttribute()
+	_, err := wulaiClient.UserAttributeList(true, 1, 100)
 	if err != nil {
 		if _, ok := err.(*errors.ServerError); ok {
 
