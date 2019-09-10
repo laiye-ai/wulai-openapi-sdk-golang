@@ -23,7 +23,7 @@ func NewServerError(httpStatus int, message string, originErr error) Error {
 }
 
 func (err *ServerError) Error() string {
-	return fmt.Sprintf("SDK.ServerError\nErrorCode:%s\nMessage: %s", err.errorCode, err.message)
+	return fmt.Sprintf("SDK.ServerError\t Message: %s", err.message)
 }
 
 //OriginError HTTP 原始错误信息

@@ -7,57 +7,72 @@ import (
 	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/errors"
 )
 
-func Test_GetBotResponseWithText(t *testing.T) {
+func Test_GetBotResponse(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.Version = "v2"
 	text := &Text{"您好!"}
-	botResp, err := wulaiClient.MSGBotResponse("userID", text, "")
+	_, err := wulaiClient.MSGBotResponse("xiao_lai", text, "")
 	if err != nil {
-		if _, ok := err.(*errors.ServerError); ok {
-
-		} else if err, ok := err.(*errors.ClientError); ok {
-
-			t.Errorf("[Test_GetBotResponseWithText]=> %s.", err.Message())
-		} else {
-			t.Error("[Test_GetBotResponseWithText]=> failed.")
+		if err, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_GetBotResponse]=> %s\n", err.Error())
 		}
+
+		t.Log(err.Error())
 	}
-	_, _ = botResp.ToString()
 }
 
 func Test_GetBotResponseQAWithText(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
-	botResp, err := wulaiClient.MSGBotResponseQa("userID", "您好!", "")
+	_, err := wulaiClient.MSGBotResponseQa("xiao_lai", "您好!", "")
 	if err != nil {
-		if _, ok := err.(*errors.ServerError); ok {
-
-		} else if err, ok := err.(*errors.ClientError); ok {
-
-			t.Errorf("[Test_GetBotResponseWithText]=> %s.", err.Message())
-		} else {
-			t.Error("[Test_GetBotResponseWithText]=> failed.")
+		if err, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_GetBotResponseQAWithText]=> %s\n", err.Message())
 		}
+
+		t.Log(err.Error())
 	}
-	_, _ = botResp.ToString()
+}
+
+func Test_GetBotResponseKeyword(t *testing.T) {
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	_, err := wulaiClient.MSGBotResponseKeyword("xiao_lai", "您好!", "")
+	if err != nil {
+		if err, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_GetBotResponseKeyword]=> %s\n", err.Message())
+		}
+
+		t.Log(err.Error())
+	}
+}
+
+func Test_GetBotResponseTask(t *testing.T) {
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	_, err := wulaiClient.MSGBotResponseTask("xiao_lai", "您好!", "")
+	if err != nil {
+		if err, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_GetBotResponseTask]=> %s\n", err.Message())
+		}
+
+		t.Log(err.Error())
+	}
 }
 
 func Test_GetBotResponseWitCustom(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
-
 	custom := &Custom{"您好!"}
-	botResp, err := wulaiClient.MSGBotResponse("userID", custom, "")
+	_, err := wulaiClient.MSGBotResponse("xiao_lai", custom, "")
 	if err != nil {
-		if _, ok := err.(*errors.ServerError); ok {
-
-		} else if _, ok := err.(*errors.ClientError); ok {
-			t.Error("[Test_GetBotResponseWitCustom]=> failed.")
-		} else {
+		if _, ok := err.(*errors.ClientError); ok {
 			t.Error("[Test_GetBotResponseWitCustom]=> failed.")
 		}
+
+		t.Log(err.Error())
 	}
-	_, _ = botResp.ToString()
 }
 
 func Test_CheckMsgType(t *testing.T) {

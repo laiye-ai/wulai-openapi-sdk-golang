@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/errors"
+	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/log"
 )
 
 //msgBotResponseV2 获取机器人回复(V2)
@@ -21,6 +22,10 @@ func (x *Client) msgBotResponseV2(userID, extra, typeStr string, msgType interfa
 		"msg_body": {"%s": %s},
 		"user_id": "%s"
 	  }`, extra, typeStr, string(msgBody), userID)
+
+	if x.Debug {
+		log.Debugf("[Request URL]:%s\n [Input]: %s\n", url, input)
+	}
 
 	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
@@ -42,6 +47,10 @@ func (x *Client) msgBotResponseQaV2(userID, content, extra string) ([]byte, erro
 		"extra": %q
 	  }`, content, userID, extra)
 
+	if x.Debug {
+		log.Debugf("[Request URL]:%s\n%s\n", url, input)
+	}
+
 	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
 		return nil, err
@@ -62,6 +71,10 @@ func (x *Client) msgBotResponseKeywordV2(userID, content, extra string) ([]byte,
 		"extra": %q
 	  }`, content, userID, extra)
 
+	if x.Debug {
+		log.Debugf("[Request URL]:%s\n%s\n", url, input)
+	}
+
 	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
 		return nil, err
@@ -81,6 +94,10 @@ func (x *Client) msgBotResponseTaskV2(userID, content, extra string) ([]byte, er
 		"user_id": "%s",
 		"extra": %q
 	  }`, content, userID, extra)
+
+	if x.Debug {
+		log.Debugf("[Request URL]:%s\n%s\n", url, input)
+	}
 
 	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {

@@ -12,12 +12,17 @@ func main() {
 	wulaiClient.Version = "v2"
 	log.Infof("[wulaiClient]%+v\n", wulaiClient)
 
-	user, err := wulaiClient.UserCreate("xiao_lai", "", "")
+	user, err := wulaiClient.UserCreate("xiao_lai", "nice_name", "")
 	if err != nil {
 		log.Fatalf("user Create test reuslt:%s", err.Error())
 	}
 
 	log.Infof("[创建用户]: %+v\n", user)
+
+	err = wulaiClient.UserAttributeCreate(user.UserID, "体重", "120")
+	if err != nil {
+		log.Errorf("[创建用户属性失败]: %s\n", err.Error())
+	}
 
 	//消息类型[文本消息]
 	textMsg := &wulai.Text{

@@ -1,21 +1,12 @@
 package wulai
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
-//Response base
-type Response struct{}
-
 //BotResponse 机器人回复
 type BotResponse struct {
-	Response
 	IsDispatch            bool   `json:"is_dispatch"`
 	MsgID                 string `json:"msg_id"`
 	TaskSuggestedResponse []struct {
-		Score  int  `json:"score"`
-		IsSend bool `json:"is_send"`
+		Score  float64 `json:"score"`
+		IsSend bool    `json:"is_send"`
 		Task   struct {
 			BlockType string `json:"block_type"`
 			BlockID   int    `json:"block_id"`
@@ -59,7 +50,6 @@ type BotResponse struct {
 
 //BotResponseQa 问答机器人回复
 type BotResponseQa struct {
-	Response
 	IsDispatch          bool   `json:"is_dispatch"`
 	MsgID               string `json:"msg_id"`
 	QaSuggestedResponse []struct {
@@ -68,8 +58,8 @@ type BotResponseQa struct {
 			StandardQuestion string `json:"standard_question"`
 			Question         string `json:"question"`
 		} `json:"qa"`
-		IsSend   bool `json:"is_send"`
-		Score    int  `json:"score"`
+		IsSend   bool    `json:"is_send"`
+		Score    float64 `json:"score"`
 		Response []struct {
 			MsgBody struct {
 				Text struct {
@@ -96,12 +86,11 @@ type BotResponseQa struct {
 
 //BotResponseKeyword 关键字机器人回复
 type BotResponseKeyword struct {
-	Response
 	IsDispatch               bool   `json:"is_dispatch"`
 	MsgID                    string `json:"msg_id"`
 	KeywordSuggestedResponse []struct {
-		IsSend   bool `json:"is_send"`
-		Score    int  `json:"score"`
+		IsSend   bool    `json:"is_send"`
+		Score    float64 `json:"score"`
 		Response []struct {
 			MsgBody struct {
 				Text struct {
@@ -132,12 +121,11 @@ type BotResponseKeyword struct {
 
 //BotResponseTask 任务机器人回复
 type BotResponseTask struct {
-	Response
 	IsDispatch            bool   `json:"is_dispatch"`
 	MsgID                 string `json:"msg_id"`
 	TaskSuggestedResponse []struct {
-		Score  int  `json:"score"`
-		IsSend bool `json:"is_send"`
+		Score  float64 `json:"score"`
+		IsSend bool    `json:"is_send"`
 		Task   struct {
 			BlockType string `json:"block_type"`
 			BlockID   int    `json:"block_id"`
@@ -179,17 +167,20 @@ type BotResponseTask struct {
 	} `json:"task_suggested_response"`
 }
 
-//ToByte 返回 字节
-func (x *Response) ToByte() ([]byte, error) {
-	return json.Marshal(x)
-}
-
-//ToString 返回 json string
-func (x *Response) ToString() (string, error) {
-	bytes, err := json.Marshal(x)
-	if err != nil {
-		return "", err
-	}
-
-	return fmt.Sprintf("%s", bytes), nil
+//UserAttributeList 用户属性列表
+type UserAttributeList struct {
+	PageCount                        int `json:"page_count"`
+	UserAttributeUserAttributeValues []struct {
+		UserAttribute struct {
+			ValueType               string `json:"value_type"`
+			UseInUserAttributeGroup bool   `json:"use_in_user_attribute_group"`
+			Type                    string `json:"type"`
+			ID                      string `json:"id"`
+			Name                    string `json:"name"`
+		} `json:"user_attribute"`
+		UserAttributeValue []struct {
+			ID   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"user_attribute_value"`
+	} `json:"user_attribute_user_attribute_values"`
 }

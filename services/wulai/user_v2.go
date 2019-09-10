@@ -4,22 +4,28 @@ import (
 	"fmt"
 
 	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/errors"
+	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/log"
 )
 
 //createV2 创建用户(版本2)
-func (x *Client) createV2(nickname, avatarURL, userID string) (*User, error) {
+func (x *Client) createV2(nickname, avatarURL, userID string) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/user/create", x.Endpoint, x.Version)
 	input := fmt.Sprintf(`{
 		"nickname": "%s",
 		"avatar_url": "%s",
 		"user_id": "%s"
 	  }`, nickname, avatarURL, userID)
-	resp, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
-	if err != nil {
-		return nil, errors.NewServerError(resp.StatusCode, err.Error(), err)
+
+	if x.Debug {
+		log.Debugf("[Request URL]:%s\n%s\n", url, input)
 	}
 
-	return &User{nickname, avatarURL, userID}, nil
+	resp, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp.ResponseBodyBytes, err
 }
 
 //UserAttributeList 获取用户属性列表
@@ -32,6 +38,11 @@ func (x *Client) userAttributeListV2(isAttrGroup bool, page, pageSize int) ([]by
 		"page": %v,
 		"page_size": %v
 	  }`, isAttrGroup, page, pageSize)
+
+	if x.Debug {
+		log.Debugf("[Request URL]:%s\n%s\n", url, input)
+	}
+
 	resp, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
 		return nil, errors.NewServerError(resp.StatusCode, err.Error(), err)
@@ -56,6 +67,11 @@ func (x *Client) userAttributeCreateV2(userID, attrName, attrValue string) ([]by
 		],
 		"user_id": "%s"
 	  }`, attrName, attrValue, userID)
+
+	if x.Debug {
+		log.Debugf("[Request URL]:%s\n%s\n", url, input)
+	}
+
 	resp, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
 		return nil, errors.NewServerError(resp.StatusCode, err.Error(), err)

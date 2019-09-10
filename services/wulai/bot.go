@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/errors"
+	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/log"
 )
 
 //Bot 机器人
@@ -34,6 +35,11 @@ func (x *Client) MSGBotResponse(userID string, msgType interface{}, extra string
 		return nil, err
 	}
 
+	if x.Debug {
+		log.Debugf("[MSGBotResponse Response]:%s\n", bytes)
+	}
+
+	model = &BotResponseKeyword{}
 	if err = json.Unmarshal(bytes, model); err != nil {
 		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
 	}
@@ -55,6 +61,11 @@ func (x *Client) MSGBotResponseQa(userID, content, extra string) (model *BotResp
 		return nil, err
 	}
 
+	if x.Debug {
+		log.Debugf("[MSGBotResponseQa Response]:%s\n", bytes)
+	}
+
+	model = &BotResponseQa{}
 	if err = json.Unmarshal(bytes, model); err != nil {
 		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
 	}
@@ -76,6 +87,11 @@ func (x *Client) MSGBotResponseKeyword(userID, content, extra string) (model *Bo
 		return nil, err
 	}
 
+	if x.Debug {
+		log.Debugf("[MSGBotResponseKeyword Response]:%s\n", bytes)
+	}
+
+	model = &BotResponseKeyword{}
 	if err = json.Unmarshal(bytes, model); err != nil {
 		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
 	}
@@ -97,6 +113,11 @@ func (x *Client) MSGBotResponseTask(userID, content, extra string) (model *BotRe
 		return nil, err
 	}
 
+	if x.Debug {
+		log.Debugf("[MSGBotResponseTask Response]:%s\n", bytes)
+	}
+
+	model = &BotResponseTask{}
 	if err = json.Unmarshal(bytes, model); err != nil {
 		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
 	}
