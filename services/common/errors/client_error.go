@@ -9,6 +9,9 @@ const (
 	NetWorkErrorCode    = "SDK.NetWorkError"
 	NetWorkErrorMessage = "Network error %s,try using err.Message() to get detail message"
 
+	UnsupportedMethodErrorCode    = "SDK.UnsupportedMethod"
+	UnsupportedMethodErrorMessage = "The version (%s) is not supported,retry using (%s)"
+
 	UnsupportedTypeErrorCode    = "SDK.UnsupportedType"
 	UnsupportedTypeErrorMessage = "Specified type (%s) is not supported,retry using (%s)"
 

@@ -121,7 +121,7 @@ func (c *Client) Request(action, url string, input []byte, retry int) (*HTTPResp
 	//如果StatusCode不等于200,则错误
 	if response.StatusCode != 200 {
 		response.Message = string(response.ResponseBodyBytes)
-		return response, errors.NewServerError(resp.StatusCode, "Server Error", response.Message, err)
+		return response, errors.NewServerError(resp.StatusCode, response.Message, err)
 	}
 
 	if c.Debug {

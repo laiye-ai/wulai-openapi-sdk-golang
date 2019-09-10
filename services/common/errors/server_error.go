@@ -14,21 +14,16 @@ type ServerError struct {
 }
 
 //NewServerError 实例化 ServerError
-func NewServerError(httpStatus int, errorCode, message string, originErr error) Error {
+func NewServerError(httpStatus int, message string, originErr error) Error {
 	return &ServerError{
 		httpStatus:  httpStatus,
-		errorCode:   errorCode,
 		message:     message,
 		originError: originErr,
 	}
 }
 
 func (err *ServerError) Error() string {
-	clientErrMsg := fmt.Sprintf("[%s] %s", err.ErrorCode(), err.message)
-	if err.originError != nil {
-		return clientErrMsg + "\ncaused by:\n" + err.originError.Error()
-	}
-	return clientErrMsg
+	return fmt.Sprintf("SDK.ServerError\t Message: %s", err.message)
 }
 
 //OriginError HTTP 原始错误信息
@@ -41,7 +36,7 @@ func (err *ServerError) HttpStatus() int {
 	return err.httpStatus
 }
 
-//ErrorCode HTTP 错误码
+//ErrorCode 错误码
 func (err *ServerError) ErrorCode() string {
 	return err.errorCode
 }

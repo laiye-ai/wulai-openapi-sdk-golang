@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/errors"
+	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/log"
 )
 
 //Bot 机器人
@@ -14,7 +15,7 @@ type Bot struct {
 }
 
 //MSGBotResponse 获取机器人回复
-func (x *Client) MSGBotResponse(userID string, msgType interface{}, extra string) ([]byte, error) {
+func (x *Client) MSGBotResponse(userID string, msgType interface{}, extra string) (model *BotResponseKeyword, err error) {
 
 	//检查消息类型是否合法
 	typeStr, ok := checkMsgType(msgType)
@@ -25,64 +26,103 @@ func (x *Client) MSGBotResponse(userID string, msgType interface{}, extra string
 
 	if strings.ToUpper(x.Version) == "V1" {
 
-	} else if strings.ToUpper(x.Version) == "V2" {
-		return x.msgBotResponseV2(userID, extra, typeStr, msgType)
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return nil, errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
 	}
 
-	return x.msgBotResponseV2(userID, extra, typeStr, msgType)
-}
-
-//msgBotResponseV2 获取机器人回复(V2)
-func (x *Client) msgBotResponseV2(userID, extra, typeStr string, msgType interface{}) ([]byte, error) {
-	url := fmt.Sprintf("%s/%s/msg/bot-response", x.Endpoint, x.Version)
-	var err error
-	msgBody, err := json.Marshal(msgType)
-	if err != nil {
-		return nil, errors.NewClientError(errors.JsonMarshalErrorCode, errors.JsonMarshalErrorMessage, err)
-	}
-
-	input := fmt.Sprintf(`{
-		"extra": "%s",
-		"msg_body": {"%s": %s},
-		"user_id": "%s"
-	  }`, extra, typeStr, string(msgBody), userID)
-
-	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
+	bytes, err := x.msgBotResponseV2(userID, extra, typeStr, msgType)
 	if err != nil {
 		return nil, err
 	}
-	return respBytes.ResponseBodyBytes, nil
+
+	if x.Debug {
+		log.Debugf("[MSGBotResponse Response]:%s\n", bytes)
+	}
+
+	model = &BotResponseKeyword{}
+	if err = json.Unmarshal(bytes, model); err != nil {
+		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	return model, nil
 }
 
 //MSGBotResponseQa 获取问答机器人回复
-func (x *Client) MSGBotResponseQa(content, userID, extra string) ([]byte, error) {
+func (x *Client) MSGBotResponseQa(userID, content, extra string) (model *BotResponseQa, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
 
-	} else if strings.ToUpper(x.Version) == "V2" {
-		return x.msgBotResponseQaV2(content, userID, extra)
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return nil, errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
 	}
-	return x.msgBotResponseQaV2(content, userID, extra)
-}
 
-//msgBotResponseQaV2 获取问答机器人回复(V2)
-func (x *Client) msgBotResponseQaV2(content, userID, extra string) ([]byte, error) {
-	url := fmt.Sprintf("%s/%s/msg/bot-response/qa", x.Endpoint, x.Version)
-	input := fmt.Sprintf(`{
-		"msg_body": {
-		  "text": {
-			"content": "%s"
-		  }
-		},
-		"user_id": "%s",
-		"extra": "%s"
-	  }`, content, userID, extra)
-
-	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
+	bytes, err := x.msgBotResponseQaV2(userID, content, extra)
 	if err != nil {
 		return nil, err
 	}
-	return respBytes.ResponseBodyBytes, nil
+
+	if x.Debug {
+		log.Debugf("[MSGBotResponseQa Response]:%s\n", bytes)
+	}
+
+	model = &BotResponseQa{}
+	if err = json.Unmarshal(bytes, model); err != nil {
+		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	return model, nil
+}
+
+//MSGBotResponseKeyword 获取关键字机器人回复
+func (x *Client) MSGBotResponseKeyword(userID, content, extra string) (model *BotResponseKeyword, err error) {
+
+	if strings.ToUpper(x.Version) == "V1" {
+
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return nil, errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
+	}
+
+	bytes, err := x.msgBotResponseKeywordV2(userID, content, extra)
+	if err != nil {
+		return nil, err
+	}
+
+	if x.Debug {
+		log.Debugf("[MSGBotResponseKeyword Response]:%s\n", bytes)
+	}
+
+	model = &BotResponseKeyword{}
+	if err = json.Unmarshal(bytes, model); err != nil {
+		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	return model, nil
+}
+
+//MSGBotResponseTask 获取任务机器人回复
+func (x *Client) MSGBotResponseTask(userID, content, extra string) (model *BotResponseTask, err error) {
+
+	if strings.ToUpper(x.Version) == "V1" {
+
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return nil, errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
+	}
+
+	bytes, err := x.msgBotResponseTaskV2(userID, content, extra)
+	if err != nil {
+		return nil, err
+	}
+
+	if x.Debug {
+		log.Debugf("[MSGBotResponseTask Response]:%s\n", bytes)
+	}
+
+	model = &BotResponseTask{}
+	if err = json.Unmarshal(bytes, model); err != nil {
+		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	return model, nil
 }
 
 //checkMsgType 检查消息类型

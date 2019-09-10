@@ -21,6 +21,7 @@ func NewClient(secret, pubkey string) *Client {
 	client := common.NewClient(credential)
 	wulai.HTTPClient = client
 
+	//默认版本:V2
 	wulai.Version = "v2"
 	wulai.Endpoint = "https://openapi.wul.ai"
 	return wulai
