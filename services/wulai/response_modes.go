@@ -184,3 +184,40 @@ type UserAttributeList struct {
 		} `json:"user_attribute_value"`
 	} `json:"user_attribute_user_attribute_values"`
 }
+
+//MsgHistory 历史消息
+type MsgHistory struct {
+	Msg []struct {
+		Direction  string `json:"direction"`
+		SenderInfo struct {
+			AvatarURL string `json:"avatar_url"`
+			Nickname  string `json:"nickname"`
+			RealName  string `json:"real_name"`
+		} `json:"sender_info"`
+		MsgType  string `json:"msg_type"`
+		Extra    string `json:"extra"`
+		MsgID    string `json:"msg_id"`
+		MsgTs    string `json:"msg_ts"`
+		UserInfo struct {
+			AvatarURL string `json:"avatar_url"`
+			Nickname  string `json:"nickname"`
+		} `json:"user_info"`
+		MsgBody struct {
+			Text struct {
+				Content string `json:"content"`
+			} `json:"text"`
+		} `json:"msg_body"`
+	} `json:"msg"`
+	HasMore bool `json:"has_more"`
+}
+
+//direction
+type direction string
+
+const (
+	//BACKWARD :向旧的消息翻页，查询比传入msg_id更小的消息
+	BACKWARD direction = "BACKWARD"
+
+	//FORWARD :先新的消息翻页，查询比传入msg_id更大的消息
+	FORWARD direction = "FORWARD"
+)

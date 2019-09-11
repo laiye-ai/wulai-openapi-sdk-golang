@@ -14,8 +14,8 @@ import (
 type Bot struct {
 }
 
-//MSGBotResponse 获取机器人回复
-func (x *Client) MSGBotResponse(userID string, msgType interface{}, extra string) (model *BotResponseKeyword, err error) {
+//MsgBotResponse 获取机器人回复
+func (x *Client) MsgBotResponse(userID string, msgType interface{}, extra string) (model *BotResponseKeyword, err error) {
 
 	//检查消息类型是否合法
 	typeStr, ok := checkMsgType(msgType)
@@ -47,8 +47,8 @@ func (x *Client) MSGBotResponse(userID string, msgType interface{}, extra string
 	return model, nil
 }
 
-//MSGBotResponseQa 获取问答机器人回复
-func (x *Client) MSGBotResponseQa(userID, content, extra string) (model *BotResponseQa, err error) {
+//MsgBotResponseQa 获取问答机器人回复
+func (x *Client) MsgBotResponseQa(userID, content, extra string) (model *BotResponseQa, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
 
@@ -73,8 +73,8 @@ func (x *Client) MSGBotResponseQa(userID, content, extra string) (model *BotResp
 	return model, nil
 }
 
-//MSGBotResponseKeyword 获取关键字机器人回复
-func (x *Client) MSGBotResponseKeyword(userID, content, extra string) (model *BotResponseKeyword, err error) {
+//MsgBotResponseKeyword 获取关键字机器人回复
+func (x *Client) MsgBotResponseKeyword(userID, content, extra string) (model *BotResponseKeyword, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
 
@@ -99,8 +99,8 @@ func (x *Client) MSGBotResponseKeyword(userID, content, extra string) (model *Bo
 	return model, nil
 }
 
-//MSGBotResponseTask 获取任务机器人回复
-func (x *Client) MSGBotResponseTask(userID, content, extra string) (model *BotResponseTask, err error) {
+//MsgBotResponseTask 获取任务机器人回复
+func (x *Client) MsgBotResponseTask(userID, content, extra string) (model *BotResponseTask, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
 
@@ -118,6 +118,37 @@ func (x *Client) MSGBotResponseTask(userID, content, extra string) (model *BotRe
 	}
 
 	model = &BotResponseTask{}
+	if err = json.Unmarshal(bytes, model); err != nil {
+		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	return model, nil
+}
+
+//MsgHistory 查询历史消息
+func (x *Client) MsgHistory(userID, msgID string, direction direction, num int) (model *MsgHistory, err error) {
+
+	if strings.ToUpper(x.Version) == "V1" {
+
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return nil, errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
+	}
+
+	//设置默认值为 BACKWARD
+	if strings.TrimSpace(string(direction)) == "" {
+		direction = BACKWARD
+	}
+
+	bytes, err := x.msgHistoryV2(userID, msgID, direction, num)
+	if err != nil {
+		return nil, err
+	}
+
+	if x.Debug {
+		log.Debugf("[MsgHistory Response]:%s\n", bytes)
+	}
+
+	model = &MsgHistory{}
 	if err = json.Unmarshal(bytes, model); err != nil {
 		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
 	}

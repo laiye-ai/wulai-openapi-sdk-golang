@@ -105,3 +105,24 @@ func (x *Client) msgBotResponseTaskV2(userID, content, extra string) ([]byte, er
 	}
 	return respBytes.ResponseBodyBytes, nil
 }
+
+//msgHistory 查询历史消息(V2)
+func (x *Client) msgHistoryV2(userID, msgID string, direction direction, num int) ([]byte, error) {
+	url := fmt.Sprintf("%s/%s/msg/history", x.Endpoint, x.Version)
+	input := fmt.Sprintf(`{
+		"direction": "%s",
+		"msg_id": "%s",
+		"user_id": "%s",
+		"num": %v
+	  }`, direction, msgID, userID, num)
+
+	if x.Debug {
+		log.Debugf("[Request URL]:%s\n%s\n", url, input)
+	}
+
+	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
+	if err != nil {
+		return nil, err
+	}
+	return respBytes.ResponseBodyBytes, nil
+}

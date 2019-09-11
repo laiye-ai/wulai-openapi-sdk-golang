@@ -12,7 +12,7 @@ func Test_GetBotResponse(t *testing.T) {
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.Version = "v2"
 	text := &Text{"您好!"}
-	_, err := wulaiClient.MSGBotResponse("xiao_lai", text, "")
+	_, err := wulaiClient.MsgBotResponse("xiao_lai", text, "")
 	if err != nil {
 		if err, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_GetBotResponse]=> %s\n", err.Error())
@@ -25,7 +25,7 @@ func Test_GetBotResponse(t *testing.T) {
 func Test_GetBotResponseQAWithText(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
-	_, err := wulaiClient.MSGBotResponseQa("xiao_lai", "您好!", "")
+	_, err := wulaiClient.MsgBotResponseQa("xiao_lai", "您好!", "")
 	if err != nil {
 		if err, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_GetBotResponseQAWithText]=> %s\n", err.Message())
@@ -38,7 +38,7 @@ func Test_GetBotResponseQAWithText(t *testing.T) {
 func Test_GetBotResponseKeyword(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
-	_, err := wulaiClient.MSGBotResponseKeyword("xiao_lai", "您好!", "")
+	_, err := wulaiClient.MsgBotResponseKeyword("xiao_lai", "您好!", "")
 	if err != nil {
 		if err, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_GetBotResponseKeyword]=> %s\n", err.Message())
@@ -51,7 +51,7 @@ func Test_GetBotResponseKeyword(t *testing.T) {
 func Test_GetBotResponseTask(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
-	_, err := wulaiClient.MSGBotResponseTask("xiao_lai", "您好!", "")
+	_, err := wulaiClient.MsgBotResponseTask("xiao_lai", "您好!", "")
 	if err != nil {
 		if err, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_GetBotResponseTask]=> %s\n", err.Message())
@@ -65,7 +65,20 @@ func Test_GetBotResponseWitCustom(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
 	custom := &Custom{"您好!"}
-	_, err := wulaiClient.MSGBotResponse("xiao_lai", custom, "")
+	_, err := wulaiClient.MsgBotResponse("xiao_lai", custom, "")
+	if err != nil {
+		if _, ok := err.(*errors.ClientError); ok {
+			t.Error("[Test_GetBotResponseWitCustom]=> failed.")
+		}
+
+		t.Log(err.Error())
+	}
+}
+
+func Test_MsgHistory(t *testing.T) {
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	_, err := wulaiClient.MsgHistory("xiao_lai", "", BACKWARD, 1)
 	if err != nil {
 		if _, ok := err.(*errors.ClientError); ok {
 			t.Error("[Test_GetBotResponseWitCustom]=> failed.")
