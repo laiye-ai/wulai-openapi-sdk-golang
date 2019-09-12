@@ -12,6 +12,7 @@ func main() {
 	wulaiClient.Version = "v2"
 	log.Infof("[wulaiClient]%+v\n", wulaiClient)
 
+	//1:创建用户
 	user, err := wulaiClient.UserCreate("xiao_lai", "nice_name", "")
 	if err != nil {
 		log.Fatalf("user Create test reuslt:%s", err.Error())
@@ -19,6 +20,7 @@ func main() {
 
 	log.Infof("[创建用户]: %+v\n", user)
 
+	//2:创建属性
 	err = wulaiClient.UserAttributeCreate(user.UserID, "体重", "120")
 	if err != nil {
 		log.Errorf("[创建用户属性失败]: %s\n", err.Error())
@@ -29,7 +31,7 @@ func main() {
 		Content: "您好",
 	}
 
-	//发起问答
+	//3:发起问答
 	botResp, err := wulaiClient.MsgBotResponse(user.UserID, textMsg, "预留信息")
 	if err != nil {
 		log.Fatalf("bot response reuslt:%s", err.Error())

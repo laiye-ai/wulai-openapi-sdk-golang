@@ -211,6 +211,16 @@ type MsgHistory struct {
 	HasMore bool `json:"has_more"`
 }
 
+//MsgReceive 接收用户发的消息
+type MsgReceive struct {
+	MsgID string `json:"msg_id"`
+}
+
+//MsgSync 同步发给用户的消息
+type MsgSync struct {
+	MsgID string `json:"msg_id"`
+}
+
 //direction
 type direction string
 
