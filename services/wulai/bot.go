@@ -11,8 +11,6 @@ import (
 )
 
 //Bot 机器人
-type Bot struct {
-}
 
 //MsgBotResponse 获取机器人回复
 func (x *Client) MsgBotResponse(userID string, msgBody interface{}, extra string) (model *BotResponseKeyword, err error) {
