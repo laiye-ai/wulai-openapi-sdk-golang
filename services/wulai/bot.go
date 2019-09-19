@@ -13,7 +13,7 @@ import (
 //Bot 机器人
 
 //MsgBotResponse 获取机器人回复
-func (x *Client) MsgBotResponse(userID string, msgBody interface{}, extra string) (model *BotResponseKeyword, err error) {
+func (x *Client) MsgBotResponse(userID string, msgBody interface{}, extra string) (model *BotResponse, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
 
@@ -42,7 +42,7 @@ func (x *Client) MsgBotResponse(userID string, msgBody interface{}, extra string
 		log.Debugf("[MSGBotResponse Response]:%s\n", bytes)
 	}
 
-	model = &BotResponseKeyword{}
+	model = &BotResponse{}
 	if err = json.Unmarshal(bytes, model); err != nil {
 		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
 	}
