@@ -33,7 +33,7 @@ func (x *Client) UserCreate(userID, nickname, avatarURL string) (model *User, er
 		return nil, err
 	}
 
-	return &User{nickname, avatarURL, userID}, nil
+	return &User{userID, avatarURL, nickname}, nil
 }
 
 //UserUpdate 更新用户信息

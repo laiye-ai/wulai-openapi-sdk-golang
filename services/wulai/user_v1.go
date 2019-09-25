@@ -47,7 +47,7 @@ func (x *Client) userUpdateV1(userID, nickname, avatarURL string) ([]byte, error
 }
 
 //GroupMembers 获取群成员列表信息
-func (x *Client) GroupMembers(pageIndex, pageSize int, userID string) ([]byte, error) {
+func (x *Client) groupMembers(pageIndex, pageSize int, userID string) ([]byte, error) {
 	url := x.Endpoint + "/v1/user/group/members"
 	input := fmt.Sprintf(`{
 		"page_index": %v,

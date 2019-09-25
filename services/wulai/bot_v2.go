@@ -135,10 +135,10 @@ func (x *Client) msgSyncV2(userID, msgTS, extra, msgType string, msgBody []byte)
 	url := fmt.Sprintf("%s/%s/msg/sync", x.Endpoint, x.Version)
 	input := fmt.Sprintf(`{
 		"msg_body": {"%s": %s},
-		"extra": "%s",
+		"extra": %q,
 		"user_id": "%s",
 		"msg_ts": "%s"
-	  }`, msgType, msgBody, extra, userID, msgTS)
+		}`, msgType, msgBody, extra, userID, msgTS)
 
 	if x.Debug {
 		log.Debugf("[Request URL]:%s\n%s\n", url, input)
