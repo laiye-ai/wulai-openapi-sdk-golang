@@ -201,7 +201,6 @@ func (x *Client) MsgHistory(userID, msgID string, direction direction, num int) 
 func (x *Client) MsgReceive(userID string, msgBody interface{}, thirdMsgID, extra string) (model *MsgReceive, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
-
 		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
 		return nil, errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
 	}

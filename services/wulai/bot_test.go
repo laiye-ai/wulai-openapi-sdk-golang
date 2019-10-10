@@ -156,9 +156,9 @@ func Test_MsgHistory(t *testing.T) {
 func Test_MsgReceive(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
-	//wulaiClient.Debug = true
+	wulaiClient.Debug = true
 	text := &Text{"您好!"}
-	model, err := wulaiClient.MsgReceive("xiao_lai", text, "", "")
+	model, err := wulaiClient.MsgReceive("xiao_lai", text, "msg_id_xxxx1", "预留信息")
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_MsgReceive]=>%s\n", cliErr.Error())

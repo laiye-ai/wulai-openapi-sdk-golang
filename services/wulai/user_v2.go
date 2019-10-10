@@ -55,7 +55,7 @@ func (x *Client) userAttributeListV2(isAttrGroup bool, page, pageSize int) ([]by
 
 //参考 https://openapi.wul.ai/docs/latest/saas.openapi.v2/openapi.v2.html#operation/ListUserAttribute
 //userAttributeCreate 给用户添加属性值
-func (x *Client) userAttributeCreateV2(userID, attrName, attrValue string) ([]byte, error) {
+func (x *Client) userAttributeCreateV2(userID, attrID, attrValue string) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/user/user-attribute/create", x.Endpoint, x.Version)
 	input := fmt.Sprintf(`{
 		"user_attribute_user_attribute_value": [
@@ -69,7 +69,7 @@ func (x *Client) userAttributeCreateV2(userID, attrName, attrValue string) ([]by
 		  }
 		],
 		"user_id": "%s"
-	  }`, attrName, attrValue, userID)
+	  }`, attrID, attrValue, userID)
 
 	if x.Debug {
 		log.Debugf("[Request URL]:%s\n%s\n", url, input)
