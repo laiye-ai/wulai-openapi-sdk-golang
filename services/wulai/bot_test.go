@@ -30,6 +30,28 @@ func Test_GetBotResponse(t *testing.T) {
 	}
 }
 
+func Test_GetBotResponseV1(t *testing.T) {
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.Debug = true
+	wulaiClient.Version = "v1"
+	text := &Text{"您好!"}
+	model, err := wulaiClient.MsgBotResponse("xiao_lai", text, "")
+	if err != nil {
+		if cliErr, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_GetBotResponse]=>%s\n", cliErr.Error())
+		} else if serErr, ok := err.(*errors.ServerError); ok {
+			log.Infof("[Test_GetBotResponse]=>%s\n", serErr.Error())
+		}
+
+		return
+	}
+
+	if len(model.SuggestedResponse) <= 0 {
+		log.Warnf("result is empty. detail=>%+v\n", model)
+	}
+}
+
 func Test_GetBotResponseQAWithText(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)

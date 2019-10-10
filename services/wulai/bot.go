@@ -15,12 +15,6 @@ import (
 //MsgBotResponse 获取机器人回复
 func (x *Client) MsgBotResponse(userID string, msgBody interface{}, extra string) (model *BotResponse, err error) {
 
-	if strings.ToUpper(x.Version) == "V1" {
-
-		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
-		return nil, errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
-	}
-
 	//检查消息类型是否合法
 	msgType, ok := checkMsgType(msgBody)
 	if !ok {
@@ -33,9 +27,17 @@ func (x *Client) MsgBotResponse(userID string, msgBody interface{}, extra string
 		return nil, errors.NewClientError(errors.JsonMarshalErrorCode, errors.JsonMarshalErrorMessage, err)
 	}
 
-	bytes, err := x.msgBotResponseV2(userID, extra, msgType, msgBytes)
-	if err != nil {
-		return nil, err
+	var bytes []byte
+	var errRes error
+
+	if strings.ToUpper(x.Version) == "V1" {
+		bytes, errRes = x.msgBotResponseV1(userID, msgType, msgBytes)
+	} else {
+		bytes, errRes = x.msgBotResponseV2(userID, extra, msgType, msgBytes)
+	}
+
+	if errRes != nil {
+		return nil, errRes
 	}
 
 	if x.Debug {
