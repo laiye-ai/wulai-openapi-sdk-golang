@@ -133,32 +133,12 @@ func Test_GetBotResponseWitCustom(t *testing.T) {
 	}
 }
 
-func Test_MsgHistory(t *testing.T) {
-	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
-	wulaiClient := NewClient(secret, pubkey)
-	wulaiClient.Debug = true
-	model, err := wulaiClient.MsgHistory("xiao_lai", "", BACKWARD, 1)
-	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); ok {
-			t.Errorf("[Test_MsgHistory]=>%s\n", cliErr.Error())
-		} else if serErr, ok := err.(*errors.ServerError); ok {
-			log.Infof("[Test_MsgHistory]=>%s\n", serErr.Error())
-		}
-
-		return
-	}
-
-	if len(model.Msg) <= 0 {
-		log.Warnf("result is empty. detail=>%+v\n", model)
-	}
-}
-
 func Test_MsgReceive(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.Debug = true
 	text := &Text{"您好!"}
-	model, err := wulaiClient.MsgReceive("xiao_lai", text, "msg_id_xxxx1", "预留信息")
+	model, err := wulaiClient.MsgReceive("xiao_lai", text, "third_msg_id_xxxx1", "预留信息")
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_MsgReceive]=>%s\n", cliErr.Error())
@@ -179,8 +159,11 @@ func Test_MsgSync(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.Debug = true
+
+	bot := &QA{}
 	text := &Text{"您好!"}
-	model, err := wulaiClient.MsgSync("xiao_lai", text, "1", "")
+	answerID := 0 //answer_id 的值从机器人的回复中获取
+	model, err := wulaiClient.MsgSync("xiao_lai", answerID, "", "预留信息", bot, text)
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_MsgSync]=>%s\n", cliErr.Error())
@@ -191,6 +174,27 @@ func Test_MsgSync(t *testing.T) {
 		return
 	}
 	if strings.TrimSpace(model.MsgID) == "" {
+		log.Warnf("result is empty. detail=>%+v\n", model)
+	}
+}
+
+func Test_MsgHistory(t *testing.T) {
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.Debug = true
+
+	model, err := wulaiClient.MsgHistory("xiao_lai", "msg_id", BACKWARD, 10)
+	if err != nil {
+		if cliErr, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_MsgHistory]=>%s\n", cliErr.Error())
+		} else if serErr, ok := err.(*errors.ServerError); ok {
+			log.Infof("[Test_MsgHistory]=>%s\n", serErr.Error())
+		}
+
+		return
+	}
+
+	if len(model.Msg) <= 0 {
 		log.Warnf("result is empty. detail=>%+v\n", model)
 	}
 }

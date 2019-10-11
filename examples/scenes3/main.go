@@ -33,7 +33,7 @@ func main() {
 	}
 
 	//3:将消息传给机器人
-	botResp, err := wulaiClient.MsgReceive(user.UserID, textMsg, "msg_id_xxxx1", "预留信息")
+	botResp, err := wulaiClient.MsgReceive(user.UserID, textMsg, "third_msg_id_xxxx1", "预留信息")
 	if err != nil {
 		log.Fatalf("bot response reuslt:%s", err.Error())
 	}

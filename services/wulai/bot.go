@@ -235,7 +235,7 @@ func (x *Client) MsgReceive(userID string, msgBody interface{}, thirdMsgID, extr
 }
 
 //MsgSync 同步发给用户的消息
-func (x *Client) MsgSync(userID string, msgBody interface{}, msgTS, extra string) (model *MsgSync, err error) {
+func (x *Client) MsgSync(userID string, answerID int, msgTS, extra string, botBody, msgBody interface{}) (model *MsgSync, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
 
@@ -250,12 +250,26 @@ func (x *Client) MsgSync(userID string, msgBody interface{}, msgTS, extra string
 		return nil, errors.NewClientError(errors.UnsupportedTypeErrorCode, errorMsg, nil)
 	}
 
+	//检查Bot类型是否合法
+	botType, ok := checkBotType(botBody)
+	if !ok {
+		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, botType, "*"+botType)
+		return nil, errors.NewClientError(errors.UnsupportedTypeErrorCode, errorMsg, nil)
+	}
+
+	//msg bytes
 	msgBytes, err := json.Marshal(msgBody)
 	if err != nil {
 		return nil, errors.NewClientError(errors.JsonMarshalErrorCode, errors.JsonMarshalErrorMessage, err)
 	}
 
-	bytes, err := x.msgSyncV2(userID, msgTS, extra, msgType, msgBytes)
+	//bot bytes
+	botBytes, err := json.Marshal(botBody)
+	if err != nil {
+		return nil, errors.NewClientError(errors.JsonMarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	bytes, err := x.msgSyncV2(userID, answerID, msgTS, extra, botType, botBytes, msgType, msgBytes)
 	if err != nil {
 		return nil, err
 	}
@@ -294,4 +308,20 @@ func checkMsgType(msgType interface{}) (string, bool) {
 		return "share_link", true
 	}
 	return reflect.TypeOf(msgType).String(), false
+}
+
+//checkBotType 检查Bot类型
+func checkBotType(botType interface{}) (string, bool) {
+
+	switch botType.(type) {
+	case *QA:
+		return "qa", true
+	case *Chitchat:
+		return "chitchat", true
+	case *Task:
+		return "task", true
+	case *Keyword:
+		return "keyword", true
+	}
+	return reflect.TypeOf(botType).String(), false
 }
