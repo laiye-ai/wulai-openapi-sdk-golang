@@ -20,7 +20,7 @@ func (x *Client) QaSimilarQuestionDelete(id string) (err error) {
 	bytes, err := x.qaSimilarQuestionDeleteV2(id)
 
 	if x.Debug {
-		log.Debugf("[UserCreate Response]:%s\n", bytes)
+		log.Debugf("[QaSimilarQuestionDelete Response]:%s\n", bytes)
 	}
 
 	if err != nil {

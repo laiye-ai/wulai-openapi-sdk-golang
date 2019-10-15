@@ -4,7 +4,9 @@
 
 实现效果：用户将消息发送给吾来平台的机器人，机器人处理后，通过消息投递，将机器人的回复发送给用户。
 
-<img src="../../docs/static/sync_talk.png" style="width:320px">
+<img src="../../docs/static/sync_talk.png" width="320">
+
+
 
 对接前提：
 

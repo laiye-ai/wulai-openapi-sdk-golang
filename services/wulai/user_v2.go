@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/errors"
-	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/log"
 )
 
 //参考 https://openapi.wul.ai/docs/latest/saas.openapi.v2/openapi.v2.html#operation/CreateUser
@@ -16,10 +15,6 @@ func (x *Client) createV2(nickname, avatarURL, userID string) ([]byte, error) {
 		"avatar_url": "%s",
 		"user_id": "%s"
 	  }`, nickname, avatarURL, userID)
-
-	if x.Debug {
-		log.Debugf("[Request URL]:%s\n%s\n", url, input)
-	}
 
 	resp, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
@@ -40,10 +35,6 @@ func (x *Client) userAttributeListV2(isAttrGroup bool, page, pageSize int) ([]by
 		"page": %v,
 		"page_size": %v
 	  }`, isAttrGroup, page, pageSize)
-
-	if x.Debug {
-		log.Debugf("[Request URL]:%s\n%s\n", url, input)
-	}
 
 	resp, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
@@ -70,10 +61,6 @@ func (x *Client) userAttributeCreateV2(userID, attrID, attrValue string) ([]byte
 		],
 		"user_id": "%s"
 	  }`, attrID, attrValue, userID)
-
-	if x.Debug {
-		log.Debugf("[Request URL]:%s\n%s\n", url, input)
-	}
 
 	resp, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
