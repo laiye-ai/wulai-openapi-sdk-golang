@@ -2,8 +2,6 @@ package wulai
 
 import (
 	"fmt"
-
-	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/log"
 )
 
 //CreateV1 创建用户
@@ -14,10 +12,6 @@ func (x *Client) createV1(nickname, avatarURL, userID string) ([]byte, error) {
 		"nickname": "%s",
 		"imgurl": "%s"
 	  }`, userID, nickname, avatarURL)
-
-	if x.Debug {
-		log.Debugf("[Request URL]:%s\n%s\n", url, input)
-	}
 
 	resp, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
@@ -35,10 +29,6 @@ func (x *Client) userUpdateV1(userID, nickname, avatarURL string) ([]byte, error
 		"imgurl": "%s"
 	  }`, userID, nickname, avatarURL)
 
-	if x.Debug {
-		log.Debugf("[Request URL]:%s\n%s\n", url, input)
-	}
-
 	resp, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
 		return nil, err
@@ -55,10 +45,6 @@ func (x *Client) groupMembers(pageIndex, pageSize int, userID string) ([]byte, e
 		"user_id": "%s"
 	 }`, pageIndex, pageSize, userID)
 
-	if x.Debug {
-		log.Debugf("[Request URL]:%s\n%s\n", url, input)
-	}
-
 	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
 		return nil, err
@@ -72,10 +58,6 @@ func (x *Client) userInfoV1(userID string) ([]byte, error) {
 	input := fmt.Sprintf(`{
 		"user_id": "%s"
 		}`, userID)
-
-	if x.Debug {
-		log.Debugf("[Request URL]:%s\n%s\n", url, input)
-	}
 
 	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
