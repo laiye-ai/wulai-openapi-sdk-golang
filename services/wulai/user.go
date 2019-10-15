@@ -110,7 +110,7 @@ func (x *Client) UserAttributeList(isAttrGroup bool, page, pageSize int) (model 
 }
 
 //UserAttributeCreate 给用户添加属性值
-func (x *Client) UserAttributeCreate(userID, attrName, attrValue string) error {
+func (x *Client) UserAttributeCreate(userID, attrID, attrValue string) error {
 
 	var bytes []byte
 
@@ -119,7 +119,7 @@ func (x *Client) UserAttributeCreate(userID, attrName, attrValue string) error {
 		return errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
 	}
 
-	bytes, err := x.userAttributeCreateV2(userID, attrName, attrValue)
+	bytes, err := x.userAttributeCreateV2(userID, attrID, attrValue)
 
 	if x.Debug {
 		log.Debugf("[UserAttributeCreate Response]:%s\n", bytes)

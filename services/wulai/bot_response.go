@@ -48,11 +48,12 @@ type SimilarResponse struct {
 	Detail Detail        `json:"detail"` //回复的机器人:问答机器人/闲聊机器人/任务机器人/关键字机器人
 }
 
-//Qa 问答机器人
-type Qa struct {
+//QA 问答机器人(标准)
+type QA struct {
 	KnowledgeID      int64  `json:"knowledge_id"`      //知识点id
 	StandardQuestion string `json:"standard_question"` //标准问(<= 100 characters)
 	Question         string `json:"question"`          //命中的相似问(<= 1024 characters)
+	IsNoneIntention  bool   `json:"is_none_intention"` //是否为无意图知识点(boolean)
 }
 
 //Chitchat 闲聊机器人
@@ -62,7 +63,7 @@ type Chitchat struct {
 
 //Bot 机器人类型
 type Bot struct {
-	Qa       Qa       `json:"qa"`       //问答机器人
+	QA       QA       `json:"qa"`       //问答机器人
 	Chitchat Chitchat `json:"chitchat"` //闲聊机器人
 	Task     Task     `json:"task"`     //任务机器人
 	Keyword  Keyword  `json:"keyword"`  //关键字机器人
@@ -70,7 +71,7 @@ type Bot struct {
 
 //Detail 机器人类型
 type Detail struct {
-	Qa       Qa       `json:"qa"`       //问答机器人
+	QA       QA       `json:"qa"`       //问答机器人
 	Chitchat Chitchat `json:"chitchat"` //闲聊机器人
 	Task     Task     `json:"task"`     //任务机器人
 	Keyword  Keyword  `json:"keyword"`  //关键字机器人
@@ -89,7 +90,7 @@ type BotResponseQa struct {
 
 //QaSuggestedResponse 本次机器人应答内容列表。机器人的响应可能会有多个内容。
 type QaSuggestedResponse struct {
-	Qa         Qa         `json:"qa"`          //问答机器人
+	QA         QA         `json:"qa"`          //问答机器人
 	IsSend     bool       `json:"is_send"`     //是否发给用户
 	Score      float64    `json:"score"`       //置信度 score<= 1
 	Response   []Response `json:"response"`    //回复内容
@@ -203,4 +204,24 @@ type MsgReceive struct {
 //MsgSync 同步发给用户的消息
 type MsgSync struct {
 	MsgID string `json:"msg_id"`
+}
+
+/****************
+- 消息投递
+****************/
+
+//MessageDelivery 消息投递 返回数据的结构体
+type MessageDelivery struct {
+	UserID          string            `json:"user_id"`
+	SenderInfo      SenderInfo        `json:"sender_info"`
+	MsgType         MsgTypeEnum       `json:"msg_type"`
+	Extra           string            `json:"extra"`
+	MsgID           string            `json:"msg_id"`
+	Bot             Bot               `json:"bot"`
+	MsgTs           string            `json:"msg_ts"`
+	Source          string            `json:"source"`
+	MsgBody         MsgBody           `json:"msg_body"`
+	SimilarResponse []SimilarResponse `json:"similar_response"`
+	EnableEvaluate  bool              `json:"enable_evaluate"`
+	QuickReply      []string          `json:"quick_reply"`
 }
