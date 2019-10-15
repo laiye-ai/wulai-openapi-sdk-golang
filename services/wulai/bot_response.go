@@ -205,3 +205,23 @@ type MsgReceive struct {
 type MsgSync struct {
 	MsgID string `json:"msg_id"`
 }
+
+/****************
+- 消息投递
+****************/
+
+//MessageDelivery 消息投递 返回数据的结构体
+type MessageDelivery struct {
+	UserID          string            `json:"user_id"`
+	SenderInfo      SenderInfo        `json:"sender_info"`
+	MsgType         MsgTypeEnum       `json:"msg_type"`
+	Extra           string            `json:"extra"`
+	MsgID           string            `json:"msg_id"`
+	Bot             Bot               `json:"bot"`
+	MsgTs           string            `json:"msg_ts"`
+	Source          string            `json:"source"`
+	MsgBody         MsgBody           `json:"msg_body"`
+	SimilarResponse []SimilarResponse `json:"similar_response"`
+	EnableEvaluate  bool              `json:"enable_evaluate"`
+	QuickReply      []string          `json:"quick_reply"`
+}
