@@ -210,7 +210,7 @@ type MsgSync struct {
 - 消息投递
 ****************/
 
-//MessageDelivery 消息投递 返回数据的结构体
+//MessageDelivery "消息投递"返回的数据结构体
 type MessageDelivery struct {
 	UserID          string            `json:"user_id"`
 	SenderInfo      SenderInfo        `json:"sender_info"`
@@ -224,4 +224,27 @@ type MessageDelivery struct {
 	SimilarResponse []SimilarResponse `json:"similar_response"`
 	EnableEvaluate  bool              `json:"enable_evaluate"`
 	QuickReply      []string          `json:"quick_reply"`
+}
+
+/****************
+- 消息路由
+****************/
+
+//MessageRoute "消息路由"返回的数据结构体
+type MessageRoute struct {
+	SuggestedResponse []SuggestedResponse `json:"suggested_response"`
+	UserID            string              `json:"user_id"`
+	Extra             string              `json:"extra"`
+	MsgID             string              `json:"msg_id"`
+	IsDispatch        bool                `json:"is_dispatch"`
+	MsgTs             string              `json:"msg_ts"`
+	MsgBody           MsgBody             `json:"msg_body"`
+	Nickname          string              `json:"nickname"`
+}
+
+//MessageRouteResponses 处理"消息路由"后的相应数据体
+type MessageRouteResponses struct {
+	IsDispatch        bool                `json:"is_dispatch"`
+	SuggestedResponse []SuggestedResponse `json:"suggested_response"`
+	Extra             string              `json:"extra"`
 }
