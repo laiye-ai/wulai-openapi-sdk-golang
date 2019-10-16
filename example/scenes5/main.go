@@ -30,7 +30,7 @@ func main() {
 
 	//2:同步消息给吾来平台
 	answerID := 0 //answer_id 的值从机器人的回复中获取
-	msgSync, err := wulaiClient.MsgSync("xiao_lai", answerID, "0", "预留信息", botType, textMsg)
+	msgSync, _ := wulaiClient.MsgSync("xiao_lai", answerID, "0", "预留信息", botType, textMsg)
 
 	//3:获取历史消息
 	botResp, err := wulaiClient.MsgHistory(user.UserID, msgSync.MsgID, wulai.BACKWARD, 10)

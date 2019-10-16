@@ -1,22 +1,14 @@
-### 回调类接口实现
-
-
-#### 消息路由
+## 消息路由
 > 消息路由即 Webhook ，该 Web 服务需要开发者自己搭建，并且需要遵从开放平台预先定义好的输入输出。  
   机器人每次响应，吾来会把机器人回复内容、对话解析结果传给消息路由，
   调用方可以按需使或修改消息体内容达到影响机器人回复的目的  
   消息路由可视为：在获取机器人回复前（bot-response），对response的预处理。  
   在同步方式、异步方式中均可使用。
 
-go code example
 
-```go
+---
 
-
-```
-
-
-#### 消息投递
+## 消息投递
 > 调用方开发。如果机器人对接第三方渠道，机器人做出响应后，会调用消息投递接口，将消息投递到第三方渠道。
 
 **注意**：
@@ -27,47 +19,91 @@ go code example
 1) 接入方根据msg_id做去重
 2) 接入方根据msg_ts在客户端做重排序
 
-go code example
+
+--- 
+example 代码
 
 ```go
-package main
+package service
 
 import (
-	"flag"
-	"fmt"
+	"encoding/json"
 	"io/ioutil"
-	"log"
 	"net/http"
+	"strings"
+
+	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/log"
+	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/wulai"
 )
 
-//CallbackHandler 接收吾来平台回调, 返回信息给客户端
-func CallbackHandler(w http.ResponseWriter, r *http.Request) {
-	//request log
-	log.Printf("[/]=>remote=>%s host=>%s   url=>%s   method=>%s\n", r.RemoteAddr, r.Host, r.URL, r.Method)
+//Bot bot
+type Bot struct {
+}
+
+// botMsgDelivery 消息投递 handles
+func botMsgDelivery(hub *Hub, w http.ResponseWriter, r *http.Request) {
 
 	respBytes, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		log.Printf("%s\n", err)
+		log.Infof("%s\n", err)
 		return
 	}
-
-	log.Printf("[message delivery log]=>%s\n", respBytes)
-	w.Write([]byte("success"))
+    log.Infof("[机器人投递的消息]]=>%s\n", respBytes)
+    
+	//将机器人回复的消息投递到前端
+	hub.botMsgQueue <- respBytes
+	w.Write([]byte("ok"))
 }
 
-func main() {
+// botMsgRoute 消息路由 handles
+func botMsgRoute(hub *Hub, w http.ResponseWriter, r *http.Request) {
 
-	var port int
-	flag.IntVar(&port, "p", 8000, "端口号")
-	flag.Parse()
+	inBytes, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		log.Infof("%s\n", err)
+		return
+	}
+	log.Infof("[收到消息路由传递的消息]]=>%s\n", inBytes)
 
-	//设置接受机器人答案的函数
-	http.Handle("/callback", http.HandlerFunc(CallbackHandler))
+	//处理收到的消息
+	msgBody := &wulai.MessageRoute{}
+	if err := json.Unmarshal(inBytes, msgBody); err != nil {
+		log.Errorf("%s\n", err)
+	}
 
-	//设置http服务
-	ip := fmt.Sprintf(":%v", port)
-	log.Printf("listen on:%s\n", ip)
-	http.ListenAndServe(ip, nil)
+	respBody := &wulai.MessageRouteResponses{}
+	respBody.IsDispatch = false                            //不转人工
+	respBody.SuggestedResponse = msgBody.SuggestedResponse //不处理,直接将消息传回
+
+	outBytes, _ := json.Marshal(respBody)
+
+	log.Info("返回处理后的结果给机器人")
+	w.Write(outBytes)
+}
+
+//ServeBotMsg bot message handle
+func ServeBotMsg(hub *Hub, w http.ResponseWriter, r *http.Request) {
+
+	//request log
+	log.Infof("[/]=>remote=>%s host=>%s   url=>%s   method=>%s\n", r.RemoteAddr, r.Host, r.URL, r.Method)
+
+	url := strings.ToLower(r.URL.String())
+	switch {
+	case url == "/bot/message_delivery":
+		botMsgDelivery(hub, w, r)
+	case url == "/bot/message_route":
+		botMsgRoute(hub, w, r)
+	default:
+		w.Write([]byte("Unknown Pattern"))
+	}
 }
 
 ```
+
+
+
+
+完整代码链接: [Bot异步定制对话](https://github.com/shzy2012/bot_msg_example)
+
+
+
