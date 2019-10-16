@@ -244,7 +244,7 @@ type MessageRoute struct {
 
 //MessageRouteResponses 处理"消息路由"后的相应数据体
 type MessageRouteResponses struct {
-	IsDispatch        bool                `json:"is_dispatch"`
-	SuggestedResponse []SuggestedResponse `json:"suggested_response"`
-	Extra             string              `json:"extra"`
+	IsDispatch        bool                `json:"is_dispatch"`        //是否转人工
+	SuggestedResponse []SuggestedResponse `json:"suggested_response"` //本次机器人应答内容列表
+	Extra             string              `json:"extra"`              //自定义字段
 }
