@@ -201,7 +201,15 @@ func Test_MsgHistory(t *testing.T) {
 
 func Test_CheckMsgType(t *testing.T) {
 	text := &Text{"您好"}
-	_, ok := checkMsgType(text)
+	_, ok := CheckMsgType(text)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckBotType(t *testing.T) {
+	qa := &QA{}
+	_, ok := CheckBotType(qa)
 	if !ok {
 		t.Fail()
 	}
@@ -210,6 +218,13 @@ func Test_CheckMsgType(t *testing.T) {
 func Benchmark_CheckMsgType(t *testing.B) {
 	for i := 0; i < t.N; i++ {
 		text := &Text{"toenxt"}
-		checkMsgType(text)
+		CheckMsgType(text)
+	}
+}
+
+func Benchmark_CheckBotType(t *testing.B) {
+	for i := 0; i < t.N; i++ {
+		qa := &QA{}
+		CheckBotType(qa)
 	}
 }
