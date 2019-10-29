@@ -18,8 +18,8 @@ func Test_PostWithNetError(t *testing.T) {
 	client.SetHTTPTimeout(5)
 	_, err := client.Request("POST", "http://aaabbbxxxyyyyzzzzzz.info", []byte(""), 1)
 	if err != nil {
-		if _, ok := err.(*errors.ServerError); ok {
-			t.Error("[Test_PostWithNetError]=> failed.")
+		if serErr, ok := err.(*errors.ServerError); ok {
+			t.Error("[Test_PostWithNetError]=> failed.", serErr)
 		} else if _, ok := err.(*errors.ClientError); ok {
 
 		} else {
@@ -50,8 +50,8 @@ func Test_PostWithTransport(t *testing.T) {
 	client.SetTransport(transport)
 	_, err := client.Request("POST", "http://aaabbbxxxyyyyzzzzzz.info", []byte(""), 1)
 	if err != nil {
-		if _, ok := err.(*errors.ServerError); ok {
-			t.Error("[Test_PostWithTransport]=> failed.")
+		if serErr, ok := err.(*errors.ServerError); ok {
+			t.Error("[Test_PostWithTransport]=> failed.", serErr)
 		} else if _, ok := err.(*errors.ClientError); ok {
 
 		} else {
@@ -68,8 +68,8 @@ func Test_Request1(t *testing.T) {
 	client.SetHTTPTimeout(3)
 	_, err := client.Request("POST", "http://aaabbbxxxyyyyzzzzzz.info", []byte(`{"name":"request"}`), 3)
 	if err != nil {
-		if _, ok := err.(*errors.ServerError); ok {
-			t.Error("[Test_PostWithNetError]=> failed.")
+		if serErr, ok := err.(*errors.ServerError); ok {
+			t.Error("[Test_PostWithNetError]=> failed.", serErr)
 		} else if _, ok := err.(*errors.ClientError); ok {
 
 		} else {
@@ -85,8 +85,8 @@ func Test_Request2(t *testing.T) {
 	client := NewClient(credential)
 	_, err := client.Request("POST", "http://qq.com", []byte(`错误的json`), 3)
 	if err != nil {
-		if _, ok := err.(*errors.ServerError); ok {
-			t.Error("[Test_PostWithNetError]=> failed.")
+		if serErr, ok := err.(*errors.ServerError); ok {
+			t.Error("[Test_PostWithNetError]=> failed.", serErr)
 		} else if _, ok := err.(*errors.ClientError); ok {
 
 		} else {
@@ -105,7 +105,7 @@ func Test_IsJSONString(t *testing.T) {
 
 	if isJSONString([]byte(`{"name":wrong"}`)) {
 		t.Fail()
-	} 
+	}
 }
 
 func Benchmark_isJSONString(t *testing.B) {
