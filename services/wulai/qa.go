@@ -122,7 +122,7 @@ func (x *Client) QaKnowledgeItemList(page, pageSize int) (model *QaKnowledgeItem
 }
 
 /****************
-- 相识问
+- 相似问
 ****************/
 
 //QaSimilarQuestionList 获取相似问列表
@@ -153,7 +153,7 @@ func (x *Client) QaSimilarQuestionList(knowledgeID, similarQuestionID string, pa
 }
 
 //QaSimilarQuestionCreate 创建相似问
-func (x *Client) QaSimilarQuestionCreate(knowledgeID, question, id string) (model *QaSimilarQuestionResponse, err error) {
+func (x *Client) QaSimilarQuestionCreate(knowledgeID, question string) (model *QaSimilarQuestionResponse, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
 
@@ -161,13 +161,40 @@ func (x *Client) QaSimilarQuestionCreate(knowledgeID, question, id string) (mode
 		return nil, errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
 	}
 
-	bytes, err := x.qaSimilarQuestionCreateV2(knowledgeID, question, id)
+	bytes, err := x.qaSimilarQuestionCreateV2(knowledgeID, question)
 	if err != nil {
 		return nil, err
 	}
 
 	if x.Debug {
 		log.Debugf("[QaSimilarQuestionCreate Response]:%s\n", bytes)
+	}
+
+	//返回结果
+	model = &QaSimilarQuestionResponse{}
+	if err = json.Unmarshal(bytes, model); err != nil {
+		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	return model, nil
+}
+
+//QaSimilarQuestionUpdate 更新相似问
+func (x *Client) QaSimilarQuestionUpdate(knowledgeID, question, id string) (model *QaSimilarQuestionResponse, err error) {
+
+	if strings.ToUpper(x.Version) == "V1" {
+
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return nil, errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
+	}
+
+	bytes, err := x.qaSimilarQuestionUpdateV2(knowledgeID, question, id)
+	if err != nil {
+		return nil, err
+	}
+
+	if x.Debug {
+		log.Debugf("[QaSimilarQuestionUpdate Response]:%s\n", bytes)
 	}
 
 	//返回结果
@@ -205,8 +232,8 @@ func (x *Client) QaSimilarQuestionDelete(id string) (err error) {
 - 用户属性组
 ****************/
 
-//QaListUserAttributeGroupItems 查询属性组及属性列表
-func (x *Client) QaListUserAttributeGroupItems(page, pageSize int) (model *QaUserAttributeGroupItemList, err error) {
+//QaAttributeGroupItemList 查询属性组及属性列表
+func (x *Client) QaAttributeGroupItemList(page, pageSize int) (model *QaUserAttributeGroupItemList, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
 
@@ -215,12 +242,12 @@ func (x *Client) QaListUserAttributeGroupItems(page, pageSize int) (model *QaUse
 	}
 
 	//发起调用
-	bytes, err := x.qaListUserAttributeGroupItemsV2(page, pageSize)
+	bytes, err := x.qaUserAttributeGroupItemListV2(page, pageSize)
 	if err != nil {
 		return nil, err
 	}
 	if x.Debug {
-		log.Debugf("[QaListUserAttributeGroupItems Response]:%s\n", bytes)
+		log.Debugf("[QaAttributeGroupItemList Response]:%s\n", bytes)
 	}
 
 	//返回结果
@@ -232,8 +259,8 @@ func (x *Client) QaListUserAttributeGroupItems(page, pageSize int) (model *QaUse
 	return model, nil
 }
 
-//QaCreateUserAttributeGroup 创建属性组
-func (x *Client) QaCreateUserAttributeGroup(groupName, attributeID, attributeName string) (model *QaUserAttributeGroupResponse, err error) {
+//QaUserAttributeGroupCreate 创建属性组
+func (x *Client) QaUserAttributeGroupCreate(groupName, attributeID, attributeName string) (model *QaUserAttributeGroupResponse, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
 
@@ -242,12 +269,12 @@ func (x *Client) QaCreateUserAttributeGroup(groupName, attributeID, attributeNam
 	}
 
 	//发起调用
-	bytes, err := x.qaCreateUserAttributeGroupV2(groupName, attributeID, attributeName)
+	bytes, err := x.qaUserAttributeGroupCreateV2(groupName, attributeID, attributeName)
 	if err != nil {
 		return nil, err
 	}
 	if x.Debug {
-		log.Debugf("[QaCreateUserAttributeGroup Response]:%s\n", bytes)
+		log.Debugf("[QaUserAttributeGroupCreate Response]:%s\n", bytes)
 	}
 
 	//返回结果
@@ -259,8 +286,8 @@ func (x *Client) QaCreateUserAttributeGroup(groupName, attributeID, attributeNam
 	return model, nil
 }
 
-//QaUpdateUserAttributeGroup 更新属性组
-func (x *Client) QaUpdateUserAttributeGroup(groupID, groupName string, attributes map[string]string) (model *QaUserAttributeGroupResponse, err error) {
+//QaUserAttributeGroupUpdate 更新属性组
+func (x *Client) QaUserAttributeGroupUpdate(groupID, groupName string, attributes map[string]string) (model *QaUserAttributeGroupResponse, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
 
@@ -269,12 +296,12 @@ func (x *Client) QaUpdateUserAttributeGroup(groupID, groupName string, attribute
 	}
 
 	//发起调用
-	bytes, err := x.qaUpdateUserAttributeGroupV2(groupID, groupName, attributes)
+	bytes, err := x.qaUserAttributeGroupUpdateV2(groupID, groupName, attributes)
 	if err != nil {
 		return nil, err
 	}
 	if x.Debug {
-		log.Debugf("[QaUpdateUserAttributeGroup Response]:%s\n", bytes)
+		log.Debugf("[QaUserAttributeGroupUpdate Response]:%s\n", bytes)
 	}
 
 	//返回结果
@@ -284,4 +311,130 @@ func (x *Client) QaUpdateUserAttributeGroup(groupID, groupName string, attribute
 	}
 
 	return model, nil
+}
+
+/****************
+- 属性组回复
+****************/
+
+//QaUserAttributeGroupAnswerList 查询属性组回复列表
+func (x *Client) QaUserAttributeGroupAnswerList(knowledgeID, groupID string, page, pageSize int) (model *QaUserAttributeGroupAnswerList, err error) {
+
+	if strings.ToUpper(x.Version) == "V1" {
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return nil, errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
+	}
+
+	//发起调用
+	bytes, err := x.qaUserAttributeGroupAnswerListV2(knowledgeID, groupID, page, pageSize)
+	if err != nil {
+		return nil, err
+	}
+	if x.Debug {
+		log.Debugf("[QaUserAttributeGroupAnswerList Response]:%s\n", bytes)
+	}
+
+	//返回结果
+	model = &QaUserAttributeGroupAnswerList{}
+	if err = json.Unmarshal(bytes, model); err != nil {
+		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	return model, nil
+}
+
+//QaUserAttributeGroupAnswerCreate 创建属性组回复
+func (x *Client) QaUserAttributeGroupAnswerCreate(knowledgeID, groupID string, msgBody interface{}) (model *QaUserAttributeGroupAnswer, err error) {
+
+	if strings.ToUpper(x.Version) == "V1" {
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return nil, errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
+	}
+
+	//检查消息类型是否合法
+	msgType, ok := CheckMsgType(msgBody)
+	if !ok {
+		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "*"+msgType)
+		return nil, errors.NewClientError(errors.UnsupportedTypeErrorCode, errorMsg, nil)
+	}
+
+	msgBytes, err := json.Marshal(msgBody)
+	if err != nil {
+		return nil, errors.NewClientError(errors.JsonMarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	bytes, err := x.qaUserAttributeGroupAnswerCreateV2(knowledgeID, groupID, msgType, msgBytes)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if x.Debug {
+		log.Debugf("[QaUserAttributeGroupAnswerCreate Response]:%s\n", bytes)
+	}
+
+	model = &QaUserAttributeGroupAnswer{}
+	if err = json.Unmarshal(bytes, model); err != nil {
+		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	return model, nil
+}
+
+//QaUserAttributeGroupAnswerUpdate 更新属性组回复
+func (x *Client) QaUserAttributeGroupAnswerUpdate(knowledgeID, groupID, answerID string, msgBody interface{}) (model *QaUserAttributeGroupAnswer, err error) {
+
+	if strings.ToUpper(x.Version) == "V1" {
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return nil, errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
+	}
+
+	//检查消息类型是否合法
+	msgType, ok := CheckMsgType(msgBody)
+	if !ok {
+		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "*"+msgType)
+		return nil, errors.NewClientError(errors.UnsupportedTypeErrorCode, errorMsg, nil)
+	}
+
+	msgBytes, err := json.Marshal(msgBody)
+	if err != nil {
+		return nil, errors.NewClientError(errors.JsonMarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	bytes, err := x.qaUserAttributeGroupAnswerUpdateV2(knowledgeID, groupID, answerID, msgType, msgBytes)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if x.Debug {
+		log.Debugf("[QaUserAttributeGroupAnswerUpdate Response]:%s\n", bytes)
+	}
+
+	model = &QaUserAttributeGroupAnswer{}
+	if err = json.Unmarshal(bytes, model); err != nil {
+		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	return model, nil
+}
+
+//QaUserAttributeGroupAnswerDelete 删除属性组回复
+func (x *Client) QaUserAttributeGroupAnswerDelete(answerID string) error {
+
+	if strings.ToUpper(x.Version) == "V1" {
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
+	}
+
+	//发起调用
+	bytes, err := x.qaUserAttributeGroupAnswerDeleteV2(answerID)
+	if err != nil {
+		return err
+	}
+	if x.Debug {
+		log.Debugf("[QaUserAttributeGroupAnswerDelete Response]:%s\n", bytes)
+	}
+
+	return nil
 }

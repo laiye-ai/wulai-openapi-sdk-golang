@@ -13,7 +13,9 @@ func Test_GetBotResponse(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.Version = "v2"
-	text := &Text{"您好!"}
+	wulaiClient.SetDebug(true)
+
+	text := &Text{"您好!"} //传入指针
 	model, err := wulaiClient.MsgBotResponse("xiao_lai", text, "")
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
@@ -33,8 +35,9 @@ func Test_GetBotResponse(t *testing.T) {
 func Test_GetBotResponseV1(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
-	wulaiClient.Debug = true
+	wulaiClient.SetDebug(true)
 	wulaiClient.Version = "v1"
+
 	text := &Text{"您好!"}
 	model, err := wulaiClient.MsgBotResponse("xiao_lai", text, "")
 	if err != nil {
@@ -55,6 +58,8 @@ func Test_GetBotResponseV1(t *testing.T) {
 func Test_GetBotResponseQAWithText(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.SetDebug(true)
+
 	text := &Text{"您好!"}
 	model, err := wulaiClient.MsgBotResponseQa("xiao_lai", text, "")
 	if err != nil {
@@ -75,6 +80,8 @@ func Test_GetBotResponseQAWithText(t *testing.T) {
 func Test_GetBotResponseKeyword(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.SetDebug(true)
+
 	text := &Text{"您好!"}
 	model, err := wulaiClient.MsgBotResponseKeyword("xiao_lai", text, "")
 	if err != nil {
@@ -95,6 +102,7 @@ func Test_GetBotResponseKeyword(t *testing.T) {
 func Test_GetBotResponseTask(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
+
 	text := &Text{"您好!"}
 	model, err := wulaiClient.MsgBotResponseTask("xiao_lai", text, "")
 	if err != nil {
@@ -116,6 +124,7 @@ func Test_GetBotResponseWitCustom(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.Debug = true
+
 	custom := &Custom{"您好!"}
 	model, err := wulaiClient.MsgBotResponse("xiao_lai", custom, "")
 	if err != nil {
@@ -137,6 +146,7 @@ func Test_MsgReceive(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.Debug = true
+
 	text := &Text{"您好!"}
 	model, err := wulaiClient.MsgReceive("xiao_lai", text, "third_msg_id_xxxx1", "预留信息")
 	if err != nil {

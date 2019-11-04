@@ -54,9 +54,9 @@ type KnowledgeItem struct {
 
 //SimilarQuestion 相似问
 type SimilarQuestion struct {
-	KnowledgeID string `json:"knowledge_id"`
-	Question    string `json:"question"`
-	ID          string `json:"id"`
+	KnowledgeID string `json:"knowledge_id"` //知识点id
+	Question    string `json:"question"`     //相似问
+	ID          string `json:"id"`           //相似问id
 }
 
 //QaKnowledgeResponse 更新知识点返回结构体
@@ -65,26 +65,18 @@ type QaKnowledgeResponse struct {
 }
 
 /****************
-- 相识问
+- 相似问
 ****************/
 
-//QaSimilarQuestionResponse 创建返回的响应体-相识问结构体
+//QaSimilarQuestionResponse 相似问结构体
 type QaSimilarQuestionResponse struct {
-	SimilarQuestion struct {
-		KnowledgeID string `json:"knowledge_id"` //知识点id
-		Question    string `json:"question"`     //相似问
-		ID          string `json:"id"`           //相似问id
-	} `json:"similar_question"`
+	SimilarQuestion SimilarQuestion `json:"similar_question"`
 }
 
 //QaSimilarQuestionList 相识问列表
 type QaSimilarQuestionList struct {
-	SimilarQuestions []struct {
-		KnowledgeID string `json:"knowledge_id"`
-		Question    string `json:"question"`
-		ID          string `json:"id"`
-	} `json:"similar_questions"`
-	PageCount int `json:"page_count"`
+	SimilarQuestions []SimilarQuestion `json:"similar_questions"`
+	PageCount        int               `json:"page_count"`
 }
 
 /****************
@@ -110,8 +102,8 @@ type QaUserAttributeGroupItem struct {
 
 //QaUserAttributeUserAttributeValues 属性
 type QaUserAttributeUserAttributeValues struct {
-	UserAttribute      QaUserAttribute      `json:"user_attribute"`
-	UserAttributeValue QaUserAttributeValue `json:"user_attribute_value"`
+	UserAttribute      UserAttribute      `json:"user_attribute"`
+	UserAttributeValue UserAttributeValue `json:"user_attribute_value"`
 }
 
 //QaUserAttributeGroup 用户属性组详情
@@ -120,18 +112,30 @@ type QaUserAttributeGroup struct {
 	Name string `json:"name"`
 }
 
-//QaUserAttribute 用户属性
-type QaUserAttribute struct {
-	Name                    string             `json:"name"`
-	Lifespan                int                `json:"lifespan"`
-	ValueType               AttributeValueType `json:"value_type"`
-	UseInUserAttributeGroup bool               `json:"use_in_user_attribute_group"`
-	Type                    AttributeType      `json:"type"`
-	ID                      string             `json:"id"`
+/****************
+- 属性组回复
+****************/
+
+//QaUserAttributeGroupAnswerList 属性组回复列表
+type QaUserAttributeGroupAnswerList struct {
+	UserAttributeGroupAnswers []UserAttributeGroupAnswer `json:"user_attribute_group_answers"`
+	PageCount                 int                        `json:"page_count"`
 }
 
-//QaUserAttributeValue 用户属性值
-type QaUserAttributeValue struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+//Answer 回复
+type Answer struct {
+	KnowledgeID string  `json:"knowledge_id"` //知识点id
+	MsgBody     MsgBody `json:"msg_body"`     //消息体格式
+	ID          string  `json:"id"`           //回复id
+}
+
+//UserAttributeGroupAnswer 属性组id
+type UserAttributeGroupAnswer struct {
+	Answer               Answer `json:"answer"`
+	UserAttributeGroupID string `json:"user_attribute_group_id"`
+}
+
+//QaUserAttributeGroupAnswer 属性组
+type QaUserAttributeGroupAnswer struct {
+	UserAttributeGroupAnswer UserAttributeGroupAnswer `json:"user_attribute_group_answer"`
 }
