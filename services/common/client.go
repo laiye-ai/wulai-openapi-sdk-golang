@@ -45,7 +45,7 @@ func (c *Client) Request(action, url string, input []byte, retry int) (*HTTPResp
 	response := &HTTPResponse{}
 
 	if c.Debug {
-		log.Debugf("[req]=>%s to %s \n%s\n", action, url, string(input))
+		log.Debugf("[http req]=>%s to %s \n%s\n", action, url, input)
 	}
 
 	//处理 http action
@@ -125,7 +125,7 @@ func (c *Client) Request(action, url string, input []byte, retry int) (*HTTPResp
 	}
 
 	if c.Debug {
-		log.Debugf("[resp]=>%s \n", bytes)
+		log.Debugf("[http resp]=>%s \n", bytes)
 	}
 
 	return response, nil

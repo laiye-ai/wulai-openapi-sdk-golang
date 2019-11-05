@@ -16,7 +16,7 @@ import (
 func (x *Client) MsgBotResponse(userID string, msgBody interface{}, extra string) (model *BotResponse, err error) {
 
 	//检查消息类型是否合法
-	msgType, ok := checkMsgType(msgBody)
+	msgType, ok := CheckMsgType(msgBody)
 	if !ok {
 		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "*"+msgType)
 		return nil, errors.NewClientError(errors.UnsupportedTypeErrorCode, errorMsg, nil)
@@ -62,7 +62,7 @@ func (x *Client) MsgBotResponseQa(userID string, msgBody interface{}, extra stri
 	}
 
 	//检查消息类型是否合法
-	msgType, ok := checkMsgType(msgBody)
+	msgType, ok := CheckMsgType(msgBody)
 	if !ok {
 		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "*"+msgType)
 		return nil, errors.NewClientError(errors.UnsupportedTypeErrorCode, errorMsg, nil)
@@ -100,7 +100,7 @@ func (x *Client) MsgBotResponseKeyword(userID string, msgBody interface{}, extra
 	}
 
 	//检查消息类型是否合法
-	msgType, ok := checkMsgType(msgBody)
+	msgType, ok := CheckMsgType(msgBody)
 	if !ok {
 		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "*"+msgType)
 		return nil, errors.NewClientError(errors.UnsupportedTypeErrorCode, errorMsg, nil)
@@ -138,7 +138,7 @@ func (x *Client) MsgBotResponseTask(userID string, msgBody interface{}, extra st
 	}
 
 	//检查消息类型是否合法
-	msgType, ok := checkMsgType(msgBody)
+	msgType, ok := CheckMsgType(msgBody)
 	if !ok {
 		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "*"+msgType)
 		return nil, errors.NewClientError(errors.UnsupportedTypeErrorCode, errorMsg, nil)
@@ -206,7 +206,7 @@ func (x *Client) MsgReceive(userID string, msgBody interface{}, thirdMsgID, extr
 	}
 
 	//检查消息类型是否合法
-	msgType, ok := checkMsgType(msgBody)
+	msgType, ok := CheckMsgType(msgBody)
 	if !ok {
 		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "*"+msgType)
 		return nil, errors.NewClientError(errors.UnsupportedTypeErrorCode, errorMsg, nil)
@@ -244,14 +244,14 @@ func (x *Client) MsgSync(userID string, answerID int, msgTS, extra string, botBo
 	}
 
 	//检查消息类型是否合法
-	msgType, ok := checkMsgType(msgBody)
+	msgType, ok := CheckMsgType(msgBody)
 	if !ok {
 		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "*"+msgType)
 		return nil, errors.NewClientError(errors.UnsupportedTypeErrorCode, errorMsg, nil)
 	}
 
 	//检查Bot类型是否合法
-	botType, ok := checkBotType(botBody)
+	botType, ok := CheckBotType(botBody)
 	if !ok {
 		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, botType, "*"+botType)
 		return nil, errors.NewClientError(errors.UnsupportedTypeErrorCode, errorMsg, nil)
@@ -286,8 +286,8 @@ func (x *Client) MsgSync(userID string, answerID int, msgTS, extra string, botBo
 	return model, nil
 }
 
-//checkMsgType 检查消息类型
-func checkMsgType(msgType interface{}) (string, bool) {
+//CheckMsgType 检查消息类型
+func CheckMsgType(msgType interface{}) (string, bool) {
 
 	switch msgType.(type) {
 	case *Text:
@@ -310,8 +310,8 @@ func checkMsgType(msgType interface{}) (string, bool) {
 	return reflect.TypeOf(msgType).String(), false
 }
 
-//checkBotType 检查Bot类型
-func checkBotType(botType interface{}) (string, bool) {
+//CheckBotType 检查Bot类型
+func CheckBotType(botType interface{}) (string, bool) {
 
 	switch botType.(type) {
 	case *QA:

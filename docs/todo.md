@@ -6,35 +6,37 @@
 
 ### 知识点类
 
-删除相似问 `deleteSimilarQuestion`
+[√] 查询知识点分类列表 `listKnowledgeTags`
 
-更新属性组 `updateUserAttributeGroup`
+[√] 创建知识点 `createKnowledgeTagKnowledge`
 
-查询相似问列表 `listSimilarQuestions`
+[√] 更新知识点 `updateKnowledge`
 
-创建相似问 `createSimilarQuestion`
+[√] 查询知识点列表 `listKnowledgeItems`
 
-查询知识点列表 `listKnowledgeItems`
+[√] 查询相似问列表 `listSimilarQuestions`
 
-更新知识点 `updateKnowledge`
+[√] 创建相似问 `createSimilarQuestion`
 
-查询知识点分类列表 `listKnowledgeTags`
+[√] 删除相似问 `deleteSimilarQuestion`
 
-删除属性组回复 `deleteUserAttributeGroupAnswer`
+[√] 更新相似问 `UpdateSimilarQuestion`
 
-创建属性组回复 `createUserAttributeGroupAnswer`
+[√] 创建属性组 `createUserAttributeGroup`
 
-创建知识点 `createKnowledgeTagKnowledge`
+[√] 查询属性组及属性列表 `listUserAttributeGroupItems`
 
-更新属性组回复 `updateUserAttributeGroupAnswer`
+[√] 更新属性组 `updateUserAttributeGroup`
 
-查询属性组及属性列表 `listUserAttributeGroupItems`
+[√] 查询属性组回复列表 `listUserAttributeGroupAnswers`
 
-查询属性组回复列表 `listUserAttributeGroupAnswers`
+[√] 创建属性组回复 `createUserAttributeGroupAnswer`
 
-更新相似问 `UpdateSimilarQuestion`
+[√] 更新属性组回复 `updateUserAttributeGroupAnswer`
 
-创建属性组 `createUserAttributeGroup`
+[√] 删除属性组回复 `deleteUserAttributeGroupAnswer`
+
+
 
 ### 统计类
 
