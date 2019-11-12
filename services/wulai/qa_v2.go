@@ -328,3 +328,34 @@ func (x *Client) qaUserAttributeGroupAnswerDeleteV2(answerID string) ([]byte, er
 	}
 	return respBytes.ResponseBodyBytes, nil
 }
+
+/****************
+- QA 统计
+****************/
+
+/*qaSatisCreateV2 添加用户满意度评价
+@satisType：满意度枚举类型
+@userID：用户id
+@knowledgeID：知识点id
+@msgID：机器人回复的消息id
+*/
+func (x *Client) qaSatisCreateV2(satisType SatisType, userID, knowledgeID, msgID string) ([]byte, error) {
+	url := fmt.Sprintf("%s/%s/qa/satisfaction/create", x.Endpoint, x.Version)
+
+	input := fmt.Sprintf(`
+	{
+		"satisfaction": "%s",
+		"msg_id": "%s",
+		"user_id": "%s",
+		"bot_id": {
+		  "knowledge_id": "%s"
+		}
+	}`, satisType, msgID, userID, knowledgeID)
+
+	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
+	if err != nil {
+		return nil, err
+	}
+
+	return respBytes.ResponseBodyBytes, nil
+}

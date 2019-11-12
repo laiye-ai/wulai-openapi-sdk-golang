@@ -359,3 +359,27 @@ func Test_QaUserAttributeGroupAnswerDelete(t *testing.T) {
 		return
 	}
 }
+
+/****************
+- QA 统计
+****************/
+func Test_QaSatisCreate(t *testing.T) {
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.SetDebug(true)
+
+	satisType := DEFAULT_SATISFACTION
+	userID := "1"
+	knowledgeID := "1"
+	msgID := "1"
+	err := wulaiClient.QaSatisCreate(satisType, userID, knowledgeID, msgID)
+	if err != nil {
+		if cliErr, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_QaSatisCreate]=>%s\n", cliErr.Error())
+		} else if serErr, ok := err.(*errors.ServerError); ok {
+			log.Infof("[Test_QaSatisCreate]=>%s\n", serErr.Error())
+		}
+
+		return
+	}
+}
