@@ -40,13 +40,13 @@
 
 ### 统计类
 
-查询问答召回数统计列表（知识点粒度，日报） `listQARecallDailyKnowledgeStats`
+[√] 查询问答召回数统计列表（知识点粒度，日报） `listQARecallDailyKnowledgeStats`
 
-查询问答召回数统计列表（日报） `listQARecallDailyStats`
+[√] 查询问答召回数统计列表（日报） `listQARecallDailyStats`
 
-添加用户满意度评价 `createQASatisfaction`
+[√] 添加用户满意度评价 `createQASatisfaction`
 
-查询问答满意度评价统计列表（知识点粒度，日报） `listQASatisfactionDailyKnowledgeStats`
+[√] 查询问答满意度评价统计列表（知识点粒度，日报） `listQASatisfactionDailyKnowledgeStats`
 
 ### 词库管理类
 
@@ -79,9 +79,9 @@
 
 ### 自然语言处理类
 
-实体抽取 `extractEntities`
+[√] 实体抽取 `extractEntities`
 
-分词&词性标注 `tokenize`
+[√] 分词&词性标注 `tokenize`
 
 ### 任务类
 查询任务待审核消息列表 `listIntentTriggerLearnings`

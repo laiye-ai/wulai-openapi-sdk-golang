@@ -43,3 +43,25 @@ const (
 	//USER_ATTRIBUTE_VALUE_TYPE_INT :整型类型
 	USER_ATTRIBUTE_VALUE_TYPE_INT AttributeValueType = "USER_ATTRIBUTE_VALUE_TYPE_INT"
 )
+
+/*****************QA 统计*****************/
+
+//SatisType 用户满意度评价类型
+type SatisType string
+
+const (
+	//DEFAULT_SATISFACTION [默认]
+	DEFAULT_SATISFACTION SatisType = "DEFAULT_SATISFACTION"
+
+	//THUMB_UP [点赞]
+	THUMB_UP SatisType = "THUMB_UP"
+
+	//THUMB_UP [回答了我的问题，但答案不够好]
+	BAD_ANSWER SatisType = "BAD_ANSWER"
+
+	//WRONG_ANSWER [没有回答我的问题]
+	WRONG_ANSWER SatisType = "WRONG_ANSWER"
+
+	//REPORT [举报]
+	REPORT SatisType = "REPORT"
+)

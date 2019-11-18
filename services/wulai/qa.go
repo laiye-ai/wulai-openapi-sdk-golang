@@ -438,3 +438,32 @@ func (x *Client) QaUserAttributeGroupAnswerDelete(answerID string) error {
 
 	return nil
 }
+
+/****************
+- QA 统计
+****************/
+
+/*QaSatisCreate 添加用户满意度评价
+@satisType：满意度枚举类型
+@userID：用户id
+@knowledgeID：知识点id
+@msgID：机器人回复的消息id
+*/
+func (x *Client) QaSatisCreate(satisType SatisType, userID, knowledgeID, msgID string) error {
+
+	if strings.ToUpper(x.Version) == "V1" {
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
+	}
+
+	//发起调用
+	bytes, err := x.qaSatisCreateV2(satisType, userID, knowledgeID, msgID)
+	if err != nil {
+		return err
+	}
+	if x.Debug {
+		log.Debugf("[QaSatisCreate Response]:%s\n", bytes)
+	}
+
+	return nil
+}
