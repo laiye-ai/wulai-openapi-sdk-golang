@@ -32,6 +32,9 @@ type ResponseType string
 
 const (
 
+	//RESPONSE_ERROR :错误
+	RESPONSE_ERROR ResponseType = "RESPONSE_ERROR"
+
 	//RESPONSE_RANDOM :随机回复
 	RESPONSE_RANDOM ResponseType = "RESPONSE_RANDOM"
 
@@ -40,6 +43,24 @@ const (
 
 	//RESPONSE_LOOP :依次回复
 	RESPONSE_LOOP ResponseType = "RESPONSE_LOOP"
+)
+
+//BlockType 对话单元类型
+type BlockType string
+
+const (
+
+	//SCENE_BLOCK_TYPE_DEFAULT :错误
+	SCENE_BLOCK_TYPE_DEFAULT BlockType = "SCENE_BLOCK_TYPE_DEFAULT"
+
+	//SCENE_BLOCK_TYPE_INFORM :消息发送单元
+	SCENE_BLOCK_TYPE_INFORM BlockType = "SCENE_BLOCK_TYPE_INFORM"
+
+	//SCENE_BLOCK_TYPE_REQUEST :询问填槽单元
+	SCENE_BLOCK_TYPE_REQUEST BlockType = "SCENE_BLOCK_TYPE_REQUEST"
+
+	//SCENE_BLOCK_TYPE_END :意图终点单元
+	SCENE_BLOCK_TYPE_END BlockType = "SCENE_BLOCK_TYPE_END"
 )
 
 /****************
@@ -158,26 +179,77 @@ type SceneIntentStatusUpdateResponse struct {
 }
 
 /****************
+- 单元类
+****************/
+
+//SceneBlockListResponse 查询单元列表的结果
+type SceneBlockListResponse struct {
+	Blocks []Block `json:"blocks"`
+}
+
+//Block 单元
+type Block struct {
+	ID   int       `json:"id"`   //单元ID
+	Name string    `json:"name"` //单元名称
+	Type BlockType `json:"type"` //对话单元类型
+}
+
+/****************
+- 询问填槽单元
+****************/
+
+//BlockRequestParam 创建/更新 询问填槽单元的参数
+type BlockRequestParam struct {
+	ID                   int          `json:"id"`                      //单元ID >= 1
+	IntentID             int          `json:"intent_id"`               //所属意图ID >= 1
+	Name                 string       `json:"name"`                    //单元名称[1-200]characters
+	DefaultSlotValue     string       `json:"default_slot_value"`      //默认词槽值 <= 200 characters
+	SlotFillingWhenAsked bool         `json:"slot_filling_when_asked"` //是否仅询问时填槽,默认否.true: 仅在当前单元询问时才填充关联词槽;false: 即使机器人并没有询问，如果用户消息中有可以填槽的信息，也填充关联词槽
+	SlotID               int          `json:"slot_id"`                 //绑定的词槽ID >= 1
+	Mode                 ResponseType `json:"mode"`                    //单元回复类型
+	RequestCount         int          `json:"request_count"`           //询问次数,默认3次 <= 200
+}
+
+//BlockRequestResponse 创建/更新 询问填槽单元响应结构体
+type BlockRequestResponse struct {
+	Block BlockRequest `json:"block"`
+}
+
+//BlockRequest 询问填槽单元的结构体
+type BlockRequest struct {
+	Name                 string           `json:"name"`                    //单元名称[1-200]characters
+	DefaultSlotValue     string           `json:"default_slot_value"`      //默认词槽值
+	SlotFillingWhenAsked bool             `json:"slot_filling_when_asked"` //是否仅询问时填槽
+	Connections          []Connection     `json:"connections"`             //单元跳转关系
+	SlotID               int              `json:"slot_id"`                 //绑定的词槽ID
+	Mode                 string           `json:"mode"`                    //单元回复类型
+	RequestCount         int              `json:"request_count"`           //询问次数,默认3次
+	IntentID             int              `json:"intent_id"`               //所属意图ID
+	ID                   int              `json:"id"`                      //单元ID
+	Responses            []BlockResponses `json:"responses"`               //单元内回复
+}
+
+/****************
 - 消息发送单元
 ****************/
 
 //SceneBlockInformResponse 获取消息发送单元的响应
 type SceneBlockInformResponse struct {
-	Block Block `json:"block"`
+	Block BlockInform `json:"block"`
 }
 
-//Block 消息发送单元
-type Block struct {
-	IntentID   int             `json:"intent_id"`  //所属意图ID
-	ID         int             `json:"id"`         //单元ID
-	Name       string          `json:"name"`       //单元名称
-	Responses  []BlockResponse `json:"responses"`  //单元内回复
-	Connection Connection      `json:"connection"` //单元关系
-	Mode       ResponseType    `json:"mode"`       //单元回复类型
+//BlockInform 消息发送单元
+type BlockInform struct {
+	IntentID   int              `json:"intent_id"`  //所属意图ID
+	ID         int              `json:"id"`         //单元ID
+	Name       string           `json:"name"`       //单元名称
+	Responses  []BlockResponses `json:"responses"`  //单元内回复
+	Connection Connection       `json:"connection"` //单元关系
+	Mode       ResponseType     `json:"mode"`       //单元回复类型
 }
 
-//BlockResponse  单元内回复
-type BlockResponse struct {
+//BlockResponses  单元内回复
+type BlockResponses struct {
 	Text      Text      `json:"text"`       //文本消息
 	Image     Image     `json:"image"`      //图片消息
 	Custom    Custom    `json:"custom"`     //自定义消息
@@ -198,7 +270,7 @@ type Connection struct {
 
 //Condition 单元跳转条件
 type Condition struct {
-	Default              interface{}          `json:"default"`                  //单元跳转条件 默认
+	Default              Default              `json:"default"`                  //单元跳转条件 默认
 	InEntity             InEntity             `json:"in_entity"`                //单元跳转条件 属于(实体)
 	EqualTo              EqualTo              `json:"equal_to"`                 //单元跳转条件 等于
 	NotEqualTo           NotEqualTo           `json:"not_equal_to"`             //单元跳转条件 不等于
@@ -211,6 +283,10 @@ type Condition struct {
 	LessThan             LessThan             `json:"less_than"`                //单元跳转条件 小于
 	Include              Include              `json:"include"`                  //单元跳转条件 包含
 	MatchRegex           MatchRegex           `json:"match_regex"`              //单元跳转条件 符合正则
+}
+
+//Default 单元跳转条件 默认
+type Default struct {
 }
 
 //InEntity 单元跳转条件 属于(实体)
@@ -274,5 +350,110 @@ type LessThan struct {
 }
 
 /****************
+- 单元关系
+****************/
+
+//SceneBlockRelationResponse 创建单元关系响应值
+type SceneBlockRelationResponse struct {
+	Relation Relation `json:"relation"`
+}
+
+//Relation 单元关系
+type Relation struct {
+	Connection Connection `json:"connection"` //单元关系
+	IntentID   int        `json:"intent_id"`  //意图ID
+	ID         int        `json:"id"`         //单元关系ID
+}
+
+//Relation2 单元关系参数
+type Relation2 struct {
+	Connection Connection `json:"connection"` //单元关系
+	IntentID   int        `json:"intent_id"`  //意图ID
+}
+
+/****************
 - 任务待审核消息
 ****************/
+
+//SceneIntentTriggerLearningListResponse 查询任务待审核消息列表
+type SceneIntentTriggerLearningListResponse struct {
+	QueryItems []QueryItem `json:"query_items"` //待审核问题列表
+}
+
+//QueryItem 待审核问题
+type QueryItem struct {
+	Content         string          `json:"content"`          //用户消息内容
+	ID              int             `json:"id"`               //待审核消息ID
+	RecommendIntent RecommendIntent `json:"recommend_intent"` //推荐意图
+}
+
+//RecommendIntent 推荐意图
+type RecommendIntent struct {
+	IntentID   int    `json:"intent_id"`   //意图ID
+	Score      int    `json:"score"`       //置信度
+	IntentName string `json:"intent_name"` //意图名称
+}
+
+/****************
+- 单元内回复
+****************/
+
+//SceneBlockCreateResponse 创建单元内回复
+type SceneBlockCreateResponse struct {
+	Response SceneBlockResponse `json:"response"` //单元内回复
+}
+
+//SceneBlockUpdateResponse 更新单元内回复
+type SceneBlockUpdateResponse struct {
+	Response SceneBlockResponse `json:"response"` //单元内回复
+}
+
+//SceneBlockResponse 单元内回复
+type SceneBlockResponse struct {
+	Response BlockResponses `json:"response"` //消息体格式
+	ID       int            `json:"id"`       //回复ID
+	BlockID  int            `json:"block_id"` //单元ID
+}
+
+/****************
+- 意图终点单元
+****************/
+
+//SceneBlockEndBlockParam 创建意图终点单元的参数
+type SceneBlockEndBlockParam struct {
+	Block BlockEnd `json:"block"`
+}
+
+//SceneBlockEndBlockResponse 创建/更新 意图终点单元
+type SceneBlockEndBlockResponse struct {
+	Block BlockEnd `json:"block"`
+}
+
+//BlockEnd 意图终点单元
+type BlockEnd struct {
+	IntentID       int    `json:"intent_id"`
+	ID             int    `json:"id"`
+	Name           string `json:"name"`
+	SlotMemorizing bool   `json:"slot_memorizing"`
+	Action         Action `json:"action"`
+}
+
+//Action 结束单元跳转方式
+type Action struct {
+	Last      Last      `json:"last"`      //跳转上个意图
+	End       End       `json:"end"`       //不跳转
+	Specified Specified `json:"specified"` //跳转指定意图
+}
+
+//Last 意图终点单元跳转上个意图
+type Last struct {
+}
+
+//End 意图终点单元不跳转
+type End struct {
+}
+
+//Specified 意图终点单元跳转指定意图
+type Specified struct {
+	ID int `json:"id"` //意图ID >=1
+}

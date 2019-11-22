@@ -1,6 +1,8 @@
 package wulai
 
-import "fmt"
+import (
+	"fmt"
+)
 
 /****************
 - 场景类
@@ -115,6 +117,21 @@ func (x *Client) sceneIntentCreateV2(sceneID int, name string, lifespanMins int)
 		  "lifespan_mins": %v
 		}
 	}`, sceneID, name, lifespanMins)
+	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
+	if err != nil {
+		return nil, err
+	}
+
+	return respBytes.ResponseBodyBytes, nil
+}
+
+/*sceneIntentDeleteV2 删除意图
+@id：意图ID >=1
+*/
+func (x *Client) sceneIntentDeleteV2(id int) ([]byte, error) {
+	url := fmt.Sprintf("%s/%s/scene/intent/delete", x.Endpoint, x.Version)
+	input := fmt.Sprintf(`{"id": %v}`, id)
+
 	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
 		return nil, err
@@ -312,6 +329,21 @@ func (x *Client) sceneSlotDataSourceCreateV2(slotID, entityID int) ([]byte, erro
 	return respBytes.ResponseBodyBytes, nil
 }
 
+/*sceneSlotDataSourceDeleteV2 删除词槽数据来源
+@id：词槽数据来源ID >=1
+*/
+func (x *Client) sceneSlotDataSourceDeleteV2(id int) ([]byte, error) {
+	url := fmt.Sprintf("%s/%s/scene/slot/data-source/delete", x.Endpoint, x.Version)
+	input := fmt.Sprintf(`{"id": %v}`, id)
+
+	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
+	if err != nil {
+		return nil, err
+	}
+
+	return respBytes.ResponseBodyBytes, nil
+}
+
 /****************
 - 触发器
 ****************/
@@ -397,6 +429,119 @@ func (x *Client) sceneIntentTriggerDeleteV2(id int) ([]byte, error) {
 }
 
 /****************
+- 单元类
+****************/
+
+/*sceneBlockListV2 查询单元列表
+@intentID：意图ID
+@page：页码，代表查看第几页的数据，从1开始
+@pageSize：每页的触发器数量[1-200]
+*/
+
+func (x *Client) sceneBlockListV2(intentID, page, pageSize int) ([]byte, error) {
+	url := fmt.Sprintf("%s/%s/scene/block/list", x.Endpoint, x.Version)
+	input := fmt.Sprintf(`
+	{
+		"intent_id": %v,
+		"page": %v,
+		"page_size": %v
+	}`, intentID, page, pageSize)
+	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
+	if err != nil {
+		return nil, err
+	}
+
+	return respBytes.ResponseBodyBytes, nil
+}
+
+/*sceneBlockDeleteV2 删除单元
+@id：单元ID >=1
+*/
+func (x *Client) sceneBlockDeleteV2(id int) ([]byte, error) {
+	url := fmt.Sprintf("%s/%s/scene/block/delete", x.Endpoint, x.Version)
+	input := fmt.Sprintf(`{"id": %v}`, id)
+
+	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
+	if err != nil {
+		return nil, err
+	}
+
+	return respBytes.ResponseBodyBytes, nil
+}
+
+/****************
+- 询问填槽单元
+****************/
+
+/*sceneBlockRequestCreateV2 创建询问填槽单元
+@param：参数 BlockRequestParam(指针类型)
+*/
+func (x *Client) sceneBlockRequestCreateV2(param *BlockRequestParam) ([]byte, error) {
+	url := fmt.Sprintf("%s/%s/scene/block/request-block/create", x.Endpoint, x.Version)
+	input := fmt.Sprintf(`
+	{
+		"block": {
+		  "name": "%s",
+		  "default_slot_value": "%s",
+		  "slot_filling_when_asked": %v,
+		  "slot_id": %v,
+		  "mode": "%s",
+		  "request_count": %v,
+		  "intent_id": %v
+		}
+	}`, param.Name, param.DefaultSlotValue, param.SlotFillingWhenAsked, param.SlotID, param.Mode, param.RequestCount, param.IntentID)
+	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
+	if err != nil {
+		return nil, err
+	}
+
+	return respBytes.ResponseBodyBytes, nil
+}
+
+/*sceneBlockRequestGetV2 查询询问填槽单元
+@id：单元ID >=1
+*/
+func (x *Client) sceneBlockRequestGetV2(id int) ([]byte, error) {
+	url := fmt.Sprintf("%s/%s/scene/block/request-block/get", x.Endpoint, x.Version)
+	input := fmt.Sprintf(`
+	{
+		"id": %v
+	}`, id)
+	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
+	if err != nil {
+		return nil, err
+	}
+
+	return respBytes.ResponseBodyBytes, nil
+}
+
+/*sceneBlockRequestUpdateV2 更新询问填槽单元
+@param：参数 BlockRequestParam(指针类型)
+*/
+func (x *Client) sceneBlockRequestUpdateV2(param *BlockRequestParam) ([]byte, error) {
+	url := fmt.Sprintf("%s/%s/scene/block/request-block/update", x.Endpoint, x.Version)
+	input := fmt.Sprintf(`
+	{
+		"block": {
+		  "name": "%s",
+		  "default_slot_value": "%s",
+		  "slot_filling_when_asked": %v,
+		  "slot_id": %v,
+		  "mode": "%s",
+		  "request_count": %v,
+		  "intent_id": %v,
+		  "id": %v
+		}
+	}`, param.Name, param.DefaultSlotValue, param.SlotFillingWhenAsked, param.SlotID, param.Mode, param.RequestCount, param.IntentID, param.ID)
+	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
+	if err != nil {
+		return nil, err
+	}
+
+	return respBytes.ResponseBodyBytes, nil
+}
+
+/****************
 - 消息发送单元
 ****************/
 
@@ -467,6 +612,222 @@ func (x *Client) sceneBlockInformGetV2(blockID int) ([]byte, error) {
 - 任务待审核消息
 ****************/
 
+/*sceneIntentTriggerLearningListV2 查询任务待审核消息列表
+@page：页码，代表查看第几页的数据，从1开始
+@pageSize：每页的触发器数量[1-200]
+*/
+func (x *Client) sceneIntentTriggerLearningListV2(page, pageSize int) ([]byte, error) {
+	url := fmt.Sprintf("%s/%s/scene/intent/trigger-learning/list", x.Endpoint, x.Version)
+	input := fmt.Sprintf(`
+	{
+		"page": %v,
+		"page_size": %v
+	}`, page, pageSize)
+	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
+	if err != nil {
+		return nil, err
+	}
+
+	return respBytes.ResponseBodyBytes, nil
+}
+
+/*sceneIntentTriggerLearningDeleteV2 删除任务待审核消息
+@id：待审核消息ID >=1
+*/
+func (x *Client) sceneIntentTriggerLearningDeleteV2(id int) ([]byte, error) {
+	url := fmt.Sprintf("%s/%s/scene/intent/trigger-learning/delete", x.Endpoint, x.Version)
+	input := fmt.Sprintf(`{"id": %v}`, id)
+
+	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
+	if err != nil {
+		return nil, err
+	}
+
+	return respBytes.ResponseBodyBytes, nil
+}
+
+/****************
+- 单元关系
+****************/
+
+/*sceneBlockRelationCreateV2 创建单元关系
+@intentID：意图ID >=1
+@fromBlockID：当前单元ID >=1
+@toBlockID：下一个单元ID >=1
+@msgType：条件类型
+@msgBody：条件值
+*/
+func (x *Client) sceneBlockRelationCreateV2(intentID, fromBlockID, toBlockID int, msgType string, msgBody []byte) ([]byte, error) {
+	url := fmt.Sprintf("%s/%s/scene/block/relation/create", x.Endpoint, x.Version)
+	input := fmt.Sprintf(`
+	{
+		"relation": {
+		  "connection": {
+			"from_block_id": %v,
+			"to_block_id": %v,
+			"condition": {"%s": %s}
+		  },
+		  "intent_id": %v
+		}
+	}`, fromBlockID, toBlockID, msgType, msgBody, intentID)
+
+	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
+	if err != nil {
+		return nil, err
+	}
+
+	return respBytes.ResponseBodyBytes, nil
+}
+
+/*sceneBlockRelationDeleteV2 删除单元关系
+@id：单元关系ID >=1
+*/
+func (x *Client) sceneBlockRelationDeleteV2(id int) ([]byte, error) {
+	url := fmt.Sprintf("%s/%s/scene/block/relation/delete", x.Endpoint, x.Version)
+	input := fmt.Sprintf(`{"id": %v}`, id)
+
+	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
+	if err != nil {
+		return nil, err
+	}
+
+	return respBytes.ResponseBodyBytes, nil
+}
+
 /****************
 - 单元内回复
 ****************/
+
+/*sceneBlockResponseCreateV2 创建单元内回复
+@blockID：单元ID>=1
+@msgType：消息类型
+@msgBody：消息体格式，任意选择一种消息类型[文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息]
+*/
+func (x *Client) sceneBlockResponseCreateV2(blockID int, msgType string, msgBody []byte) ([]byte, error) {
+	url := fmt.Sprintf("%s/%s/scene/block/response/create", x.Endpoint, x.Version)
+	input := fmt.Sprintf(`
+	{
+		"response": {
+		  "block_id": %v,
+		  "response": {"%s": %s}
+		}
+	}`, blockID, msgType, msgBody)
+	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
+	if err != nil {
+		return nil, err
+	}
+
+	return respBytes.ResponseBodyBytes, nil
+}
+
+/*sceneBlockResponseUpdateV2 更新单元内回复
+@id：回复ID >=1
+@msgType：消息类型
+@msgBody：消息体格式，任意选择一种消息类型[文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息]
+*/
+func (x *Client) sceneBlockResponseUpdateV2(id int, msgType string, msgBody []byte) ([]byte, error) {
+	url := fmt.Sprintf("%s/%s/scene/block/response/update", x.Endpoint, x.Version)
+	input := fmt.Sprintf(`
+	{
+		"response": {
+		  "id": %v,
+		  "response": {"%s": %s}
+		}
+	}`, id, msgType, msgBody)
+	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
+	if err != nil {
+		return nil, err
+	}
+
+	return respBytes.ResponseBodyBytes, nil
+}
+
+/*sceneBlockResponseDeleteV2 删除单元内回复
+@id：回复ID >=1
+*/
+func (x *Client) sceneBlockResponseDeleteV2(id int) ([]byte, error) {
+	url := fmt.Sprintf("%s/%s/scene/block/response/delete", x.Endpoint, x.Version)
+	input := fmt.Sprintf(`{"id": %v}`, id)
+
+	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
+	if err != nil {
+		return nil, err
+	}
+
+	return respBytes.ResponseBodyBytes, nil
+}
+
+/****************
+- 意图终点单元
+****************/
+
+/*sceneBlockEndBlockCreateV2 创建意图终点单元
+@intentID：所属意图ID>=1
+@name：单元名称[1-200]characters
+@slot_memorizing：是否保存词槽值(默认关闭).true: 开启;false: 关闭
+@actionType：结束单元跳转方式
+@actionBody：结束单元跳转方式 (指定意图 / 上个意图 / 不跳转))
+*/
+func (x *Client) sceneBlockEndBlockCreateV2(intentID int, name string, slotMemorizing bool, actionType string, actionBody []byte) ([]byte, error) {
+	url := fmt.Sprintf("%s/%s/scene/block/end-block/create", x.Endpoint, x.Version)
+	input := fmt.Sprintf(`
+	{
+		"block": {
+		  "action": {"%s": %s},
+		  "intent_id": %v,
+		  "name": "%s",
+		  "slot_memorizing": %v
+		}
+	}`, actionType, actionBody, intentID, name, slotMemorizing)
+	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
+	if err != nil {
+		return nil, err
+	}
+
+	return respBytes.ResponseBodyBytes, nil
+}
+
+/*sceneBlockEndBlockCreateV2 更新意图终点单元
+@intentID：所属意图ID>=1
+@id：单元ID>=1
+@name：单元名称[1-200]characters
+@slot_memorizing：是否保存词槽值(默认关闭).true: 开启;false: 关闭
+@actionType：结束单元跳转方式
+@actionBody：结束单元跳转方式 (指定意图 / 上个意图 / 不跳转))
+*/
+func (x *Client) sceneBlockEndBlockUpdateV2(intentID int, id int, name string, slotMemorizing bool, actionType string, actionBody []byte) ([]byte, error) {
+	url := fmt.Sprintf("%s/%s/scene/block/end-block/create", x.Endpoint, x.Version)
+	input := fmt.Sprintf(`
+	{
+		"block": {
+		  "action": {"%s": %s},
+		  "intent_id": %v,
+		  "name": "%s",
+		  "id": %v,
+		  "slot_memorizing": %v
+		}
+	}`, actionType, actionBody, intentID, name, id, slotMemorizing)
+	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
+	if err != nil {
+		return nil, err
+	}
+
+	return respBytes.ResponseBodyBytes, nil
+}
+
+/*sceneBlockEndBlockGetV2 查询意图终点单元
+@id：单元ID>=1
+*/
+func (x *Client) sceneBlockEndBlockGetV2(id int) ([]byte, error) {
+	url := fmt.Sprintf("%s/%s/scene/block/end-block/get", x.Endpoint, x.Version)
+	input := fmt.Sprintf(`
+	{
+		"id": %v
+	}`, id)
+	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
+	if err != nil {
+		return nil, err
+	}
+
+	return respBytes.ResponseBodyBytes, nil
+}

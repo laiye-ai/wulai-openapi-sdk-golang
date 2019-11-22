@@ -3,6 +3,7 @@ package wulai
 import (
 	"encoding/json"
 	"fmt"
+	"reflect"
 	"strings"
 
 	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/errors"
@@ -216,6 +217,29 @@ func (x *Client) SceneIntentUpdate(id int, name string, lifespanMins int) (model
 	}
 
 	return model, nil
+}
+
+/*SceneIntentDelete 删除意图
+@id：意图ID >=1
+*/
+func (x *Client) SceneIntentDelete(id int) error {
+
+	if strings.ToUpper(x.Version) == "V1" {
+
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
+	}
+
+	bytes, err := x.sceneIntentDeleteV2(id)
+	if err != nil {
+		return err
+	}
+
+	if x.Debug {
+		log.Debugf("[SceneIntentDelete Response]:%s\n", bytes)
+	}
+
+	return nil
 }
 
 /*SceneIntentStatusUpdate 更新意图状态
@@ -461,8 +485,30 @@ func (x *Client) SceneSlotDataSourceCreate(slotID, entityID int) (model *SceneSl
 	return model, nil
 }
 
-/****************
+/*SceneSlotDataSourceDelete 删除词槽数据来源
+@id：词槽数据来源ID >=1
+*/
+func (x *Client) SceneSlotDataSourceDelete(id int) error {
 
+	if strings.ToUpper(x.Version) == "V1" {
+
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
+	}
+
+	bytes, err := x.sceneSlotDataSourceDeleteV2(id)
+	if err != nil {
+		return err
+	}
+
+	if x.Debug {
+		log.Debugf("[SceneSlotDataSourceDelete Response]:%s\n", bytes)
+	}
+
+	return nil
+}
+
+/****************
 - 触发器
 ****************/
 
@@ -575,10 +621,159 @@ func (x *Client) SceneIntentTriggerDelete(triggerID int) error {
 	}
 
 	if x.Debug {
-		log.Debugf("[SceneIntentTriggerUpdate Response]:%s\n", bytes)
+		log.Debugf("[SceneIntentTriggerDelete Response]:%s\n", bytes)
 	}
 
 	return nil
+}
+
+/****************
+- 单元类
+****************/
+
+/*SceneBlockList 查询单元列表
+@intentID：意图ID
+@page：页码，代表查看第几页的数据，从1开始
+@pageSize：每页的触发器数量[1-200]
+*/
+func (x *Client) SceneBlockList(intentID, page, pageSize int) (model *SceneBlockListResponse, err error) {
+
+	if strings.ToUpper(x.Version) == "V1" {
+
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return nil, errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
+	}
+
+	bytes, err := x.sceneBlockListV2(intentID, page, pageSize)
+	if err != nil {
+		return nil, err
+	}
+
+	if x.Debug {
+		log.Debugf("[SceneBlockList Response]:%s\n", bytes)
+	}
+
+	//返回结果
+	model = &SceneBlockListResponse{}
+	if err = json.Unmarshal(bytes, model); err != nil {
+		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	return model, nil
+}
+
+/*SceneBlockDelete 删除单元
+@id：单元ID >=1
+*/
+func (x *Client) SceneBlockDelete(id int) error {
+
+	if strings.ToUpper(x.Version) == "V1" {
+
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
+	}
+
+	bytes, err := x.sceneBlockDeleteV2(id)
+	if err != nil {
+		return err
+	}
+
+	if x.Debug {
+		log.Debugf("[SceneBlockDelete Response]:%s\n", bytes)
+	}
+
+	return nil
+}
+
+/****************
+- 询问填槽单元
+****************/
+
+/*SceneBlockRequestGet 查询询问填槽单元
+@id：单元ID >=1
+*/
+func (x *Client) SceneBlockRequestGet(id int) (model *BlockRequestResponse, err error) {
+
+	if strings.ToUpper(x.Version) == "V1" {
+
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return nil, errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
+	}
+
+	bytes, err := x.sceneBlockRequestGetV2(id)
+	if err != nil {
+		return nil, err
+	}
+
+	if x.Debug {
+		log.Debugf("[SceneBlockRequestGet Response]:%s\n", bytes)
+	}
+
+	//返回结果
+	model = &BlockRequestResponse{}
+	if err = json.Unmarshal(bytes, model); err != nil {
+		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	return model, nil
+}
+
+/*SceneBlockRequestCreate 创建询问填槽单元
+@param：参数 BlockRequest(指针类型)
+*/
+func (x *Client) SceneBlockRequestCreate(param *BlockRequestParam) (model *BlockRequestResponse, err error) {
+
+	if strings.ToUpper(x.Version) == "V1" {
+
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return nil, errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
+	}
+
+	bytes, err := x.sceneBlockRequestCreateV2(param)
+	if err != nil {
+		return nil, err
+	}
+
+	if x.Debug {
+		log.Debugf("[SceneBlockRequestCreate Response]:%s\n", bytes)
+	}
+
+	//返回结果
+	model = &BlockRequestResponse{}
+	if err = json.Unmarshal(bytes, model); err != nil {
+		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	return model, nil
+}
+
+/*SceneBlockRequestUpdate 更新询问填槽单元
+@param：参数 BlockRequest(指针类型)
+*/
+func (x *Client) SceneBlockRequestUpdate(param *BlockRequestParam) (model *BlockRequestResponse, err error) {
+
+	if strings.ToUpper(x.Version) == "V1" {
+
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return nil, errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
+	}
+
+	bytes, err := x.sceneBlockRequestUpdateV2(param)
+	if err != nil {
+		return nil, err
+	}
+
+	if x.Debug {
+		log.Debugf("[SceneBlockRequestUpdate Response]:%s\n", bytes)
+	}
+
+	//返回结果
+	model = &BlockRequestResponse{}
+	if err = json.Unmarshal(bytes, model); err != nil {
+		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	return model, nil
 }
 
 /****************
@@ -680,6 +875,417 @@ func (x *Client) SceneBlockInformUpdate(id int, name string, mode ResponseType) 
 - 任务待审核消息
 ****************/
 
+/*SceneIntentTriggerLearningList 查询任务待审核消息列表
+@page：页码，代表查看第几页的数据，从1开始
+@pageSize：每页的触发器数量[1-200]
+*/
+func (x *Client) SceneIntentTriggerLearningList(page, pageSize int) (model *SceneIntentTriggerLearningListResponse, err error) {
+
+	if strings.ToUpper(x.Version) == "V1" {
+
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return nil, errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
+	}
+
+	bytes, err := x.sceneIntentTriggerLearningListV2(page, pageSize)
+	if err != nil {
+		return nil, err
+	}
+
+	if x.Debug {
+		log.Debugf("[SceneIntentTriggerLearningList Response]:%s\n", bytes)
+	}
+
+	//返回结果
+	model = &SceneIntentTriggerLearningListResponse{}
+	if err = json.Unmarshal(bytes, model); err != nil {
+		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	return model, nil
+}
+
+/*SceneIntentTriggerLearningDelete 删除任务待审核消息
+@id：待审核消息ID >=1
+*/
+func (x *Client) SceneIntentTriggerLearningDelete(id int) error {
+
+	if strings.ToUpper(x.Version) == "V1" {
+
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
+	}
+
+	bytes, err := x.sceneIntentTriggerLearningDeleteV2(id)
+	if err != nil {
+		return err
+	}
+
+	if x.Debug {
+		log.Debugf("[SceneIntentTriggerLearningDelete Response]:%s\n", bytes)
+	}
+
+	return nil
+}
+
 /****************
 - 单元内回复
 ****************/
+
+/*SceneBlockResponseCreate 创建单元内回复
+@blockID：单元ID>=1
+@msgBody：消息体格式，任意选择一种消息类型[文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息]
+*/
+func (x *Client) SceneBlockResponseCreate(blockID int, msgBody interface{}) (model *SceneBlockCreateResponse, err error) {
+
+	if strings.ToUpper(x.Version) == "V1" {
+
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return nil, errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
+	}
+
+	//检查消息类型是否合法
+	msgType, ok := CheckMsgType(msgBody)
+	if !ok {
+		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "*"+msgType)
+		return nil, errors.NewClientError(errors.UnsupportedTypeErrorCode, errorMsg, nil)
+	}
+
+	//检查 json format
+	msgBytes, err := json.Marshal(msgBody)
+	if err != nil {
+		return nil, errors.NewClientError(errors.JsonMarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	bytes, err := x.sceneBlockResponseCreateV2(blockID, msgType, msgBytes)
+	if err != nil {
+		return nil, err
+	}
+
+	if x.Debug {
+		log.Debugf("[SceneBlockResponseCreate Response]:%s\n", bytes)
+	}
+
+	//返回结果
+	model = &SceneBlockCreateResponse{}
+	if err = json.Unmarshal(bytes, model); err != nil {
+		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	return model, nil
+}
+
+/*SceneBlockResponseUpdate 更新单元内回复
+@id：回复ID >=1
+@msgBody：消息体格式，任意选择一种消息类型[文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息]
+*/
+func (x *Client) SceneBlockResponseUpdate(id int, msgBody interface{}) (model *SceneBlockUpdateResponse, err error) {
+
+	if strings.ToUpper(x.Version) == "V1" {
+
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return nil, errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
+	}
+
+	//检查消息类型是否合法
+	msgType, ok := CheckMsgType(msgBody)
+	if !ok {
+		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "*"+msgType)
+		return nil, errors.NewClientError(errors.UnsupportedTypeErrorCode, errorMsg, nil)
+	}
+
+	//检查 json format
+	msgBytes, err := json.Marshal(msgBody)
+	if err != nil {
+		return nil, errors.NewClientError(errors.JsonMarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	bytes, err := x.sceneBlockResponseUpdateV2(id, msgType, msgBytes)
+	if err != nil {
+		return nil, err
+	}
+
+	if x.Debug {
+		log.Debugf("[SceneBlockResponseUpdate Response]:%s\n", bytes)
+	}
+
+	//返回结果
+	model = &SceneBlockUpdateResponse{}
+	if err = json.Unmarshal(bytes, model); err != nil {
+		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	return model, nil
+}
+
+/*SceneBlockResponseDelete 删除单元内回复
+@id：回复ID >=1
+*/
+func (x *Client) SceneBlockResponseDelete(id int) error {
+
+	if strings.ToUpper(x.Version) == "V1" {
+
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
+	}
+
+	bytes, err := x.sceneBlockResponseDeleteV2(id)
+	if err != nil {
+		return err
+	}
+
+	if x.Debug {
+		log.Debugf("[SceneBlockResponseDelete Response]:%s\n", bytes)
+	}
+
+	return nil
+}
+
+/****************
+- 单元关系
+****************/
+
+/*SceneBlockRelationCreate 创建单元关系
+@intentID：意图ID >=1
+@fromBlockID：当前单元ID >=1
+@toBlockID：下一个单元ID >=1
+@msgType：条件类型
+@msgBody：条件值
+*/
+func (x *Client) SceneBlockRelationCreate(intentID, fromBlockID, toBlockID int, condition interface{}) (model *SceneBlockRelationResponse, err error) {
+
+	if strings.ToUpper(x.Version) == "V1" {
+
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return nil, errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
+	}
+
+	//检查消息类型是否合法
+	msgType, ok := CheckConditionType(condition)
+	if !ok {
+		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "*"+msgType)
+		return nil, errors.NewClientError(errors.UnsupportedTypeErrorCode, errorMsg, nil)
+	}
+
+	//msg bytes
+	msgBytes, err := json.Marshal(condition)
+	if err != nil {
+		return nil, errors.NewClientError(errors.JsonMarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	bytes, err := x.sceneBlockRelationCreateV2(intentID, fromBlockID, toBlockID, msgType, msgBytes)
+	if err != nil {
+		return nil, err
+	}
+
+	if x.Debug {
+		log.Debugf("[SceneBlockRelationCreate Response]:%s\n", bytes)
+	}
+
+	//返回结果
+	model = &SceneBlockRelationResponse{}
+	if err = json.Unmarshal(bytes, model); err != nil {
+		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	return model, nil
+}
+
+/*SceneBlockRelationDelete 删除单元关系
+@id：单元关系ID >=1
+*/
+func (x *Client) SceneBlockRelationDelete(id int) error {
+
+	if strings.ToUpper(x.Version) == "V1" {
+
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
+	}
+
+	bytes, err := x.sceneBlockRelationDeleteV2(id)
+	if err != nil {
+		return err
+	}
+
+	if x.Debug {
+		log.Debugf("[SceneBlockRelationDelete Response]:%s\n", bytes)
+	}
+
+	return nil
+}
+
+/****************
+- 意图终点单元
+****************/
+
+/*SceneBlockEndBlockCreate 创建意图终点单元
+@intentID：所属意图ID>=1
+@name：单元名称[1-200]characters
+@slot_memorizing：是否保存词槽值(默认关闭).true: 开启;false: 关闭
+@action：结束单元跳转方式 (指定意图 / 上个意图 / 不跳转))
+*/
+func (x *Client) SceneBlockEndBlockCreate(intentID int, name string, slotMemorizing bool, action interface{}) (model *SceneBlockEndBlockResponse, err error) {
+
+	if strings.ToUpper(x.Version) == "V1" {
+
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return nil, errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
+	}
+
+	//检查类型是否合法
+	actionType, ok := CheckActionType(action)
+	if !ok {
+		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, actionType, "*"+actionType)
+		return nil, errors.NewClientError(errors.UnsupportedTypeErrorCode, errorMsg, nil)
+	}
+
+	//msg bytes
+	actionBytes, err := json.Marshal(action)
+	if err != nil {
+		return nil, errors.NewClientError(errors.JsonMarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	bytes, err := x.sceneBlockEndBlockCreateV2(intentID, name, slotMemorizing, actionType, actionBytes)
+	if err != nil {
+		return nil, err
+	}
+
+	if x.Debug {
+		log.Debugf("[SceneBlockEndBlockCreate Response]:%s\n", bytes)
+	}
+
+	//返回结果
+	model = &SceneBlockEndBlockResponse{}
+	if err = json.Unmarshal(bytes, model); err != nil {
+		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	return model, nil
+}
+
+/*SceneBlockEndBlockUpdate 更新意图终点单元
+@intentID：所属意图ID>=1
+@id：单元ID>=1
+@name：单元名称[1-200]characters
+@slot_memorizing：是否保存词槽值(默认关闭).true: 开启;false: 关闭
+@action：结束单元跳转方式 (指定意图 / 上个意图 / 不跳转))
+*/
+func (x *Client) SceneBlockEndBlockUpdate(intentID int, id int, name string, slotMemorizing bool, action interface{}) (model *SceneBlockEndBlockResponse, err error) {
+
+	if strings.ToUpper(x.Version) == "V1" {
+
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return nil, errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
+	}
+
+	//检查类型是否合法
+	actionType, ok := CheckActionType(action)
+	if !ok {
+		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, actionType, "*"+actionType)
+		return nil, errors.NewClientError(errors.UnsupportedTypeErrorCode, errorMsg, nil)
+	}
+
+	//msg bytes
+	actionBytes, err := json.Marshal(action)
+	if err != nil {
+		return nil, errors.NewClientError(errors.JsonMarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	bytes, err := x.sceneBlockEndBlockUpdateV2(intentID, id, name, slotMemorizing, actionType, actionBytes)
+	if err != nil {
+		return nil, err
+	}
+
+	if x.Debug {
+		log.Debugf("[SceneBlockEndBlockUpdate Response]:%s\n", bytes)
+	}
+
+	//返回结果
+	model = &SceneBlockEndBlockResponse{}
+	if err = json.Unmarshal(bytes, model); err != nil {
+		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	return model, nil
+}
+
+/*SceneBlockEndBlockGet 查询意图终点单元
+@id：单元ID>=1
+*/
+func (x *Client) SceneBlockEndBlockGet(blockID int) (model *SceneBlockEndBlockResponse, err error) {
+
+	if strings.ToUpper(x.Version) == "V1" {
+
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return nil, errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
+	}
+
+	bytes, err := x.sceneBlockEndBlockGetV2(blockID)
+	if err != nil {
+		return nil, err
+	}
+
+	if x.Debug {
+		log.Debugf("[SceneBlockEndBlockGet Response]:%s\n", bytes)
+	}
+
+	//返回结果
+	model = &SceneBlockEndBlockResponse{}
+	if err = json.Unmarshal(bytes, model); err != nil {
+		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	return model, nil
+}
+
+/****************
+- 类型检查
+****************/
+
+//CheckConditionType 检查消息类型
+func CheckConditionType(msgType interface{}) (string, bool) {
+
+	switch msgType.(type) {
+	case *Default:
+		return "default", true
+	case *InEntity:
+		return "in_entity", true
+	case *EqualTo:
+		return "equal_to", true
+	case *NotEqualTo:
+		return "not_equal_to", true
+	case *LessThanOrQqualTo:
+		return "less_than_or_equal_to", true
+	case *NotInEntity:
+		return "not_in_entity", true
+	case *GreaterThanOrEqualTo:
+		return "greater_than_or_equal_to", true
+	case *DismatchRegex:
+		return "dismatch_regex", true
+	case *GreaterThan:
+		return "greater_than", true
+	case *Exclude:
+		return "exclude", true
+	case *LessThan:
+		return "less_than", true
+	case *Include:
+		return "include", true
+	case *MatchRegex:
+		return "match_regex", true
+	}
+	return reflect.TypeOf(msgType).String(), false
+}
+
+//CheckActionType 检查结束单元跳转方式
+func CheckActionType(msgType interface{}) (string, bool) {
+
+	switch msgType.(type) {
+	case *Last:
+		return "last", true
+	case *End:
+		return "end", true
+	case *Specified:
+		return "specified", true
+	}
+	return reflect.TypeOf(msgType).String(), false
+}

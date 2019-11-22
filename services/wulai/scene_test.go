@@ -155,9 +155,9 @@ func Test_SceneIntentUpdate(t *testing.T) {
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.SetDebug(true)
 
-	id := 45627          //意图ID >=1
-	name := "意图名-update" //意图名称[1-200]characters
-	lifespanMins := 10   //意图闲置等待时长（分钟），默认3分钟) <= 60
+	id := 45677        //意图ID >=1
+	name := "问卷调查机器人"  //意图名称[1-200]characters
+	lifespanMins := 10 //意图闲置等待时长（分钟），默认3分钟) <= 60
 	resp, err := wulaiClient.SceneIntentUpdate(id, name, lifespanMins)
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
@@ -196,6 +196,24 @@ func Test_SceneIntentStatusUpdate(t *testing.T) {
 	log.Infof("%+v\n", resp)
 }
 
+func Test_SceneIntentDelete(t *testing.T) {
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.SetDebug(true)
+
+	id := 1419126 //意图ID >=1
+	err := wulaiClient.SceneIntentDelete(id)
+	if err != nil {
+		if cliErr, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_SceneDelete]=>%s\n", cliErr.Error())
+		} else if serErr, ok := err.(*errors.ServerError); ok {
+			log.Infof("[Test_SceneDelete]=>%s\n", serErr.Error())
+		}
+
+		return
+	}
+}
+
 /****************
 - 触发器
 ****************/
@@ -206,9 +224,9 @@ func Test_SceneIntentTriggerList(t *testing.T) {
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.SetDebug(true)
 
-	intentID := 100 //意图ID >=1
-	page := 1       //页码，代表查看第几页的数据，从1开始
-	pageSize := 10  //每页的触发器数量[1-200]
+	intentID := 45677 //意图ID >=1
+	page := 1         //页码，代表查看第几页的数据，从1开始
+	pageSize := 10    //每页的触发器数量[1-200]
 
 	resp, err := wulaiClient.SceneIntentTriggerList(intentID, page, pageSize)
 	if err != nil {
@@ -230,7 +248,7 @@ func Test_SceneIntentTriggerCreate(t *testing.T) {
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.SetDebug(true)
 
-	intentID := 45627                               //触发器对应的意图ID >=1
+	intentID := 45677                               //触发器对应的意图ID >=1
 	text := "吃饭"                                    //触发文本[1-200]characters
 	triggerType := TRIGGER_TYPE_EXACT_MATCH_KEYWORD //触发器模式
 
@@ -434,13 +452,95 @@ func Test_SceneSlotDataSourceCreate(t *testing.T) {
 	wulaiClient.SetDebug(true)
 
 	slotID := 71034 //词槽ID >=1
-	entityID := 3   //实体ID >=1
+	entityID := 9   //实体ID >=1
 	resp, err := wulaiClient.SceneSlotDataSourceCreate(slotID, entityID)
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneSlotDataSourceCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneSlotDataSourceCreate]=>%s\n", serErr.Error())
+		}
+
+		return
+	}
+
+	log.Infof("%+v\n", resp)
+}
+
+/****************
+- 询问填槽单元
+****************/
+
+func Test_SceneBlockRequestGet(t *testing.T) {
+
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.SetDebug(true)
+
+	id := 250542 //单元ID >=1
+	resp, err := wulaiClient.SceneBlockRequestGet(id)
+	if err != nil {
+		if cliErr, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_SceneBlockRequestGet]=>%s\n", cliErr.Error())
+		} else if serErr, ok := err.(*errors.ServerError); ok {
+			log.Infof("[Test_SceneBlockRequestGet]=>%s\n", serErr.Error())
+		}
+
+		return
+	}
+
+	log.Infof("%+v\n", resp)
+}
+
+func Test_SceneBlockRequestCreate(t *testing.T) {
+
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.SetDebug(true)
+
+	param := &BlockRequestParam{} //指针类型
+	param.IntentID = 45677
+	param.Name = "询问-姓名"
+	param.DefaultSlotValue = "请问您的姓名？"
+	param.SlotFillingWhenAsked = false
+	param.SlotID = 71034
+	param.Mode = RESPONSE_LOOP
+	param.RequestCount = 1
+	resp, err := wulaiClient.SceneBlockRequestCreate(param)
+	if err != nil {
+		if cliErr, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_SceneBlockRequestCreate]=>%s\n", cliErr.Error())
+		} else if serErr, ok := err.(*errors.ServerError); ok {
+			log.Infof("[Test_SceneBlockRequestCreate]=>%s\n", serErr.Error())
+		}
+
+		return
+	}
+
+	log.Infof("%+v\n", resp)
+}
+
+func Test_SceneBlockRequestUpdate(t *testing.T) {
+
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.SetDebug(true)
+
+	param := &BlockRequestParam{} //指针类型
+	param.ID = 250542
+	param.IntentID = 45677
+	param.Name = "询问-您的姓名是？"
+	param.DefaultSlotValue = "请问您的姓名？"
+	param.SlotFillingWhenAsked = false
+	param.SlotID = 71034
+	param.Mode = RESPONSE_LOOP
+	param.RequestCount = 1
+	resp, err := wulaiClient.SceneBlockRequestUpdate(param)
+	if err != nil {
+		if cliErr, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_SceneBlockRequestUpdate]=>%s\n", cliErr.Error())
+		} else if serErr, ok := err.(*errors.ServerError); ok {
+			log.Infof("[Test_SceneBlockRequestUpdate]=>%s\n", serErr.Error())
 		}
 
 		return
@@ -459,9 +559,9 @@ func Test_SceneBlockInformCreate(t *testing.T) {
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.SetDebug(true)
 
-	intentID := 45677        //所属意图ID>=1
-	name := "创建消息发送单元"       //单元名称[1-200]characters
-	model := RESPONSE_RANDOM //单元回复类型
+	intentID := 45677      //所属意图ID>=1
+	name := "GO-消息发送单元-1"  //单元名称[1-200]characters
+	model := RESPONSE_LOOP //单元回复类型
 	resp, err := wulaiClient.SceneBlockInformCreate(intentID, name, model)
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
@@ -505,7 +605,7 @@ func Test_SceneBlockInformGet(t *testing.T) {
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.SetDebug(true)
 
-	blockID := 2 //单元ID>=1
+	blockID := 250475 //单元ID>=1
 	resp, err := wulaiClient.SceneBlockInformGet(blockID)
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
@@ -523,3 +623,274 @@ func Test_SceneBlockInformGet(t *testing.T) {
 /****************
 - 任务待审核消息
 ****************/
+
+func Test_SceneIntentTriggerLearningList(t *testing.T) {
+
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.SetDebug(true)
+
+	page := 1      //页码，代表查看第几页的数据，从1开始
+	pageSize := 10 //每页的触发器数量[1-200]
+	resp, err := wulaiClient.SceneIntentTriggerLearningList(page, pageSize)
+	if err != nil {
+		if cliErr, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_SceneIntentTriggerLearningList]=>%s\n", cliErr.Error())
+		} else if serErr, ok := err.(*errors.ServerError); ok {
+			log.Infof("[Test_SceneIntentTriggerLearningList]=>%s\n", serErr.Error())
+		}
+
+		return
+	}
+
+	log.Infof("%+v\n", resp)
+}
+
+func Test_SceneIntentTriggerLearningDelete(t *testing.T) {
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.SetDebug(true)
+
+	id := 5 //待审核消息ID >=1
+	err := wulaiClient.SceneIntentTriggerLearningDelete(id)
+	if err != nil {
+		if cliErr, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_SceneIntentTriggerLearningDelete]=>%s\n", cliErr.Error())
+		} else if serErr, ok := err.(*errors.ServerError); ok {
+			log.Infof("[Test_SceneIntentTriggerLearningDelete]=>%s\n", serErr.Error())
+		}
+
+		return
+	}
+}
+
+/****************
+- 单元内回复
+****************/
+
+func Test_SceneBlockResponseCreate(t *testing.T) {
+
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.SetDebug(true)
+
+	blockID := 250542       //单元ID>=1
+	msgBody := &Text{"您好!"} //传入指针.消息体格式，任意选择一种消息类型[文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息]
+	resp, err := wulaiClient.SceneBlockResponseCreate(blockID, msgBody)
+	if err != nil {
+		if cliErr, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_SceneBlockResponseCreate]=>%s\n", cliErr.Error())
+		} else if serErr, ok := err.(*errors.ServerError); ok {
+			log.Infof("[Test_SceneBlockResponseCreate]=>%s\n", serErr.Error())
+		}
+
+		return
+	}
+
+	log.Infof("%+v\n", resp)
+}
+
+func Test_SceneBlockResponseUpdate(t *testing.T) {
+
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.SetDebug(true)
+
+	id := 1                 //回复ID >=1
+	msgBody := &Text{"您好!"} //传入指针.消息体格式，任意选择一种消息类型[文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息]
+	resp, err := wulaiClient.SceneBlockResponseUpdate(id, msgBody)
+	if err != nil {
+		if cliErr, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_SceneBlockResponseUpdate]=>%s\n", cliErr.Error())
+		} else if serErr, ok := err.(*errors.ServerError); ok {
+			log.Infof("[Test_SceneBlockResponseUpdate]=>%s\n", serErr.Error())
+		}
+
+		return
+	}
+
+	log.Infof("%+v\n", resp)
+}
+
+func Test_SceneBlockResponseDelete(t *testing.T) {
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.SetDebug(true)
+
+	id := 5 //回复ID >=1
+	err := wulaiClient.SceneBlockResponseDelete(id)
+	if err != nil {
+		if cliErr, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_SceneBlockResponseDelete]=>%s\n", cliErr.Error())
+		} else if serErr, ok := err.(*errors.ServerError); ok {
+			log.Infof("[Test_SceneBlockResponseDelete]=>%s\n", serErr.Error())
+		}
+
+		return
+	}
+}
+
+/****************
+- 单元类
+****************/
+
+func Test_SceneBlockList(t *testing.T) {
+
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.SetDebug(true)
+
+	intentID := 45677 //意图ID
+	page := 1         //页码，代表查看第几页的数据，从1开始
+	pageSize := 10    //每页的触发器数量[1-200]
+	resp, err := wulaiClient.SceneBlockList(intentID, page, pageSize)
+	if err != nil {
+		if cliErr, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_SceneBlockList]=>%s\n", cliErr.Error())
+		} else if serErr, ok := err.(*errors.ServerError); ok {
+			log.Infof("[Test_SceneBlockList]=>%s\n", serErr.Error())
+		}
+
+		return
+	}
+
+	log.Infof("%+v\n", resp)
+}
+
+func Test_SceneBlockDelete(t *testing.T) {
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.SetDebug(true)
+
+	id := 250475 //单元ID >=1
+	err := wulaiClient.SceneBlockDelete(id)
+	if err != nil {
+		if cliErr, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_SceneBlockDelete]=>%s\n", cliErr.Error())
+		} else if serErr, ok := err.(*errors.ServerError); ok {
+			log.Infof("[Test_SceneBlockDelete]=>%s\n", serErr.Error())
+		}
+
+		return
+	}
+}
+
+/****************
+- 单元关系
+****************/
+
+func Test_SceneBlockRelationCreate(t *testing.T) {
+
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.SetDebug(true)
+
+	intentID := 45677       //意图ID >=1
+	fromBlockID := 250542   //当前单元ID >=1
+	toBlockID := 247031     //下一个单元ID >=1
+	condition := &Default{} //默认 单元跳转条件
+	resp, err := wulaiClient.SceneBlockRelationCreate(intentID, fromBlockID, toBlockID, condition)
+	if err != nil {
+		if cliErr, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_SceneBlockRelationCreate]=>%s\n", cliErr.Error())
+		} else if serErr, ok := err.(*errors.ServerError); ok {
+			log.Infof("[Test_SceneBlockRelationCreate]=>%s\n", serErr.Error())
+		}
+
+		return
+	}
+
+	log.Infof("%+v\n", resp)
+}
+
+func Test_SceneBlockRelationDelete(t *testing.T) {
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.SetDebug(true)
+
+	id := 325651 //单元关系ID >=1
+	err := wulaiClient.SceneBlockRelationDelete(id)
+	if err != nil {
+		if cliErr, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_SceneBlockRelationDelete]=>%s\n", cliErr.Error())
+		} else if serErr, ok := err.(*errors.ServerError); ok {
+			log.Infof("[Test_SceneBlockRelationDelete]=>%s\n", serErr.Error())
+		}
+
+		return
+	}
+}
+
+/****************
+- 意图终点单元
+****************/
+
+func Test_SceneBlockEndBlockCreate(t *testing.T) {
+
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.SetDebug(true)
+
+	intentID := 45677       //所属意图ID >=1
+	name := "结束意图"          //单元名称[1-200]characters
+	slotMemorizing := false //是否保存词槽值(默认关闭).true: 开启;false: 关闭
+	action := &End{}        //结束单元跳转方式 (指定意图 / 上个意图 / 不跳转)) 指针类型
+	resp, err := wulaiClient.SceneBlockEndBlockCreate(intentID, name, slotMemorizing, action)
+	if err != nil {
+		if cliErr, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_SceneBlockEndBlockCreate]=>%s\n", cliErr.Error())
+		} else if serErr, ok := err.(*errors.ServerError); ok {
+			log.Infof("[Test_SceneBlockEndBlockCreate]=>%s\n", serErr.Error())
+		}
+
+		return
+	}
+
+	log.Infof("%+v\n", resp)
+}
+
+func Test_SceneBlockEndBlockUpdate(t *testing.T) {
+
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.SetDebug(true)
+
+	intentID := 45677       //所属意图ID >=1
+	id := 254445            //单元ID>=1
+	name := "结束意图-for QA"   //单元名称[1-200]characters
+	slotMemorizing := false //是否保存词槽值(默认关闭).true: 开启;false: 关闭
+	action := &End{}        //结束单元跳转方式 (指定意图 / 上个意图 / 不跳转)) 指针类型
+	resp, err := wulaiClient.SceneBlockEndBlockUpdate(intentID, id, name, slotMemorizing, action)
+	if err != nil {
+		if cliErr, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_SceneBlockEndBlockCreate]=>%s\n", cliErr.Error())
+		} else if serErr, ok := err.(*errors.ServerError); ok {
+			log.Infof("[Test_SceneBlockEndBlockCreate]=>%s\n", serErr.Error())
+		}
+
+		return
+	}
+
+	log.Infof("%+v\n", resp)
+}
+
+func Test_SceneBlockEndBlockGet(t *testing.T) {
+
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.SetDebug(true)
+
+	id := 254445 //单元ID>=1
+	resp, err := wulaiClient.SceneBlockEndBlockGet(id)
+	if err != nil {
+		if cliErr, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_SceneBlockEndBlockGet]=>%s\n", cliErr.Error())
+		} else if serErr, ok := err.(*errors.ServerError); ok {
+			log.Infof("[Test_SceneBlockEndBlockGet]=>%s\n", serErr.Error())
+		}
+
+		return
+	}
+
+	log.Infof("%+v\n", resp)
+}
