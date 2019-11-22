@@ -1,5 +1,23 @@
 package wulai
 
+//VoiceType 语音消息类型
+type VoiceType string
+
+const (
+	//AMR :AMR
+	AMR VoiceType = "AMR"
+	//PCM :PCM
+	PCM VoiceType = "PCM"
+	//WAV :WAV
+	WAV VoiceType = "WAV"
+	//OPUS :OPUS
+	OPUS VoiceType = "OPUS"
+	//SPEEX :SPEEX
+	SPEEX VoiceType = "SPEEX"
+	//MP3 :MP3
+	MP3 VoiceType = "MP3"
+)
+
 /*****************************************************************************************/
 
 //direction
