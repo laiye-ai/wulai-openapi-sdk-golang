@@ -196,18 +196,19 @@ type Response struct {
 	SimilarResponse []SimilarResponse `json:"similar_response"` //机器人平台手动或自动配置的推荐知识点，在机器人平台-知识库-知识点详情配置
 	EnableEvaluate  bool              `json:"enable_evaluate"`  //是否允许点赞/点踩
 	DelayTs         int64             `json:"delay_ts"`         //延时发送的秒数 delay_ts<= 604800
+	AnswerID        int64             `json:"answer_id"`        //答案Id
 }
 
 //MsgBody 消息体格式，任意选择一种消息类型
 type MsgBody struct {
-	Text      Text      `json:"text"`       //文本消息
-	Image     Image     `json:"image"`      //图片消息
-	Custom    Custom    `json:"custom"`     //自定义消息
-	Video     Video     `json:"video"`      //视频消息
-	File      File      `json:"file"`       //文件消息
-	Voice     Voice     `json:"voice"`      //语音消息
-	Event     Event     `json:"event"`      //事件消息
-	ShareLink ShareLink `json:"share_link"` //图文消息
+	Text      *Text      `json:"text"`       //文本消息
+	Image     *Image     `json:"image"`      //图片消息
+	Custom    *Custom    `json:"custom"`     //自定义消息
+	Video     *Video     `json:"video"`      //视频消息
+	File      *File      `json:"file"`       //文件消息
+	Voice     *Voice     `json:"voice"`      //语音消息
+	Event     *Event     `json:"event"`      //事件消息
+	ShareLink *ShareLink `json:"share_link"` //图文消息
 }
 
 //SimilarResponse 推荐知识点
@@ -232,18 +233,18 @@ type Chitchat struct {
 
 //Bot 机器人类型
 type Bot struct {
-	QA       QA       `json:"qa"`       //问答机器人
-	Chitchat Chitchat `json:"chitchat"` //闲聊机器人
-	Task     Task     `json:"task"`     //任务机器人
-	Keyword  Keyword  `json:"keyword"`  //关键字机器人
+	QA       *QA       `json:"qa"`       //问答机器人
+	Chitchat *Chitchat `json:"chitchat"` //闲聊机器人
+	Task     *Task     `json:"task"`     //任务机器人
+	Keyword  *Keyword  `json:"keyword"`  //关键字机器人
 }
 
 //Detail 机器人类型
 type Detail struct {
-	QA       QA       `json:"qa"`       //问答机器人
-	Chitchat Chitchat `json:"chitchat"` //闲聊机器人
-	Task     Task     `json:"task"`     //任务机器人
-	Keyword  Keyword  `json:"keyword"`  //关键字机器人
+	QA       *QA       `json:"qa"`       //问答机器人
+	Chitchat *Chitchat `json:"chitchat"` //闲聊机器人
+	Task     *Task     `json:"task"`     //任务机器人
+	Keyword  *Keyword  `json:"keyword"`  //关键字机器人
 }
 
 /****************
@@ -279,7 +280,7 @@ type BotResponseKeyword struct {
 
 //Keyword 关键字机器人
 type Keyword struct {
-	KeywordID int    `json:"keyword_id"` //关键字id
+	KeywordID int64  `json:"keyword_id"` //关键字id
 	Keyword   string `json:"keyword"`    //命中的关键字
 }
 

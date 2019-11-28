@@ -250,15 +250,15 @@ type BlockInform struct {
 
 //BlockResponses  单元内回复
 type BlockResponses struct {
-	Text      Text      `json:"text"`       //文本消息
-	Image     Image     `json:"image"`      //图片消息
-	Custom    Custom    `json:"custom"`     //自定义消息
-	RichText  RichText  `json:"rich_text"`  //图文消息
-	Video     Video     `json:"video"`      //视频消息
-	File      File      `json:"file"`       //文件消息
-	Voice     Voice     `json:"voice"`      //语音消息
-	Event     Event     `json:"event"`      //事件消息
-	ShareLink ShareLink `json:"share_link"` //卡片消息
+	Text      *Text      `json:"text"`       //文本消息
+	Image     *Image     `json:"image"`      //图片消息
+	Custom    *Custom    `json:"custom"`     //自定义消息
+	RichText  *RichText  `json:"rich_text"`  //图文消息
+	Video     *Video     `json:"video"`      //视频消息
+	File      *File      `json:"file"`       //文件消息
+	Voice     *Voice     `json:"voice"`      //语音消息
+	Event     *Event     `json:"event"`      //事件消息
+	ShareLink *ShareLink `json:"share_link"` //卡片消息
 }
 
 //Connection 单元关系
@@ -270,19 +270,19 @@ type Connection struct {
 
 //Condition 单元跳转条件
 type Condition struct {
-	Default              Default              `json:"default"`                  //单元跳转条件 默认
-	InEntity             InEntity             `json:"in_entity"`                //单元跳转条件 属于(实体)
-	EqualTo              EqualTo              `json:"equal_to"`                 //单元跳转条件 等于
-	NotEqualTo           NotEqualTo           `json:"not_equal_to"`             //单元跳转条件 不等于
-	LessThanOrQqualTo    LessThanOrQqualTo    `json:"less_than_or_equal_to"`    //单元跳转条件 小于等于
-	NotInEntity          NotInEntity          `json:"not_in_entity"`            //单元跳转条件 不属于(实体)
-	GreaterThanOrEqualTo GreaterThanOrEqualTo `json:"greater_than_or_equal_to"` //单元跳转条件 大于等于
-	DismatchRegex        DismatchRegex        `json:"dismatch_regex"`           //单元跳转条件 不符合正则
-	GreaterThan          GreaterThan          `json:"greater_than"`             //单元跳转条件 大于
-	Exclude              Exclude              `json:"exclude"`                  //单元跳转条件 不包含
-	LessThan             LessThan             `json:"less_than"`                //单元跳转条件 小于
-	Include              Include              `json:"include"`                  //单元跳转条件 包含
-	MatchRegex           MatchRegex           `json:"match_regex"`              //单元跳转条件 符合正则
+	Default              *Default              `json:"default"`                  //单元跳转条件 默认
+	InEntity             *InEntity             `json:"in_entity"`                //单元跳转条件 属于(实体)
+	EqualTo              *EqualTo              `json:"equal_to"`                 //单元跳转条件 等于
+	NotEqualTo           *NotEqualTo           `json:"not_equal_to"`             //单元跳转条件 不等于
+	LessThanOrQqualTo    *LessThanOrQqualTo    `json:"less_than_or_equal_to"`    //单元跳转条件 小于等于
+	NotInEntity          *NotInEntity          `json:"not_in_entity"`            //单元跳转条件 不属于(实体)
+	GreaterThanOrEqualTo *GreaterThanOrEqualTo `json:"greater_than_or_equal_to"` //单元跳转条件 大于等于
+	DismatchRegex        *DismatchRegex        `json:"dismatch_regex"`           //单元跳转条件 不符合正则
+	GreaterThan          *GreaterThan          `json:"greater_than"`             //单元跳转条件 大于
+	Exclude              *Exclude              `json:"exclude"`                  //单元跳转条件 不包含
+	LessThan             *LessThan             `json:"less_than"`                //单元跳转条件 小于
+	Include              *Include              `json:"include"`                  //单元跳转条件 包含
+	MatchRegex           *MatchRegex           `json:"match_regex"`              //单元跳转条件 符合正则
 }
 
 //Default 单元跳转条件 默认

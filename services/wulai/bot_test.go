@@ -61,7 +61,7 @@ func Test_GetBotResponseQAWithText(t *testing.T) {
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.SetDebug(true)
 
-	text := &Text{"您好!"}
+	text := &Text{"golang!"}
 	model, err := wulaiClient.MsgBotResponseQa("xiao_lai", text, "")
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
