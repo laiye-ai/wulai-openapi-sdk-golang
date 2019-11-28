@@ -196,6 +196,7 @@ type Response struct {
 	SimilarResponse []SimilarResponse `json:"similar_response"` //机器人平台手动或自动配置的推荐知识点，在机器人平台-知识库-知识点详情配置
 	EnableEvaluate  bool              `json:"enable_evaluate"`  //是否允许点赞/点踩
 	DelayTs         int64             `json:"delay_ts"`         //延时发送的秒数 delay_ts<= 604800
+	AnswerID        int64             `json:"answer_id"`        //答案Id
 }
 
 //MsgBody 消息体格式，任意选择一种消息类型
@@ -279,7 +280,7 @@ type BotResponseKeyword struct {
 
 //Keyword 关键字机器人
 type Keyword struct {
-	KeywordID int    `json:"keyword_id"` //关键字id
+	KeywordID int64  `json:"keyword_id"` //关键字id
 	Keyword   string `json:"keyword"`    //命中的关键字
 }
 
