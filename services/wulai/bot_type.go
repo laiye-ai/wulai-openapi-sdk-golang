@@ -201,14 +201,14 @@ type Response struct {
 
 //MsgBody 消息体格式，任意选择一种消息类型
 type MsgBody struct {
-	Text      Text      `json:"text"`       //文本消息
-	Image     Image     `json:"image"`      //图片消息
-	Custom    Custom    `json:"custom"`     //自定义消息
-	Video     Video     `json:"video"`      //视频消息
-	File      File      `json:"file"`       //文件消息
-	Voice     Voice     `json:"voice"`      //语音消息
-	Event     Event     `json:"event"`      //事件消息
-	ShareLink ShareLink `json:"share_link"` //图文消息
+	Text      *Text      `json:"text"`       //文本消息
+	Image     *Image     `json:"image"`      //图片消息
+	Custom    *Custom    `json:"custom"`     //自定义消息
+	Video     *Video     `json:"video"`      //视频消息
+	File      *File      `json:"file"`       //文件消息
+	Voice     *Voice     `json:"voice"`      //语音消息
+	Event     *Event     `json:"event"`      //事件消息
+	ShareLink *ShareLink `json:"share_link"` //图文消息
 }
 
 //SimilarResponse 推荐知识点
@@ -233,18 +233,18 @@ type Chitchat struct {
 
 //Bot 机器人类型
 type Bot struct {
-	QA       QA       `json:"qa"`       //问答机器人
-	Chitchat Chitchat `json:"chitchat"` //闲聊机器人
-	Task     Task     `json:"task"`     //任务机器人
-	Keyword  Keyword  `json:"keyword"`  //关键字机器人
+	QA       *QA       `json:"qa"`       //问答机器人
+	Chitchat *Chitchat `json:"chitchat"` //闲聊机器人
+	Task     *Task     `json:"task"`     //任务机器人
+	Keyword  *Keyword  `json:"keyword"`  //关键字机器人
 }
 
 //Detail 机器人类型
 type Detail struct {
-	QA       QA       `json:"qa"`       //问答机器人
-	Chitchat Chitchat `json:"chitchat"` //闲聊机器人
-	Task     Task     `json:"task"`     //任务机器人
-	Keyword  Keyword  `json:"keyword"`  //关键字机器人
+	QA       *QA       `json:"qa"`       //问答机器人
+	Chitchat *Chitchat `json:"chitchat"` //闲聊机器人
+	Task     *Task     `json:"task"`     //任务机器人
+	Keyword  *Keyword  `json:"keyword"`  //关键字机器人
 }
 
 /****************
