@@ -61,7 +61,7 @@ func Test_GetBotResponseQAWithText(t *testing.T) {
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.SetDebug(true)
 
-	text := &Text{"golang!"}
+	text := &Text{"您好"}
 	model, err := wulaiClient.MsgBotResponseQa("xiao_lai", text, "")
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
@@ -169,13 +169,37 @@ func Test_MsgSync(t *testing.T) {
 
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
-	wulaiClient.Debug = true
+	wulaiClient.SetDebug(true)
 
 	bot := &QA{}
 	text := &Text{"您好!"}
 	answerID := 0                        //answer_id 的值从机器人的回复中获取
 	msgTS := time.Now().UnixNano() / 1e6 //当前消息时间戳(毫秒级)
 	model, err := wulaiClient.MsgSync("xiao_lai", answerID, msgTS, "预留信息", bot, text)
+	if err != nil {
+		if cliErr, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_MsgSync]=>%s\n", cliErr.Error())
+		} else if serErr, ok := err.(*errors.ServerError); ok {
+			log.Infof("[Test_MsgSync]=>%s\n", serErr.Error())
+		}
+
+		return
+	}
+	if strings.TrimSpace(model.MsgID) == "" {
+		log.Warnf("result is empty. detail=>%+v\n", model)
+	}
+}
+
+func Test_MsgSyncWithoutBot(t *testing.T) {
+
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.SetDebug(true)
+
+	text := &Text{"您好!"}
+	answerID := 0                        //answer_id 的值从机器人的回复中获取
+	msgTS := time.Now().UnixNano() / 1e6 //当前消息时间戳(毫秒级)
+	model, err := wulaiClient.MsgSync("xiao_lai", answerID, msgTS, "预留信息", nil, text)
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_MsgSync]=>%s\n", cliErr.Error())
@@ -238,5 +262,12 @@ func Benchmark_CheckBotType(t *testing.B) {
 	for i := 0; i < t.N; i++ {
 		qa := &QA{}
 		CheckBotType(qa)
+	}
+}
+
+func Benchmark_CheckNilType(t *testing.B) {
+	for i := 0; i < t.N; i++ {
+		var niltype interface{}
+		CheckBotType(niltype)
 	}
 }

@@ -70,6 +70,7 @@ func main() {
 	//实例化客户端
 	wulaiClient := wulai.NewClient("secret", "pubkey")
 	wulaiClient.Version = "v2"
+	wulaiClient.SetDebug(true) //开启调试
 	log.Infof("[wulaiClient]%+v\n", wulaiClient)
 
 	user, err := wulaiClient.UserCreate("test_golang_api", "", "test_golang_api")
@@ -103,6 +104,11 @@ func main() {
 请求、响应数据格式: JSON
 ```
 
-### 常见问题
+### 常见问题分析
+
+
+1. 以SDK.ServerError开头的错误：是服务端返回的错误信息，即吾来平台
 ```text
+错误日志：
+SDK.ServerError         Message: {"error":"invalid GetBotResponseRequest.MsgBody: embedded message failed validation | caused by: invalid MessageBody.Text: embedded message failed validation | caused by: invalid TextMessage.Content: value length must be between 1 and 2048 runes, inclusive","message":"invalid GetBotResponseRequest.MsgBody: embedded message failed validation | caused by: invalid MessageBody.Text: embedded message failed validation | caused by: invalid TextMessage.Content: value length must be between 1 and 2048 runes, inclusive","code":3,"details":[]}
 ```
