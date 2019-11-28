@@ -1,5 +1,27 @@
 package wulai
 
+/*****************词库实体类型*****************/
+
+//EntityType 词库实体类型
+type EntityType string
+
+const (
+	//LIST_ENTITY_TYPE_ERROR :默认类型
+	LIST_ENTITY_TYPE_ERROR EntityType = "LIST_ENTITY_TYPE_ERROR"
+
+	//LIST_ENTITY_TYPE_SYSTEM :预设实体
+	LIST_ENTITY_TYPE_SYSTEM EntityType = "LIST_ENTITY_TYPE_SYSTEM"
+
+	//LIST_ENTITY_TYPE_ENUMERATION :枚举实体
+	LIST_ENTITY_TYPE_ENUMERATION EntityType = "LIST_ENTITY_TYPE_ENUMERATION"
+
+	//LIST_ENTITY_TYPE_REGEX :正则实体
+	LIST_ENTITY_TYPE_REGEX EntityType = "LIST_ENTITY_TYPE_REGEX"
+
+	//LIST_ENTITY_TYPE_INTENT :意图实体
+	LIST_ENTITY_TYPE_INTENT EntityType = "LIST_ENTITY_TYPE_INTENT"
+)
+
 //DicList 全部词库实体
 type DicList struct {
 	Entities []DicEntity `json:"entities"`

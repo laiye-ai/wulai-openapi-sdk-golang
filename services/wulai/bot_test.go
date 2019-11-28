@@ -4,6 +4,7 @@ import (
 	"os"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/errors"
 	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/log"
@@ -172,8 +173,9 @@ func Test_MsgSync(t *testing.T) {
 
 	bot := &QA{}
 	text := &Text{"您好!"}
-	answerID := 0 //answer_id 的值从机器人的回复中获取
-	model, err := wulaiClient.MsgSync("xiao_lai", answerID, "", "预留信息", bot, text)
+	answerID := 0                        //answer_id 的值从机器人的回复中获取
+	msgTS := time.Now().UnixNano() / 1e6 //当前消息时间戳(毫秒级)
+	model, err := wulaiClient.MsgSync("xiao_lai", answerID, msgTS, "预留信息", bot, text)
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_MsgSync]=>%s\n", cliErr.Error())

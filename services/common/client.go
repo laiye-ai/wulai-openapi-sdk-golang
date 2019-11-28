@@ -28,11 +28,11 @@ type Client struct {
 func NewClient(credential *Credential) *Client {
 	client := &Client{
 		credential:      credential,
-		MaxIdleConns:    30,
-		MaxConnsPerHost: 30,
+		MaxIdleConns:    60,
+		MaxConnsPerHost: 60,
 		Debug:           false,
 		httpClient: &http.Client{
-			Timeout: 8 * time.Second, //设置HTTP超时时间
+			Timeout: 5 * time.Second, //设置HTTP超时时间
 		},
 	}
 	return client

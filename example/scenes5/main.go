@@ -1,6 +1,8 @@
 package main
 
 import (
+	"time"
+
 	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/log"
 	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/wulai"
 )
@@ -29,8 +31,9 @@ func main() {
 	}
 
 	//2:同步消息给吾来平台
-	answerID := 0 //answer_id 的值从机器人的回复中获取
-	msgSync, _ := wulaiClient.MsgSync("xiao_lai", answerID, "0", "预留信息", botType, textMsg)
+	answerID := 0                        //answer_id 的值从机器人的回复中获取
+	msgTS := time.Now().UnixNano() / 1e6 //当前消息时间戳(毫秒级)
+	msgSync, _ := wulaiClient.MsgSync("xiao_lai", answerID, msgTS, "预留信息", botType, textMsg)
 
 	//3:获取历史消息
 	botResp, err := wulaiClient.MsgHistory(user.UserID, msgSync.MsgID, wulai.BACKWARD, 10)

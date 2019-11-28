@@ -8,12 +8,12 @@ type UserAttributeList struct {
 
 //UserAttribute 用户属性
 type UserAttribute struct {
-	ID                      string `json:"id"`                          //属性id
-	Name                    string `json:"name"`                        //属性名
-	Lifespan                int    `json:"lifespan"`                    //属性的有效期(单位为秒)。如果为永久, 则有效期为0
-	ValueType               string `json:"value_type"`                  //用户属性值类型.//TODO:枚举类型
-	UseInUserAttributeGroup bool   `json:"use_in_user_attribute_group"` //是否可以作为属性组属性
-	Type                    string `json:"type"`                        //用户属性类型. //TODO:枚举类型
+	ID                      string             `json:"id"`                          //属性id
+	Name                    string             `json:"name"`                        //属性名
+	Lifespan                int                `json:"lifespan"`                    //属性的有效期(单位为秒)。如果为永久, 则有效期为0
+	ValueType               AttributeValueType `json:"value_type"`                  //用户属性值类型.
+	UseInUserAttributeGroup bool               `json:"use_in_user_attribute_group"` //是否可以作为属性组属性
+	Type                    AttributeType      `json:"type"`                        //用户属性类型.
 }
 
 //UserAttributeValue 枚举值

@@ -1,5 +1,90 @@
 package wulai
 
+//VoiceType 语音消息类型
+type VoiceType string
+
+const (
+	//AMR :AMR
+	AMR VoiceType = "AMR"
+	//PCM :PCM
+	PCM VoiceType = "PCM"
+	//WAV :WAV
+	WAV VoiceType = "WAV"
+	//OPUS :OPUS
+	OPUS VoiceType = "OPUS"
+	//SPEEX :SPEEX
+	SPEEX VoiceType = "SPEEX"
+	//MP3 :MP3
+	MP3 VoiceType = "MP3"
+)
+
+/*****************************************************************************************/
+
+//direction
+type direction string
+
+const (
+	//BACKWARD :向旧的消息翻页，查询比传入msg_id更小的消息
+	BACKWARD direction = "BACKWARD"
+
+	//FORWARD :先新的消息翻页，查询比传入msg_id更大的消息
+	FORWARD direction = "FORWARD"
+)
+
+/*****************机器人回复的来源*****************/
+
+//BotSourceEnum 机器人回复的来源
+type BotSourceEnum string
+
+const (
+	//DEFAULT_ANSWER_SOURCE :默认
+	DEFAULT_ANSWER_SOURCE BotSourceEnum = "DEFAULT_ANSWER_SOURCE"
+
+	//KEYWORD_BOT :关键字机器人
+	KEYWORD_BOT BotSourceEnum = "KEYWORD_BOT"
+
+	//TASK_BOT :任务机器人
+	TASK_BOT BotSourceEnum = "TASK_BOT"
+
+	//QA_BOT :问答机器人
+	QA_BOT BotSourceEnum = "QA_BOT"
+
+	//CHITCHAT_BOT :闲聊机器人
+	CHITCHAT_BOT BotSourceEnum = "CHITCHAT_BOT"
+)
+
+/*****************消息类型*****************/
+
+//MsgTypeEnum 消息类型
+type MsgTypeEnum string
+
+const (
+	//TEXT 文本消息
+	TEXT MsgTypeEnum = "TEXT"
+	//IMAGE 图片消息
+	IMAGE MsgTypeEnum = "IMAGE"
+	//VOICE 音频消息
+	VOICE MsgTypeEnum = "VOICE"
+	//NOTICE 通知消息
+	NOTICE MsgTypeEnum = "NOTICE"
+	//FILE 文件消息
+	FILE MsgTypeEnum = "FILE"
+	//SHARELINK 分享链接消息
+	SHARELINK MsgTypeEnum = "SHARELINK"
+	//VIDEO 视频消息
+	VIDEO MsgTypeEnum = "VIDEO"
+	//CUSTOM 用户自定义消息
+	CUSTOM MsgTypeEnum = "CUSTOM"
+	//PUBLIC_EVENT 微信公众号的事件消息
+	PUBLIC_EVENT MsgTypeEnum = "PUBLIC_EVENT"
+	//NONSUPPORT 不支持的消息类型
+	NONSUPPORT MsgTypeEnum = "NONSUPPORT"
+	//EVENT 事件消息
+	EVENT MsgTypeEnum = "TEXT"
+	//CALLBACK_NOTICE 若客户是异步接入的是第三方渠道，调用第三方渠道api的报错信息
+	CALLBACK_NOTICE MsgTypeEnum = "CALLBACK_NOTICE"
+)
+
 //EventType 事件类型
 type EventType string
 
@@ -12,6 +97,17 @@ const (
 
 	//ENTER :进入事件
 	ENTER EventType = "ENTER"
+)
+
+//MsgDirection 消息方向
+type MsgDirection string
+
+const (
+	//TO_USER 用户收到的消息
+	TO_USER MsgDirection = "TO_USER"
+
+	//FROM_USER 用户发出的消息
+	FROM_USER MsgDirection = "FROM_USER"
 )
 
 /****************
@@ -61,7 +157,6 @@ type Voice struct {
 
 //Event 消息类型:事件消息
 type Event struct {
-	//TODO 补充 fields
 	Fields    interface{} `json:"fields"`     //protobufStruct
 	EventType EventType   `json:"event_type"` //事件消息
 }
@@ -260,14 +355,14 @@ type UserInfo struct {
 
 //Msg 消息列表
 type Msg struct {
-	Direction  string      `json:"direction"`   //消息方向:TO_USER: 用户收到的消息;FROM_USER: 用户发出的消息.//TODO:枚举类型
-	SenderInfo SenderInfo  `json:"sender_info"` //消息发出者信息
-	MsgType    MsgTypeEnum `json:"msg_type"`    //消息类型:默认TEXT //TODO:枚举类型
-	Extra      string      `json:"extra"`       //自定义字段(<= 1024 characters)
-	MsgID      string      `json:"msg_id"`      //消息的唯一标识(<= 18 characters)
-	MsgTs      string      `json:"msg_ts"`      //消息毫秒级时间戳(>= 1)
-	UserInfo   UserInfo    `json:"user_info"`   //用户信息
-	MsgBody    MsgBody     `json:"msg_body"`    //消息体
+	Direction  MsgDirection `json:"direction"`   //消息方向:TO_USER: 用户收到的消息;FROM_USER: 用户发出的消息.
+	SenderInfo SenderInfo   `json:"sender_info"` //消息发出者信息
+	MsgType    MsgTypeEnum  `json:"msg_type"`    //消息类型:默认TEXT
+	Extra      string       `json:"extra"`       //自定义字段(<= 1024 characters)
+	MsgID      string       `json:"msg_id"`      //消息的唯一标识(<= 18 characters)
+	MsgTs      string       `json:"msg_ts"`      //消息毫秒级时间戳(>= 1)
+	UserInfo   UserInfo     `json:"user_info"`   //用户信息
+	MsgBody    MsgBody      `json:"msg_body"`    //消息体
 }
 
 //MsgReceive 接收用户发的消息
