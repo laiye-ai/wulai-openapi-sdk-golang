@@ -235,7 +235,7 @@ func (x *Client) MsgReceive(userID string, msgBody interface{}, thirdMsgID, extr
 }
 
 //MsgSync 同步发给用户的消息
-func (x *Client) MsgSync(userID string, answerID int, msgTS, extra string, botBody, msgBody interface{}) (model *MsgSync, err error) {
+func (x *Client) MsgSync(userID string, answerID int, msgTS int64, extra string, botBody, msgBody interface{}) (model *MsgSync, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
 
