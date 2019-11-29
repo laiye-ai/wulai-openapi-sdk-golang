@@ -35,7 +35,7 @@ type EntityEnumReponse struct {
 //EnumEntity 枚举实体详情
 type EnumEntity struct {
 	Values []EntityValues `json:"values"`
-	ID     int            `json:"id"`
+	ID     int64          `json:"id"`
 	Name   string         `json:"name"`
 }
 
@@ -53,7 +53,7 @@ type EntityReponse struct {
 //DicEntity 词库实体
 type DicEntity struct {
 	Type  EntityType  `json:"type"`
-	ID    int         `json:"id"`
+	ID    int64       `json:"id"`
 	Name  string      `json:"name"`
 	Value EntityValue `json:"value"`
 }
@@ -72,7 +72,7 @@ type EntityValue struct {
 
 //IntentEntity  意图实体
 type IntentEntity struct {
-	ID    int               `json:"id"`
+	ID    int64             `json:"id"`
 	Value IntentEntityValue `json:"value"`
 	Name  string            `json:"name"`
 }
@@ -126,6 +126,6 @@ type TermItem struct {
 
 //Term 专有词汇
 type Term struct {
-	ID   int    `json:"id"`
+	ID   int64  `json:"id"`
 	Name string `json:"name"`
 }

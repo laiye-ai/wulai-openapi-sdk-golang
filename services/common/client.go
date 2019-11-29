@@ -2,6 +2,7 @@ package common
 
 import (
 	"bytes"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -26,6 +27,7 @@ type Client struct {
 
 //NewClient  实例化http client
 func NewClient(credential *Credential) *Client {
+
 	client := &Client{
 		credential:      credential,
 		MaxIdleConns:    60,
@@ -33,6 +35,9 @@ func NewClient(credential *Credential) *Client {
 		Debug:           false,
 		httpClient: &http.Client{
 			Timeout: 5 * time.Second, //设置HTTP超时时间
+			Transport: &http.Transport{
+				TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, // disable security checks globally for all requests of the default client
+			},
 		},
 	}
 	return client

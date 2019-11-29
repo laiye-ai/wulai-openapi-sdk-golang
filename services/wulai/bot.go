@@ -3,7 +3,6 @@ package wulai
 import (
 	"encoding/json"
 	"fmt"
-	"reflect"
 	"strings"
 
 	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/errors"
@@ -305,7 +304,7 @@ func CheckMsgType(msgType interface{}) (string, bool) {
 	case *ShareLink:
 		return "share_link", true
 	}
-	return reflect.TypeOf(msgType).String(), false
+	return "", false
 }
 
 //CheckBotType 检查Bot类型
