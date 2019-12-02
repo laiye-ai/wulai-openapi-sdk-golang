@@ -13,7 +13,7 @@ import (
 ****************/
 func Test_SceneList(t *testing.T) {
 
-	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	secret, pubkey := "Xlc2gBhk2QBku6qCUIq6", "jllT0Tpi50tmnkFyjz4Lk2y1IewSXlIK009945086e8085dbcf" //os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.SetDebug(true)
 
@@ -746,11 +746,12 @@ func Test_SceneBlockList(t *testing.T) {
 	resp, err := wulaiClient.SceneBlockList(intentID, page, pageSize)
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
-			t.Errorf("[Test_SceneBlockList]=>%s\n", cliErr.Error())
+			t.Errorf("[Test_SceneBlockList]=>%s\n", cliErr.Message())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
-			log.Infof("[Test_SceneBlockList]=>%s\n", serErr.Error())
+			log.Infof("[Test_SceneBlockList]=>%s\n", serErr.Message())
+		} else {
+			log.Infof("[Test_SceneBlockList]=>%s\n", err.Error())
 		}
-
 		return
 	}
 
