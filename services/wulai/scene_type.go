@@ -78,7 +78,7 @@ type Scene struct {
 	Name                      string           `json:"name"`                         //场景名称
 	Description               string           `json:"description"`                  //场景描述
 	IntentSwitchMode          IntentSwitchMode `json:"intent_switch_mode"`           //意图切换模式.在意图流程中，当用户消息既可以在当前意图中填槽、又可以触发其他意图时，优先选择的处理方式
-	SmartSlotFillingThreshold int              `json:"smart_slot_filling_threshold"` //智能填槽阈值
+	SmartSlotFillingThreshold float64          `json:"smart_slot_filling_threshold"` //智能填槽阈值
 }
 
 //SceneResponse 场景操作的结果
@@ -389,9 +389,9 @@ type QueryItem struct {
 
 //RecommendIntent 推荐意图
 type RecommendIntent struct {
-	IntentID   int    `json:"intent_id"`   //意图ID
-	Score      int    `json:"score"`       //置信度
-	IntentName string `json:"intent_name"` //意图名称
+	IntentID   int     `json:"intent_id"`   //意图ID
+	Score      float64 `json:"score"`       //置信度
+	IntentName string  `json:"intent_name"` //意图名称
 }
 
 /****************
