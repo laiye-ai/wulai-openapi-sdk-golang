@@ -23,6 +23,8 @@ func Test_SceneList(t *testing.T) {
 			t.Errorf("[Test_SceneList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneList]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneList]=>%s\n", err.Error())
 		}
 
 		return
@@ -45,9 +47,11 @@ func Test_SceneCreate(t *testing.T) {
 	resp, err := wulaiClient.SceneCreate(name, description, intentSwitchMode, smartSlotFillingThreshold)
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
-			t.Errorf("[Test_SceneList]=>%s\n", cliErr.Error())
+			t.Errorf("[Test_SceneCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
-			log.Infof("[Test_SceneList]=>%s\n", serErr.Error())
+			log.Infof("[Test_SceneCreate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneCreate]=>%s\n", err.Error())
 		}
 
 		return
@@ -73,9 +77,11 @@ func Test_SceneUpdate(t *testing.T) {
 	resp, err := wulaiClient.SceneUpdate(scens)
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
-			t.Errorf("[Test_SceneList]=>%s\n", cliErr.Error())
+			t.Errorf("[Test_SceneUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
-			log.Infof("[Test_SceneList]=>%s\n", serErr.Error())
+			log.Infof("[Test_SceneUpdate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneUpdate]=>%s\n", err.Error())
 		}
 
 		return
@@ -96,6 +102,8 @@ func Test_SceneDelete(t *testing.T) {
 			t.Errorf("[Test_SceneDelete]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneDelete]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneDelete]=>%s\n", err.Error())
 		}
 
 		return
@@ -118,6 +126,8 @@ func Test_SceneIntentList(t *testing.T) {
 			t.Errorf("[Test_SceneIntentList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneIntentList]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneIntentList]=>%s\n", err.Error())
 		}
 
 		return
@@ -141,6 +151,8 @@ func Test_SceneIntentCreate(t *testing.T) {
 			t.Errorf("[Test_SceneIntentCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneIntentCreate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneIntentCreate]=>%s\n", err.Error())
 		}
 
 		return
@@ -164,6 +176,8 @@ func Test_SceneIntentUpdate(t *testing.T) {
 			t.Errorf("[Test_SceneIntentUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneIntentUpdate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneIntentUpdate]=>%s\n", err.Error())
 		}
 
 		return
@@ -188,6 +202,8 @@ func Test_SceneIntentStatusUpdate(t *testing.T) {
 			t.Errorf("[Test_SceneIntentStatusUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneIntentStatusUpdate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneIntentStatusUpdate]=>%s\n", err.Error())
 		}
 
 		return
@@ -205,9 +221,11 @@ func Test_SceneIntentDelete(t *testing.T) {
 	err := wulaiClient.SceneIntentDelete(id)
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
-			t.Errorf("[Test_SceneDelete]=>%s\n", cliErr.Error())
+			t.Errorf("[Test_SceneIntentDelete]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
-			log.Infof("[Test_SceneDelete]=>%s\n", serErr.Error())
+			log.Infof("[Test_SceneIntentDelete]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneIntentDelete]=>%s\n", err.Error())
 		}
 
 		return
@@ -234,6 +252,8 @@ func Test_SceneIntentTriggerList(t *testing.T) {
 			t.Errorf("[Test_SceneIntentTriggerList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneIntentTriggerList]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneIntentTriggerList]=>%s\n", err.Error())
 		}
 
 		return
@@ -258,6 +278,8 @@ func Test_SceneIntentTriggerCreate(t *testing.T) {
 			t.Errorf("[Test_SceneIntentTriggerCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneIntentTriggerCreate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneIntentTriggerCreate]=>%s\n", err.Error())
 		}
 
 		return
@@ -280,6 +302,8 @@ func Test_SceneIntentTriggerUpdate(t *testing.T) {
 			t.Errorf("[Test_SceneIntentTriggerUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneIntentTriggerUpdate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneIntentTriggerUpdate]=>%s\n", err.Error())
 		}
 
 		return
@@ -297,9 +321,11 @@ func Test_SceneIntentTriggerDelete(t *testing.T) {
 	err := wulaiClient.SceneIntentTriggerDelete(triggerID)
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
-			t.Errorf("[Test_SceneDelete]=>%s\n", cliErr.Error())
+			t.Errorf("[Test_SceneIntentTriggerDelete]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
-			log.Infof("[Test_SceneDelete]=>%s\n", serErr.Error())
+			log.Infof("[Test_SceneIntentTriggerDelete]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneIntentTriggerDelete]=>%s\n", err.Error())
 		}
 
 		return
@@ -326,6 +352,8 @@ func Test_SceneSlotList(t *testing.T) {
 			t.Errorf("[Test_SceneSlotList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneSlotList]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneSlotList]=>%s\n", err.Error())
 		}
 
 		return
@@ -349,6 +377,8 @@ func Test_SceneSlotCreate(t *testing.T) {
 			t.Errorf("[Test_SceneSlotCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneSlotCreate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneSlotCreate]=>%s\n", err.Error())
 		}
 
 		return
@@ -371,6 +401,8 @@ func Test_SceneSlotGet(t *testing.T) {
 			t.Errorf("[Test_SceneSlotGet]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneSlotGet]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneSlotGet]=>%s\n", err.Error())
 		}
 
 		return
@@ -391,9 +423,11 @@ func Test_SceneSlotUpdate(t *testing.T) {
 	resp, err := wulaiClient.SceneSlotUpdate(id, name, querySlotFilling)
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
-			t.Errorf("[Test_SceneSlotGet]=>%s\n", cliErr.Error())
+			t.Errorf("[Test_SceneSlotUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
-			log.Infof("[Test_SceneSlotGet]=>%s\n", serErr.Error())
+			log.Infof("[Test_SceneSlotUpdate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneSlotUpdate]=>%s\n", err.Error())
 		}
 
 		return
@@ -414,6 +448,8 @@ func Test_SceneSlotDelete(t *testing.T) {
 			t.Errorf("[Test_SceneSlotDelete]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneSlotDelete]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneSlotDelete]=>%s\n", err.Error())
 		}
 
 		return
@@ -437,6 +473,8 @@ func Test_SceneSlotDataSourceList(t *testing.T) {
 			t.Errorf("[Test_SceneSlotDataSourceList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneSlotDataSourceList]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneSlotDataSourceList]=>%s\n", err.Error())
 		}
 
 		return
@@ -459,6 +497,8 @@ func Test_SceneSlotDataSourceCreate(t *testing.T) {
 			t.Errorf("[Test_SceneSlotDataSourceCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneSlotDataSourceCreate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneSlotDataSourceCreate]=>%s\n", err.Error())
 		}
 
 		return
@@ -484,6 +524,8 @@ func Test_SceneBlockRequestGet(t *testing.T) {
 			t.Errorf("[Test_SceneBlockRequestGet]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockRequestGet]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneBlockRequestGet]=>%s\n", err.Error())
 		}
 
 		return
@@ -512,6 +554,8 @@ func Test_SceneBlockRequestCreate(t *testing.T) {
 			t.Errorf("[Test_SceneBlockRequestCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockRequestCreate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneBlockRequestCreate]=>%s\n", err.Error())
 		}
 
 		return
@@ -541,8 +585,9 @@ func Test_SceneBlockRequestUpdate(t *testing.T) {
 			t.Errorf("[Test_SceneBlockRequestUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockRequestUpdate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneBlockRequestUpdate]=>%s\n", err.Error())
 		}
-
 		return
 	}
 
@@ -568,6 +613,8 @@ func Test_SceneBlockInformCreate(t *testing.T) {
 			t.Errorf("[Test_SceneBlockInformCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockInformCreate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneBlockInformCreate]=>%s\n", err.Error())
 		}
 
 		return
@@ -591,6 +638,8 @@ func Test_SceneBlockInformUpdate(t *testing.T) {
 			t.Errorf("[Test_SceneBlockInformUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockInformUpdate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneBlockInformUpdate]=>%s\n", err.Error())
 		}
 
 		return
@@ -612,6 +661,8 @@ func Test_SceneBlockInformGet(t *testing.T) {
 			t.Errorf("[Test_SceneBlockInformGet]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockInformGet]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneBlockInformGet]=>%s\n", err.Error())
 		}
 
 		return
@@ -638,6 +689,8 @@ func Test_SceneIntentTriggerLearningList(t *testing.T) {
 			t.Errorf("[Test_SceneIntentTriggerLearningList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneIntentTriggerLearningList]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneIntentTriggerLearningList]=>%s\n", err.Error())
 		}
 
 		return
@@ -658,6 +711,8 @@ func Test_SceneIntentTriggerLearningDelete(t *testing.T) {
 			t.Errorf("[Test_SceneIntentTriggerLearningDelete]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneIntentTriggerLearningDelete]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneIntentTriggerLearningDelete]=>%s\n", err.Error())
 		}
 
 		return
@@ -682,6 +737,8 @@ func Test_SceneBlockResponseCreate(t *testing.T) {
 			t.Errorf("[Test_SceneBlockResponseCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockResponseCreate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneBlockResponseCreate]=>%s\n", err.Error())
 		}
 
 		return
@@ -704,6 +761,8 @@ func Test_SceneBlockResponseUpdate(t *testing.T) {
 			t.Errorf("[Test_SceneBlockResponseUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockResponseUpdate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneBlockResponseUpdate]=>%s\n", err.Error())
 		}
 
 		return
@@ -724,6 +783,8 @@ func Test_SceneBlockResponseDelete(t *testing.T) {
 			t.Errorf("[Test_SceneBlockResponseDelete]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockResponseDelete]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneBlockResponseDelete]=>%s\n", err.Error())
 		}
 
 		return
@@ -752,6 +813,7 @@ func Test_SceneBlockList(t *testing.T) {
 		} else {
 			log.Infof("[Test_SceneBlockList]=>%s\n", err.Error())
 		}
+
 		return
 	}
 
@@ -770,6 +832,8 @@ func Test_SceneBlockDelete(t *testing.T) {
 			t.Errorf("[Test_SceneBlockDelete]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockDelete]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneBlockDelete]=>%s\n", err.Error())
 		}
 
 		return
@@ -796,6 +860,8 @@ func Test_SceneBlockRelationCreate(t *testing.T) {
 			t.Errorf("[Test_SceneBlockRelationCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockRelationCreate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneBlockRelationCreate]=>%s\n", err.Error())
 		}
 
 		return
@@ -816,6 +882,8 @@ func Test_SceneBlockRelationDelete(t *testing.T) {
 			t.Errorf("[Test_SceneBlockRelationDelete]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockRelationDelete]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneBlockRelationDelete]=>%s\n", err.Error())
 		}
 
 		return
@@ -842,6 +910,8 @@ func Test_SceneBlockEndBlockCreate(t *testing.T) {
 			t.Errorf("[Test_SceneBlockEndBlockCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockEndBlockCreate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneBlockEndBlockCreate]=>%s\n", err.Error())
 		}
 
 		return
@@ -864,9 +934,11 @@ func Test_SceneBlockEndBlockUpdate(t *testing.T) {
 	resp, err := wulaiClient.SceneBlockEndBlockUpdate(intentID, id, name, slotMemorizing, action)
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
-			t.Errorf("[Test_SceneBlockEndBlockCreate]=>%s\n", cliErr.Error())
+			t.Errorf("[Test_SceneBlockEndBlockUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
-			log.Infof("[Test_SceneBlockEndBlockCreate]=>%s\n", serErr.Error())
+			log.Infof("[Test_SceneBlockEndBlockUpdate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneBlockEndBlockUpdate]=>%s\n", err.Error())
 		}
 
 		return
@@ -888,6 +960,8 @@ func Test_SceneBlockEndBlockGet(t *testing.T) {
 			t.Errorf("[Test_SceneBlockEndBlockGet]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockEndBlockGet]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_SceneBlockEndBlockGet]=>%s\n", err.Error())
 		}
 
 		return

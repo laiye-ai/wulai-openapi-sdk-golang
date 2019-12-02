@@ -23,6 +23,8 @@ func Test_StatsRecallDailyList(t *testing.T) {
 			t.Errorf("[Test_StatsRecallDailyList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_StatsRecallDailyList]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_StatsRecallDailyList]=>%s\n", err.Error())
 		}
 
 		return
@@ -49,7 +51,10 @@ func Test_StatsRecallDailyKnowledgeList(t *testing.T) {
 			t.Errorf("[Test_StatsRecallDailyKnowledgeList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_StatsRecallDailyKnowledgeList]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_StatsRecallDailyKnowledgeList]=>%s\n", err.Error())
 		}
+
 		return
 	}
 
@@ -74,7 +79,10 @@ func Test_StatsDailyKnowledgeList(t *testing.T) {
 			t.Errorf("[Test_StatsDailyKnowledgeList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_StatsDailyKnowledgeList]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_StatsDailyKnowledgeList]=>%s\n", err.Error())
 		}
+
 		return
 	}
 
