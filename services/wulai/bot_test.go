@@ -23,6 +23,8 @@ func Test_GetBotResponse(t *testing.T) {
 			t.Errorf("[Test_GetBotResponse]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_GetBotResponse]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_GetBotResponse]=>%s\n", err.Error())
 		}
 
 		return
@@ -46,6 +48,8 @@ func Test_GetBotResponseV1(t *testing.T) {
 			t.Errorf("[Test_GetBotResponse]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_GetBotResponse]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_GetBotResponse]=>%s\n", err.Error())
 		}
 
 		return
@@ -68,6 +72,8 @@ func Test_GetBotResponseQAWithText(t *testing.T) {
 			t.Errorf("[Test_GetBotResponseQAWithText]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_GetBotResponseQAWithText]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_GetBotResponseQAWithText]=>%s\n", err.Error())
 		}
 
 		return
@@ -90,6 +96,8 @@ func Test_GetBotResponseKeyword(t *testing.T) {
 			t.Errorf("[Test_GetBotResponseKeyword]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_GetBotResponseKeyword]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_GetBotResponseKeyword]=>%s\n", err.Error())
 		}
 
 		return
@@ -111,6 +119,8 @@ func Test_GetBotResponseTask(t *testing.T) {
 			t.Errorf("[Test_GetBotResponseTask]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_GetBotResponseTask]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_GetBotResponseTask]=>%s\n", err.Error())
 		}
 
 		return
@@ -133,6 +143,8 @@ func Test_GetBotResponseWitCustom(t *testing.T) {
 			t.Errorf("[Test_GetBotResponseWitCustom]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_GetBotResponseWitCustom]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_GetBotResponseWitCustom]=>%s\n", err.Error())
 		}
 
 		return
@@ -155,6 +167,8 @@ func Test_MsgReceive(t *testing.T) {
 			t.Errorf("[Test_MsgReceive]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_MsgReceive]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_MsgReceive]=>%s\n", err.Error())
 		}
 
 		return
@@ -181,6 +195,8 @@ func Test_MsgSync(t *testing.T) {
 			t.Errorf("[Test_MsgSync]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_MsgSync]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_MsgSync]=>%s\n", err.Error())
 		}
 
 		return
@@ -205,6 +221,8 @@ func Test_MsgSyncWithoutBot(t *testing.T) {
 			t.Errorf("[Test_MsgSync]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_MsgSync]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_MsgSync]=>%s\n", err.Error())
 		}
 
 		return
@@ -225,6 +243,8 @@ func Test_MsgHistory(t *testing.T) {
 			t.Errorf("[Test_MsgHistory]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_MsgHistory]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_MsgHistory]=>%s\n", err.Error())
 		}
 
 		return

@@ -27,6 +27,8 @@ func Test_QaKnowledgeTagList(t *testing.T) {
 			t.Errorf("[Test_QaKnowledgeTagList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaKnowledgeTagList]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_QaKnowledgeTagList]=>%s\n", err.Error())
 		}
 
 		return
@@ -53,6 +55,8 @@ func Test_QaqaKnowledgeCreate(t *testing.T) {
 			t.Errorf("[Test_QaqaKnowledgeCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaqaKnowledgeCreate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_QaqaKnowledgeCreate]=>%s\n", err.Error())
 		}
 
 		return
@@ -79,6 +83,8 @@ func Test_QaqaKnowledgeUpdate(t *testing.T) {
 			t.Errorf("[Test_QaqaKnowledgeUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaqaKnowledgeUpdate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_QaqaKnowledgeUpdate]=>%s\n", err.Error())
 		}
 
 		return
@@ -101,6 +107,8 @@ func Test_QaKnowledgeItemList(t *testing.T) {
 			t.Errorf("[Test_QaKnowledgeItemList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaKnowledgeItemList]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_QaKnowledgeItemList]=>%s\n", err.Error())
 		}
 
 		return
@@ -129,6 +137,8 @@ func Test_QaSimilarQuestionList(t *testing.T) {
 			t.Errorf("[Test_QaSimilarQuestionList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaSimilarQuestionList]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_QaSimilarQuestionList]=>%s\n", err.Error())
 		}
 
 		return
@@ -151,6 +161,8 @@ func Test_QaSimilarQuestionCreate(t *testing.T) {
 			t.Errorf("[Test_QaSimilarQuestionCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaSimilarQuestionCreate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_QaSimilarQuestionCreate]=>%s\n", err.Error())
 		}
 
 		return
@@ -174,6 +186,8 @@ func Test_QaSimilarQuestionUpdate(t *testing.T) {
 			t.Errorf("[Test_QaSimilarQuestionUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaSimilarQuestionUpdate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_QaSimilarQuestionUpdate]=>%s\n", err.Error())
 		}
 
 		return
@@ -192,6 +206,8 @@ func Test_QaSimilarQuestionDelete(t *testing.T) {
 			t.Errorf("[Test_QaSimilarQuestionDelete]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaSimilarQuestionDelete]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_QaSimilarQuestionDelete]=>%s\n", err.Error())
 		}
 
 		return
@@ -216,6 +232,8 @@ func Test_QaUserAttributeGroupItemList(t *testing.T) {
 			t.Errorf("[Test_QaListUserAttributeGroupItem]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaListUserAttributeGroupItem]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_QaListUserAttributeGroupItem]=>%s\n", err.Error())
 		}
 
 		return
@@ -238,6 +256,8 @@ func Test_QaUserAttributeGroupCreate(t *testing.T) {
 			t.Errorf("[Test_QaUserAttributeGroupCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaUserAttributeGroupCreate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_QaUserAttributeGroupCreate]=>%s\n", err.Error())
 		}
 
 		return
@@ -263,6 +283,8 @@ func Test_QaUserAttributeGroupUpdate(t *testing.T) {
 			t.Errorf("[Test_QaUserAttributeGroupUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaUserAttributeGroupUpdate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_QaUserAttributeGroupUpdate]=>%s\n", err.Error())
 		}
 
 		return
@@ -289,6 +311,8 @@ func Test_QaUserAttributeGroupAnswerList(t *testing.T) {
 			t.Errorf("[Test_QaCreateUserAttributeGroup]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaCreateUserAttributeGroup]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_QaCreateUserAttributeGroup]=>%s\n", err.Error())
 		}
 
 		return
@@ -311,6 +335,8 @@ func Test_QaUserAttributeGroupAnswerCreate(t *testing.T) {
 			t.Errorf("[Test_QaUserAttributeGroupAnswerCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaUserAttributeGroupAnswerCreate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_QaUserAttributeGroupAnswerCreate]=>%s\n", err.Error())
 		}
 
 		return
@@ -334,6 +360,8 @@ func Test_QaUserAttributeGroupAnswerUpdate(t *testing.T) {
 			t.Errorf("[Test_QaUserAttributeGroupAnswerUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaUserAttributeGroupAnswerUpdate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_QaUserAttributeGroupAnswerUpdate]=>%s\n", err.Error())
 		}
 
 		return
@@ -354,6 +382,8 @@ func Test_QaUserAttributeGroupAnswerDelete(t *testing.T) {
 			t.Errorf("[Test_QaUserAttributeGroupAnswerDelete]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaUserAttributeGroupAnswerDelete]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_QaUserAttributeGroupAnswerDelete]=>%s\n", err.Error())
 		}
 
 		return
@@ -378,6 +408,8 @@ func Test_QaSatisCreate(t *testing.T) {
 			t.Errorf("[Test_QaSatisCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaSatisCreate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_QaSatisCreate]=>%s\n", err.Error())
 		}
 
 		return

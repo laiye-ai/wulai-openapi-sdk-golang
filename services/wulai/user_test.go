@@ -19,6 +19,8 @@ func Test_UserCreate(t *testing.T) {
 			t.Errorf("[Test_UserCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_UserCreate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_UserCreate]=>%s\n", err.Error())
 		}
 
 		return
@@ -62,6 +64,8 @@ func Test_UserAttributeCreate(t *testing.T) {
 			t.Errorf("[Test_UserAttributeCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_UserAttributeCreate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_UserAttributeCreate]=>%s\n", err.Error())
 		}
 	}
 }
@@ -76,6 +80,8 @@ func Test_GetUserAttribute(t *testing.T) {
 			t.Errorf("[Test_GetUserAttribute]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_GetUserAttribute]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_GetUserAttribute]=>%s\n", err.Error())
 		}
 
 		return
@@ -96,6 +102,8 @@ func Test_GetUserInfo(t *testing.T) {
 			t.Errorf("[Test_GetUserInfo]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_GetUserInfo]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_GetUserInfo]=>%s\n", err.Error())
 		}
 
 		return
@@ -115,6 +123,8 @@ func Test_GetGroupMembers(t *testing.T) {
 			t.Errorf("[Test_GetGroupMembers]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			fmt.Printf("[Test_GetGroupMembers]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_GetGroupMembers]=>%s\n", err.Error())
 		}
 
 		return

@@ -25,6 +25,8 @@ func Test_NLPEntitiesExtract(t *testing.T) {
 			t.Errorf("[Test_NLPEntitiesExtract]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_NLPEntitiesExtract]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_NLPEntitiesExtract]=>%s\n", err.Error())
 		}
 
 		return
@@ -47,6 +49,8 @@ func Test_NLPTokenize(t *testing.T) {
 			t.Errorf("[Test_NLPTokenize]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_NLPTokenize]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_NLPTokenize]=>%s\n", err.Error())
 		}
 
 		return

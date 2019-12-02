@@ -27,6 +27,8 @@ func Test_DicEntityList(t *testing.T) {
 			t.Errorf("[Test_DicList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_DicList]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_DicList]=>%s\n", err.Error())
 		}
 
 		return
@@ -49,6 +51,8 @@ func Test_DicEntityGet(t *testing.T) {
 			t.Errorf("[Test_DicEntityGet]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_DicEntityGet]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_DicEntityGet]=>%s\n", err.Error())
 		}
 
 		return
@@ -71,6 +75,8 @@ func Test_DicEntityDelete(t *testing.T) {
 			t.Errorf("[Test_DicEntityDelete]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_DicEntityDelete]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_DicEntityDelete]=>%s\n", err.Error())
 		}
 
 		return
@@ -90,6 +96,8 @@ func Test_DicEntityEnumCreate(t *testing.T) {
 			t.Errorf("[Test_DicEntityEnumCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_DicEntityEnumCreate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_DicEntityEnumCreate]=>%s\n", err.Error())
 		}
 
 		return
@@ -114,6 +122,8 @@ func Test_DicEntityEnumValueCreate(t *testing.T) {
 			t.Errorf("[Test_DicEntityEnumValueCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_DicEntityEnumValueCreate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_DicEntityEnumValueCreate]=>%s\n", err.Error())
 		}
 
 		return
@@ -139,6 +149,8 @@ func Test_DicEntityEnumValueDelete(t *testing.T) {
 			t.Errorf("[Test_DicEntityEnumValueDelete]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_DicEntityEnumValueDelete]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_DicEntityEnumValueDelete]=>%s\n", err.Error())
 		}
 
 		return
@@ -159,6 +171,8 @@ func Test_DicEntityIntentCreate(t *testing.T) {
 			t.Errorf("[Test_DicEntityIntentCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_DicEntityIntentCreate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_DicEntityIntentCreate]=>%s\n", err.Error())
 		}
 
 		return
@@ -182,6 +196,8 @@ func Test_DicEntityIntentValueCreate(t *testing.T) {
 			t.Errorf("[Test_DicEntityIntentValueCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_DicEntityIntentValueCreate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_DicEntityIntentValueCreate]=>%s\n", err.Error())
 		}
 
 		return
@@ -205,6 +221,8 @@ func Test_DicEntityIntentValueDelete(t *testing.T) {
 			t.Errorf("[Test_DicEntityIntentValueDelete]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_DicEntityIntentValueDelete]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_DicEntityIntentValueDelete]=>%s\n", err.Error())
 		}
 
 		return
@@ -230,6 +248,8 @@ func Test_DicTermList(t *testing.T) {
 			t.Errorf("[Test_DicTermList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_DicTermList]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_DicTermList]=>%s\n", err.Error())
 		}
 
 		return
@@ -254,6 +274,8 @@ func Test_DicTermCreate(t *testing.T) {
 			t.Errorf("[Test_DicTermCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_DicTermCreate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_DicTermCreate]=>%s\n", err.Error())
 		}
 
 		return
@@ -279,6 +301,8 @@ func Test_DicTermUpdate(t *testing.T) {
 			t.Errorf("[Test_DicTermUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_DicTermUpdate]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_DicTermUpdate]=>%s\n", err.Error())
 		}
 
 		return
@@ -302,6 +326,8 @@ func Test_DicTermDelete(t *testing.T) {
 			t.Errorf("[Test_DicTermDelete]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_DicTermDelete]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_DicTermDelete]=>%s\n", err.Error())
 		}
 
 		return
