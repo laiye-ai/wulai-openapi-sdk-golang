@@ -23,6 +23,7 @@ type Client struct {
 	MaxIdleConns    int
 	MaxConnsPerHost int
 	Debug           bool
+	HttpRequest     *http.Request
 }
 
 //NewClient  实例化http client
@@ -88,6 +89,10 @@ func (c *Client) Request(action, url string, input []byte, retry int) (*HTTPResp
 	if c.ContentType != "" {
 		req.Header.Set("Content-Type", c.ContentType)
 	}
+	//User-Agent: <product> / <product-version> <comment>
+	req.Header.Set("User-Agent", "wulai-openapi-sdk-golang/v2-0.1 go/1.2")
+
+	c.HttpRequest = req
 
 	//默认 retry
 	if retry <= 0 {
