@@ -438,6 +438,10 @@ func CheckMsgType(msgType interface{}) (string, bool) {
 		return "text", true
 	case Text:
 		return "text", true
+	case *RichText:
+		return "rich_text", true
+	case RichText:
+		return "rich_text", true
 	case *Image:
 		return "image", true
 	case Image:
