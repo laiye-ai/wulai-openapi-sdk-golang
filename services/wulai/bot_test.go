@@ -158,10 +158,11 @@ func Test_MsgSend(t *testing.T) {
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.SetDebug(true)
 
-	userID := "xiao_lai"
-	msgBody := &Text{"您好!"}
-	extra := "预留信息"
-	quickReply := []string{"今天是个好天气", "今天天气不错", "今天不下雨"}
+	userID := "xiao_lai"    //用户唯一标识[1-128]characters
+	msgBody := &Text{"您好!"} //消息体格式，任意选择一种消息类型（文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息）填充
+	extra := "预留信息"         //自定义字段 <=1024 characters
+
+	quickReply := []string{"今天是个好天气", "今天天气不错", "今天不下雨"} //快捷回复 <=5 items
 
 	sr1 := SimilarResponseParam{
 		Source: DEFAULT_ANSWER_SOURCE,
@@ -177,7 +178,7 @@ func Test_MsgSend(t *testing.T) {
 			BlockName: "测试单元",
 		},
 	}
-	similarResponse := []SimilarResponseParam{sr1, sr2}
+	similarResponse := []SimilarResponseParam{sr1, sr2} //推荐知识点 <=5 items
 
 	resp, err := wulaiClient.MsgSend(userID, msgBody, extra, quickReply, similarResponse)
 	if err != nil {

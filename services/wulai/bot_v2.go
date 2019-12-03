@@ -115,7 +115,13 @@ func (x *Client) msgHistoryV2(userID, msgID string, direction direction, num int
 }
 
 /*msgSendV2 给用户发消息(V2)
- */
+@userID:用户唯一标识[1-128]characters
+@quickReply:快捷回复 <=5 items
+@msgType:消息体格式，任意选择一种消息类型（文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息）填充
+@msgBody:消息内容
+@extra:自定义字段 <=1024 characters
+@similarResponse:推荐知识点 <=5 items
+*/
 func (x *Client) msgSendV2(userID string, quickReply []string, msgType string, msgBody []byte, extra string, similarResponse []SimilarResponseParam) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/msg/send", x.Endpoint, x.Version)
 

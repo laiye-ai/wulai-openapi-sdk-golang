@@ -218,7 +218,13 @@ func (x *Client) MsgHistory(userID, msgID string, direction direction, num int) 
 }
 
 /*MsgSend 给用户发消息
- */
+@userID:用户唯一标识[1-128]characters
+@quickReply:快捷回复 <=5 items
+@msgType:消息体格式，任意选择一种消息类型（文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息）填充
+@msgBody:消息内容
+@extra:自定义字段 <=1024 characters
+@similarResponse:推荐知识点 <=5 items
+*/
 func (x *Client) MsgSend(userID string, msgBody interface{}, extra string, quickReply []string, similarResponse []SimilarResponseParam) (model *MsgSend, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
@@ -236,6 +242,18 @@ func (x *Client) MsgSend(userID string, msgBody interface{}, extra string, quick
 	msgBytes, err := json.Marshal(msgBody)
 	if err != nil {
 		return nil, errors.NewClientError(errors.JsonMarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	//check quickReply
+	if len(quickReply) > 5 {
+		errorMsg := fmt.Sprintf(errors.LimitExceededErrorMessage, "quickReply")
+		return nil, errors.NewClientError(errors.LimitExceededErrorCode, errorMsg, err)
+	}
+
+	//check similarResponse
+	if len(similarResponse) > 5 {
+		errorMsg := fmt.Sprintf(errors.LimitExceededErrorMessage, "similarResponse")
+		return nil, errors.NewClientError(errors.LimitExceededErrorCode, errorMsg, err)
 	}
 
 	bytes, err := x.msgSendV2(userID, quickReply, msgType, msgBytes, extra, similarResponse)

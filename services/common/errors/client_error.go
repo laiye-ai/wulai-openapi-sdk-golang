@@ -32,6 +32,9 @@ const (
 
 	TimeoutErrorCode    = "SDK.TimeoutError"
 	TimeoutErrorMessage = "The request timed out %s times(%s for retry), perhaps we should have the threshold raised a little?"
+
+	LimitExceededErrorCode    = "SDK.LimitExceededError"
+	LimitExceededErrorMessage = "The number of %s parameters exceeds the limit"
 )
 
 //ClientError 客户端错误定义
