@@ -947,7 +947,7 @@ func (x *Client) SceneBlockResponseCreate(blockID int, msgBody interface{}) (mod
 	//检查消息类型是否合法
 	msgType, ok := CheckMsgType(msgBody)
 	if !ok {
-		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "*"+msgType)
+		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "Text/Image/Custom/Video//File/RichText/Voice/Event/ShareLink")
 		return nil, errors.NewClientError(errors.UnsupportedTypeErrorCode, errorMsg, nil)
 	}
 
@@ -990,7 +990,7 @@ func (x *Client) SceneBlockResponseUpdate(id int, msgBody interface{}) (model *S
 	//检查消息类型是否合法
 	msgType, ok := CheckMsgType(msgBody)
 	if !ok {
-		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "*"+msgType)
+		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "Text/Image/Custom/Video//File/RichText/Voice/Event/ShareLink")
 		return nil, errors.NewClientError(errors.UnsupportedTypeErrorCode, errorMsg, nil)
 	}
 

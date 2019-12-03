@@ -2,7 +2,6 @@ package wulai
 
 import (
 	"os"
-	"strings"
 	"testing"
 	"time"
 
@@ -60,12 +59,12 @@ func Test_GetBotResponseV1(t *testing.T) {
 	}
 }
 
-func Test_GetBotResponseQAWithText(t *testing.T) {
+func Test_GetBotResponseQA(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.SetDebug(true)
 
-	text := &Text{"您好"}
+	text := Text{"您好"}
 	model, err := wulaiClient.MsgBotResponseQa("xiao_lai", text, "")
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
@@ -111,9 +110,10 @@ func Test_GetBotResponseKeyword(t *testing.T) {
 func Test_GetBotResponseTask(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.SetDebug(true)
 
 	text := &Text{"您好!"}
-	model, err := wulaiClient.MsgBotResponseTask("xiao_lai", text, "")
+	resp, err := wulaiClient.MsgBotResponseTask("xiao_lai", text, "")
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_GetBotResponseTask]=>%s\n", cliErr.Error())
@@ -126,18 +126,17 @@ func Test_GetBotResponseTask(t *testing.T) {
 		return
 	}
 
-	if len(model.TaskSuggestedResponse) <= 0 {
-		log.Warnf("result is empty. detail=>%+v\n", model)
-	}
+	log.Infoln("----------------------------------------------------------------------------------------")
+	log.Infof("%+v\n", resp)
 }
 
 func Test_GetBotResponseWitCustom(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
-	wulaiClient.Debug = true
+	wulaiClient.SetDebug(true)
 
 	custom := &Custom{"您好!"}
-	model, err := wulaiClient.MsgBotResponse("xiao_lai", custom, "")
+	resp, err := wulaiClient.MsgBotResponse("xiao_lai", custom, "")
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_GetBotResponseWitCustom]=>%s\n", cliErr.Error())
@@ -150,18 +149,61 @@ func Test_GetBotResponseWitCustom(t *testing.T) {
 		return
 	}
 
-	if len(model.SuggestedResponse) <= 0 {
-		log.Warnf("result is empty. detail=>%+v\n", model)
+	log.Infoln("----------------------------------------------------------------------------------------")
+	log.Infof("%+v\n", resp)
+}
+
+func Test_MsgSend(t *testing.T) {
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.SetDebug(true)
+
+	userID := "xiao_lai"    //用户唯一标识[1-128]characters
+	msgBody := &Text{"您好!"} //消息体格式，任意选择一种消息类型（文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息）填充
+	extra := "预留信息"         //自定义字段 <=1024 characters
+
+	quickReply := []string{"今天是个好天气", "今天天气不错", "今天不下雨"} //快捷回复 <=5 items
+
+	sr1 := SimilarResponseParam{
+		Source: DEFAULT_ANSWER_SOURCE,
+		Detail: &QA{
+			KnowledgeID: 100,
+		},
 	}
+	sr2 := SimilarResponseParam{
+		Source: DEFAULT_ANSWER_SOURCE,
+		Detail: &Task{
+			BlockType: BLOCK_TYPE_MESSAGE,
+			BlockID:   100,
+			BlockName: "测试单元",
+		},
+	}
+	similarResponse := []SimilarResponseParam{sr1, sr2} //推荐知识点 <=5 items
+
+	resp, err := wulaiClient.MsgSend(userID, msgBody, extra, quickReply, similarResponse)
+	if err != nil {
+		if cliErr, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_MsgSend]=>%s\n", cliErr.Error())
+		} else if serErr, ok := err.(*errors.ServerError); ok {
+			log.Infof("[Test_MsgSend]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_MsgSend]=>%s\n", err.Error())
+		}
+
+		return
+	}
+
+	log.Infoln("----------------------------------------------------------------------------------------")
+	log.Infof("%+v\n", resp)
 }
 
 func Test_MsgReceive(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
-	wulaiClient.Debug = true
+	wulaiClient.SetDebug(true)
 
 	text := &Text{"您好!"}
-	model, err := wulaiClient.MsgReceive("xiao_lai", text, "third_msg_id_xxxx1", "预留信息")
+	resp, err := wulaiClient.MsgReceive("xiao_lai", text, "third_msg_id_xxxx1", "预留信息")
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_MsgReceive]=>%s\n", cliErr.Error())
@@ -174,9 +216,8 @@ func Test_MsgReceive(t *testing.T) {
 		return
 	}
 
-	if strings.TrimSpace(model.MsgID) == "" {
-		log.Warnf("result is empty. detail=>%+v\n", model)
-	}
+	log.Infoln("----------------------------------------------------------------------------------------")
+	log.Infof("%+v\n", resp)
 }
 
 func Test_MsgSync(t *testing.T) {
@@ -189,7 +230,7 @@ func Test_MsgSync(t *testing.T) {
 	text := &Text{"您好!"}
 	answerID := 0                        //answer_id 的值从机器人的回复中获取
 	msgTS := time.Now().UnixNano() / 1e6 //当前消息时间戳(毫秒级)
-	model, err := wulaiClient.MsgSync("xiao_lai", answerID, msgTS, "预留信息", bot, text)
+	resp, err := wulaiClient.MsgSync("xiao_lai", answerID, msgTS, "预留信息", bot, text)
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_MsgSync]=>%s\n", cliErr.Error())
@@ -201,9 +242,9 @@ func Test_MsgSync(t *testing.T) {
 
 		return
 	}
-	if strings.TrimSpace(model.MsgID) == "" {
-		log.Warnf("result is empty. detail=>%+v\n", model)
-	}
+
+	log.Infoln("----------------------------------------------------------------------------------------")
+	log.Infof("%+v\n", resp)
 }
 
 func Test_MsgSyncWithoutBot(t *testing.T) {
@@ -215,7 +256,7 @@ func Test_MsgSyncWithoutBot(t *testing.T) {
 	text := &Text{"您好!"}
 	answerID := 0                        //answer_id 的值从机器人的回复中获取
 	msgTS := time.Now().UnixNano() / 1e6 //当前消息时间戳(毫秒级)
-	model, err := wulaiClient.MsgSync("xiao_lai", answerID, msgTS, "预留信息", nil, text)
+	resp, err := wulaiClient.MsgSync("xiao_lai", answerID, msgTS, "预留信息", nil, text)
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_MsgSync]=>%s\n", cliErr.Error())
@@ -227,17 +268,17 @@ func Test_MsgSyncWithoutBot(t *testing.T) {
 
 		return
 	}
-	if strings.TrimSpace(model.MsgID) == "" {
-		log.Warnf("result is empty. detail=>%+v\n", model)
-	}
+
+	log.Infoln("----------------------------------------------------------------------------------------")
+	log.Infof("%+v\n", resp)
 }
 
 func Test_MsgHistory(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
-	wulaiClient.Debug = true
+	wulaiClient.SetDebug(true)
 
-	model, err := wulaiClient.MsgHistory("xiao_lai", "msg_id", BACKWARD, 10)
+	resp, err := wulaiClient.MsgHistory("xiao_lai", "msg_id", BACKWARD, 10)
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_MsgHistory]=>%s\n", cliErr.Error())
@@ -250,22 +291,261 @@ func Test_MsgHistory(t *testing.T) {
 		return
 	}
 
-	if len(model.Msg) <= 0 {
-		log.Warnf("result is empty. detail=>%+v\n", model)
-	}
+	log.Infoln("----------------------------------------------------------------------------------------")
+	log.Infof("%+v\n", resp)
 }
 
-func Test_CheckMsgType(t *testing.T) {
-	text := &Text{"您好"}
-	_, ok := CheckMsgType(text)
+func Test_MsgSuggestion(t *testing.T) {
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.SetDebug(true)
+
+	userID := "xiao_lai" //用户唯一标识 [1-128]characters
+	query := "您好"        //用户输入 [1-128]characters
+	resp, err := wulaiClient.MsgSuggestion(userID, query)
+	if err != nil {
+		if cliErr, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_MsgSuggestion]=>%s\n", cliErr.Error())
+		} else if serErr, ok := err.(*errors.ServerError); ok {
+			log.Infof("[Test_MsgSuggestion]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_MsgSuggestion]=>%s\n", err.Error())
+		}
+
+		return
+	}
+
+	log.Infoln("----------------------------------------------------------------------------------------")
+	log.Infof("%+v\n", resp)
+}
+
+func Test_MsgLinked(t *testing.T) {
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.SetDebug(true)
+
+	userType := PRIVATE //默认 PRIVATE
+	hashID := "zV5RxbXHtfVwErjaTZ707GTK7adQ8XrR"
+	resp, err := wulaiClient.MsgTriggerLink(userType, hashID)
+	if err != nil {
+		if cliErr, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_MsgLinked]=>%s\n", cliErr.Error())
+		} else if serErr, ok := err.(*errors.ServerError); ok {
+			log.Infof("[Test_MsgLinked]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_MsgLinked]=>%s\n", err.Error())
+		}
+
+		return
+	}
+
+	log.Infoln("----------------------------------------------------------------------------------------")
+	log.Infof("%+v\n", resp)
+}
+
+func Test_CheckMsgTypeText(t *testing.T) {
+	tp := &Text{"您好"}
+	_, ok := CheckMsgType(tp)
 	if !ok {
 		t.Fail()
 	}
 }
 
-func Test_CheckBotType(t *testing.T) {
+func Test_CheckMsgTypeImage(t *testing.T) {
+	tp := &Image{"url"}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeCustom(t *testing.T) {
+	tp := &Custom{"url"}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeVideo(t *testing.T) {
+	tp := &Video{}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeRichText(t *testing.T) {
+	tp := &RichText{}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeFile(t *testing.T) {
+	tp := &File{}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeVoice(t *testing.T) {
+	tp := &Voice{}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeEvent(t *testing.T) {
+	tp := &Event{}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeShareLink(t *testing.T) {
+	tp := &ShareLink{}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeText2(t *testing.T) {
+	tp := Text{"您好"}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeImage2(t *testing.T) {
+	tp := Image{"url"}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeCustom2(t *testing.T) {
+	tp := Custom{"url"}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeVideo2(t *testing.T) {
+	tp := Video{}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeRichText2(t *testing.T) {
+	tp := RichText{}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeFile2(t *testing.T) {
+	tp := File{}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeVoice2(t *testing.T) {
+	tp := Voice{}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeEvent2(t *testing.T) {
+	tp := Event{}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeShareLink2(t *testing.T) {
+	tp := ShareLink{}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckBotTypeQA(t *testing.T) {
 	qa := &QA{}
 	_, ok := CheckBotType(qa)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckBotTypeQA2(t *testing.T) {
+	q := QA{}
+	_, ok := CheckBotType(q)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckBotTypeTask(t *testing.T) {
+	q := &Task{}
+	_, ok := CheckBotType(q)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckBotTypeTask2(t *testing.T) {
+	q := Task{}
+	_, ok := CheckBotType(q)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckBotTypeChitchat(t *testing.T) {
+	q := &Chitchat{}
+	_, ok := CheckBotType(q)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckBotTypeChitchat2(t *testing.T) {
+	q := Chitchat{}
+	_, ok := CheckBotType(q)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckBotTypeKeyword(t *testing.T) {
+	q := &Keyword{}
+	_, ok := CheckBotType(q)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckBotTypeKeyword2(t *testing.T) {
+	q := Keyword{}
+	_, ok := CheckBotType(q)
 	if !ok {
 		t.Fail()
 	}

@@ -45,22 +45,22 @@ const (
 	RESPONSE_LOOP ResponseType = "RESPONSE_LOOP"
 )
 
-//BlockType 对话单元类型
-type BlockType string
+//SceneBlockType 对话单元类型
+type SceneBlockType string
 
 const (
 
 	//SCENE_BLOCK_TYPE_DEFAULT :错误
-	SCENE_BLOCK_TYPE_DEFAULT BlockType = "SCENE_BLOCK_TYPE_DEFAULT"
+	SCENE_BLOCK_TYPE_DEFAULT SceneBlockType = "SCENE_BLOCK_TYPE_DEFAULT"
 
 	//SCENE_BLOCK_TYPE_INFORM :消息发送单元
-	SCENE_BLOCK_TYPE_INFORM BlockType = "SCENE_BLOCK_TYPE_INFORM"
+	SCENE_BLOCK_TYPE_INFORM SceneBlockType = "SCENE_BLOCK_TYPE_INFORM"
 
 	//SCENE_BLOCK_TYPE_REQUEST :询问填槽单元
-	SCENE_BLOCK_TYPE_REQUEST BlockType = "SCENE_BLOCK_TYPE_REQUEST"
+	SCENE_BLOCK_TYPE_REQUEST SceneBlockType = "SCENE_BLOCK_TYPE_REQUEST"
 
 	//SCENE_BLOCK_TYPE_END :意图终点单元
-	SCENE_BLOCK_TYPE_END BlockType = "SCENE_BLOCK_TYPE_END"
+	SCENE_BLOCK_TYPE_END SceneBlockType = "SCENE_BLOCK_TYPE_END"
 )
 
 /****************
@@ -189,9 +189,9 @@ type SceneBlockListResponse struct {
 
 //Block 单元
 type Block struct {
-	ID   int       `json:"id"`   //单元ID
-	Name string    `json:"name"` //单元名称
-	Type BlockType `json:"type"` //对话单元类型
+	ID   int            `json:"id"`   //单元ID
+	Name string         `json:"name"` //单元名称
+	Type SceneBlockType `json:"type"` //对话单元类型
 }
 
 /****************

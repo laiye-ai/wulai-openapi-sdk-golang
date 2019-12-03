@@ -13,7 +13,7 @@ import (
 ****************/
 func Test_SceneList(t *testing.T) {
 
-	secret, pubkey := "Xlc2gBhk2QBku6qCUIq6", "jllT0Tpi50tmnkFyjz4Lk2y1IewSXlIK009945086e8085dbcf" //os.Getenv("secret"), os.Getenv("pubkey")
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.SetDebug(true)
 

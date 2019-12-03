@@ -354,7 +354,7 @@ func (x *Client) QaUserAttributeGroupAnswerCreate(knowledgeID, groupID string, m
 	//检查消息类型是否合法
 	msgType, ok := CheckMsgType(msgBody)
 	if !ok {
-		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "*"+msgType)
+		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "Text/Image/Custom/Video//File/RichText/Voice/Event/ShareLink")
 		return nil, errors.NewClientError(errors.UnsupportedTypeErrorCode, errorMsg, nil)
 	}
 
@@ -392,7 +392,7 @@ func (x *Client) QaUserAttributeGroupAnswerUpdate(knowledgeID, groupID, answerID
 	//检查消息类型是否合法
 	msgType, ok := CheckMsgType(msgBody)
 	if !ok {
-		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "*"+msgType)
+		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "Text/Image/Custom/Video//File/RichText/Voice/Event/ShareLink")
 		return nil, errors.NewClientError(errors.UnsupportedTypeErrorCode, errorMsg, nil)
 	}
 
