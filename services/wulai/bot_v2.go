@@ -5,7 +5,12 @@ import (
 	"strings"
 )
 
-//msgBotResponseV2 获取机器人回复(V2)
+/*msgBotResponseV2 获取机器人回复(V2)
+@userID:用户唯一标识[1-128]characters
+@extra:自定义字段 <=1024 characters
+@msgType:消息体格式，任意选择一种消息类型（文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息）填充
+@msgBody:消息内容
+*/
 func (x *Client) msgBotResponseV2(userID, extra, msgType string, msgBody []byte) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/msg/bot-response", x.Endpoint, x.Version)
 	input := fmt.Sprintf(`{
@@ -21,7 +26,12 @@ func (x *Client) msgBotResponseV2(userID, extra, msgType string, msgBody []byte)
 	return respBytes.ResponseBodyBytes, nil
 }
 
-//msgBotResponseQaV2 获取问答机器人回复(V2)
+/*msgBotResponseQaV2 获取问答机器人回复(V2)
+@userID:用户唯一标识[1-128]characters
+@extra:自定义字段 <=1024 characters
+@msgType:消息体格式，任意选择一种消息类型（文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息）填充
+@msgBody:消息内容
+*/
 func (x *Client) msgBotResponseQaV2(userID, extra, msgType string, msgBody []byte) ([]byte, error) {
 
 	url := fmt.Sprintf("%s/%s/msg/bot-response/qa", x.Endpoint, x.Version)
@@ -38,7 +48,12 @@ func (x *Client) msgBotResponseQaV2(userID, extra, msgType string, msgBody []byt
 	return respBytes.ResponseBodyBytes, nil
 }
 
-//msgBotResponseKeywordV2 获取问答机器人回复(V2)
+/*msgBotResponseKeywordV2 获取问答机器人回复(V2)
+@userID:用户唯一标识[1-128]characters
+@extra:自定义字段 <=1024 characters
+@msgType:消息体格式，任意选择一种消息类型（文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息）填充
+@msgBody:消息内容
+*/
 func (x *Client) msgBotResponseKeywordV2(userID, extra, msgType string, msgBody []byte) ([]byte, error) {
 
 	url := fmt.Sprintf("%s/%s/msg/bot-response/keyword", x.Endpoint, x.Version)
@@ -55,7 +70,12 @@ func (x *Client) msgBotResponseKeywordV2(userID, extra, msgType string, msgBody 
 	return respBytes.ResponseBodyBytes, nil
 }
 
-//msgBotResponseTaskV2 获取任务机器人回复(V2)
+/*msgBotResponseTaskV2 获取任务机器人回复(V2)
+@userID:用户唯一标识[1-128]characters
+@extra:自定义字段 <=1024 characters
+@msgType:消息体格式，任意选择一种消息类型（文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息）填充
+@msgBody:消息内容
+*/
 func (x *Client) msgBotResponseTaskV2(userID, extra, msgType string, msgBody []byte) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/msg/bot-response/task", x.Endpoint, x.Version)
 	input := fmt.Sprintf(`{
@@ -71,7 +91,12 @@ func (x *Client) msgBotResponseTaskV2(userID, extra, msgType string, msgBody []b
 	return respBytes.ResponseBodyBytes, nil
 }
 
-//msgHistoryV2 查询历史消息(V2)
+/*msgHistoryV2 查询历史消息(V2)
+@userID:用户唯一标识[1-128]characters
+@msgID:从这个msg_id开始查询（结果包含此条消息）；为空时查询最新的消息 <= 18 characters
+@direction:翻页方向.BACKWARD: 向旧的消息翻页，查询比传入msg_id更小的消息.FORWARD: 先新的消息翻页，查询比传入msg_id更大的消息
+@num:一次获取消息的数目[1-50]
+*/
 func (x *Client) msgHistoryV2(userID, msgID string, direction direction, num int) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/msg/history", x.Endpoint, x.Version)
 	input := fmt.Sprintf(`{
@@ -88,7 +113,13 @@ func (x *Client) msgHistoryV2(userID, msgID string, direction direction, num int
 	return respBytes.ResponseBodyBytes, nil
 }
 
-//msgReceiveV2 接收用户发的消息(V2)
+/*msgReceiveV2 接收用户发的消息(V2)
+@userID:用户唯一标识[1-128]characters
+@thirdMsgID:接入方唯一msg_id，保证1分钟内的幂等性 <= 64 characters
+@extra:自定义字段 <=1024 characters
+@msgType:消息体格式，任意选择一种消息类型（文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息）填充
+@msgBody:消息内容
+*/
 func (x *Client) msgReceiveV2(userID, thirdMsgID, extra, msgType string, msgBody []byte) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/msg/receive", x.Endpoint, x.Version)
 	input := fmt.Sprintf(`{
@@ -105,7 +136,16 @@ func (x *Client) msgReceiveV2(userID, thirdMsgID, extra, msgType string, msgBody
 	return respBytes.ResponseBodyBytes, nil
 }
 
-//msgSyncV2 同步发给用户的消息(V2)
+/*msgSyncV2 同步发给用户的消息(V2)
+@userID:用户唯一标识[1-128]characters
+@answerID:答案id
+@msgTS:消息毫秒级时间戳 
+@extra:自定义字段 <=1024 characters
+@botType:机器人类型.如果机器人回复兜底内容，则bot为空
+@botBody:qa / chitchat / task / keyword
+@msgType:消息体格式，任意选择一种消息类型（文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息）填充
+@msgBody:消息内容
+*/
 func (x *Client) msgSyncV2(userID string, answerID int, msgTS int64, extra, botType string, botBody []byte, msgType string, msgBody []byte) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/msg/sync", x.Endpoint, x.Version)
 	input := fmt.Sprintf(`{

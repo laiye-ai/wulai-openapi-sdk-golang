@@ -11,7 +11,11 @@ import (
 
 //Bot 机器人
 
-//MsgBotResponse 获取机器人回复
+/*MsgBotResponse 获取机器人回复
+@userID:用户唯一标识[1-128]characters
+@msgBody:消息体格式(指针类型)，任意选择一种消息类型（文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息）填充
+@extra:自定义字段 <=1024 characters
+*/
 func (x *Client) MsgBotResponse(userID string, msgBody interface{}, extra string) (model *BotResponse, err error) {
 
 	//检查消息类型是否合法
@@ -51,7 +55,11 @@ func (x *Client) MsgBotResponse(userID string, msgBody interface{}, extra string
 	return model, nil
 }
 
-//MsgBotResponseQa 获取问答机器人回复
+/*MsgBotResponseQa 获取问答机器人回复
+@userID:用户唯一标识[1-128]characters
+@msgBody:消息体格式(指针类型)，任意选择一种消息类型（文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息）填充
+@extra:自定义字段 <=1024 characters
+*/
 func (x *Client) MsgBotResponseQa(userID string, msgBody interface{}, extra string) (model *BotResponseQa, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
@@ -89,7 +97,11 @@ func (x *Client) MsgBotResponseQa(userID string, msgBody interface{}, extra stri
 	return model, nil
 }
 
-//MsgBotResponseKeyword 获取关键字机器人回复
+/*MsgBotResponseKeyword 获取关键字机器人回复
+@userID:用户唯一标识[1-128]characters
+@msgBody:消息体格式(指针类型)，任意选择一种消息类型（文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息）填充
+@extra:自定义字段 <=1024 characters
+*/
 func (x *Client) MsgBotResponseKeyword(userID string, msgBody interface{}, extra string) (model *BotResponseKeyword, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
@@ -127,7 +139,11 @@ func (x *Client) MsgBotResponseKeyword(userID string, msgBody interface{}, extra
 	return model, nil
 }
 
-//MsgBotResponseTask 获取任务机器人回复
+/*MsgBotResponseTask 获取任务机器人回复
+@userID:用户唯一标识[1-128]characters
+@msgBody:消息体格式(指针类型)，任意选择一种消息类型（文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息）填充
+@extra:自定义字段 <=1024 characters
+*/
 func (x *Client) MsgBotResponseTask(userID string, msgBody interface{}, extra string) (model *BotResponseTask, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
@@ -165,7 +181,12 @@ func (x *Client) MsgBotResponseTask(userID string, msgBody interface{}, extra st
 	return model, nil
 }
 
-//MsgHistory 查询历史消息
+/*MsgHistory 查询历史消息
+@userID:用户唯一标识[1-128]characters
+@msgID:从这个msg_id开始查询（结果包含此条消息）；为空时查询最新的消息 <= 18 characters
+@direction:翻页方向.BACKWARD: 向旧的消息翻页，查询比传入msg_id更小的消息.FORWARD: 先新的消息翻页，查询比传入msg_id更大的消息
+@num:一次获取消息的数目[1-50]
+*/
 func (x *Client) MsgHistory(userID, msgID string, direction direction, num int) (model *MsgHistory, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
@@ -196,7 +217,12 @@ func (x *Client) MsgHistory(userID, msgID string, direction direction, num int) 
 	return model, nil
 }
 
-//MsgReceive 接收用户发的消息
+/*MsgReceive 接收用户发的消息
+@userID:用户唯一标识[1-128]characters
+@msgBody:消息体格式(指针类型)，任意选择一种消息类型（文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息）填充
+@thirdMsgID:接入方唯一msg_id，保证1分钟内的幂等性 <= 64 characters
+@extra:自定义字段 <=1024 characters
+*/
 func (x *Client) MsgReceive(userID string, msgBody interface{}, thirdMsgID, extra string) (model *MsgReceive, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
@@ -233,7 +259,14 @@ func (x *Client) MsgReceive(userID string, msgBody interface{}, thirdMsgID, extr
 	return model, nil
 }
 
-//MsgSync 同步发给用户的消息
+/*MsgSync 同步发给用户的消息
+@userID:用户唯一标识[1-128]characters
+@answerID:答案id
+@msgTS:消息毫秒级时间戳 比如:当前消息时间戳(毫秒级) = time.Now().UnixNano() / 1e6
+@extra:自定义字段 <=1024 characters
+@botBody:机器人类型qa / chitchat / task / keyword.如果机器人回复兜底内容，则bot为空
+@msgBody:消息体格式，任意选择一种消息类型（文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息）填充
+*/
 func (x *Client) MsgSync(userID string, answerID int, msgTS int64, extra string, botBody, msgBody interface{}) (model *MsgSync, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
