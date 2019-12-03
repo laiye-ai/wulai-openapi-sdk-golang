@@ -1,7 +1,10 @@
 package wulai
 
 import (
+	"strings"
+
 	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/common"
+	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/log"
 )
 
 //Client 吾来平台接口统一调用入口
@@ -31,4 +34,33 @@ func NewClient(secret, pubkey string) *Client {
 func (x *Client) SetDebug(debug bool) {
 	x.Debug = debug
 	x.HTTPClient.Debug = debug
+}
+
+/****************
+- tools
+****************/
+
+//join 返回包含引号("")的字符串
+func (x *Client) join(a []string, sep string) string {
+	switch len(a) {
+	case 0:
+		return ""
+	case 1:
+		return "\"" + a[0] + "\""
+	}
+	n := len(sep) * (len(a) - 1)
+	for i := 0; i < len(a); i++ {
+		n += len(a[i]) + 2
+	}
+
+	var b strings.Builder
+	b.Grow(n)
+	b.WriteString("\"" + a[0] + "\"")
+	for _, s := range a[1:] {
+		b.WriteString(sep)
+		b.WriteString("\"" + s + "\"")
+	}
+
+	log.Infoln(b.String())
+	return b.String()
 }

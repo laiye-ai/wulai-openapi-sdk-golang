@@ -33,24 +33,24 @@ const (
 
 /*****************机器人回复的来源*****************/
 
-//BotSourceEnum 机器人回复的来源
-type BotSourceEnum string
+//BotSource 机器人回复的来源
+type BotSource string
 
 const (
 	//DEFAULT_ANSWER_SOURCE :默认
-	DEFAULT_ANSWER_SOURCE BotSourceEnum = "DEFAULT_ANSWER_SOURCE"
+	DEFAULT_ANSWER_SOURCE BotSource = "DEFAULT_ANSWER_SOURCE"
 
 	//KEYWORD_BOT :关键字机器人
-	KEYWORD_BOT BotSourceEnum = "KEYWORD_BOT"
+	KEYWORD_BOT BotSource = "KEYWORD_BOT"
 
 	//TASK_BOT :任务机器人
-	TASK_BOT BotSourceEnum = "TASK_BOT"
+	TASK_BOT BotSource = "TASK_BOT"
 
 	//QA_BOT :问答机器人
-	QA_BOT BotSourceEnum = "QA_BOT"
+	QA_BOT BotSource = "QA_BOT"
 
 	//CHITCHAT_BOT :闲聊机器人
-	CHITCHAT_BOT BotSourceEnum = "CHITCHAT_BOT"
+	CHITCHAT_BOT BotSource = "CHITCHAT_BOT"
 )
 
 /*****************消息类型*****************/
@@ -108,6 +108,64 @@ const (
 
 	//FROM_USER 用户发出的消息
 	FROM_USER MsgDirection = "FROM_USER"
+)
+
+//MsgUserType 用户的消息类型
+type MsgUserType string
+
+const (
+	//PRIVATE PRIVATE
+	PRIVATE MsgUserType = "PRIVATE"
+
+	//PUBLIC PUBLIC
+	PUBLIC MsgUserType = "PUBLIC"
+
+	//PLATFORM PLATFORM
+	PLATFORM MsgUserType = "PLATFORM"
+
+	//PRIVATE_GROUP PRIVATE_GROUP
+	PRIVATE_GROUP MsgUserType = "PRIVATE_GROUP"
+
+	//U_BOT_PRIVATE U_BOT_PRIVATE
+	U_BOT_PRIVATE MsgUserType = "U_BOT_PRIVATE"
+
+	//U_BOT_GROUP U_BOT_GROUP
+	U_BOT_GROUP MsgUserType = "U_BOT_GROUP"
+
+	//WORK_WECHAT WORK_WECHAT
+	WORK_WECHAT MsgUserType = "WORK_WECHAT"
+
+	//WORK_WECHAT_GROUP WORK_WECHAT_GROUP
+	WORK_WECHAT_GROUP MsgUserType = "WORK_WECHAT_GROUP"
+)
+
+//BlockType 对话单元类型
+type BlockType string
+
+const (
+	//BLOCK_TYPE_MESSAGE 消息单元
+	BLOCK_TYPE_MESSAGE BlockType = "BLOCK_TYPE_MESSAGE"
+
+	//BLOCK_TYPE_ASK 询问单元
+	BLOCK_TYPE_ASK BlockType = "BLOCK_TYPE_ASK"
+
+	//BLOCK_TYPE_HIDE 隐藏单元
+	BLOCK_TYPE_HIDE BlockType = "BLOCK_TYPE_HIDE"
+
+	//BLOCK_TYPE_LINK 跳转单元
+	BLOCK_TYPE_LINK BlockType = "BLOCK_TYPE_LINK"
+
+	//BLOCK_TYPE_ADVANCE_INTERFACE 高级接口
+	BLOCK_TYPE_ADVANCE_INTERFACE BlockType = "BLOCK_TYPE_ADVANCE_INTERFACE"
+
+	//BLOCK_TYPE_INTERFACE 接口单元
+	BLOCK_TYPE_INTERFACE BlockType = "BLOCK_TYPE_INTERFACE"
+
+	//BLOCK_TYPE_CALCULATE 运算单元
+	BLOCK_TYPE_CALCULATE BlockType = "BLOCK_TYPE_CALCULATE"
+
+	//BLOCK_TYPE_COLLECT 收集单元
+	BLOCK_TYPE_COLLECT BlockType = "BLOCK_TYPE_COLLECT"
 )
 
 /****************
@@ -182,12 +240,12 @@ type BotResponse struct {
 
 //SuggestedResponse 机器人应答内容列表。机器人的响应可能会有多个内容
 type SuggestedResponse struct {
-	IsSend     bool          `json:"is_send"`     //是否发给用户。只有当召回知识点的分数最高且高于吾来SaaS上设置的阈值时，取值为 true
-	Bot        Bot           `json:"bot"`         //机器人类型:问答机器人/闲聊机器人/任务机器人/关键字机器人
-	Source     BotSourceEnum `json:"source"`      //回复的来源
-	Score      float64       `json:"score"`       //置信度(score<=1)
-	Response   []Response    `json:"response"`    //回复内容
-	QuickReply []string      `json:"quick_reply"` //快捷回复
+	IsSend     bool       `json:"is_send"`     //是否发给用户。只有当召回知识点的分数最高且高于吾来SaaS上设置的阈值时，取值为 true
+	Bot        Bot        `json:"bot"`         //机器人类型:问答机器人/闲聊机器人/任务机器人/关键字机器人
+	Source     BotSource  `json:"source"`      //回复的来源
+	Score      float64    `json:"score"`       //置信度(score<=1)
+	Response   []Response `json:"response"`    //回复内容
+	QuickReply []string   `json:"quick_reply"` //快捷回复
 }
 
 //Response 回复内容
@@ -213,9 +271,15 @@ type MsgBody struct {
 
 //SimilarResponse 推荐知识点
 type SimilarResponse struct {
-	URL    string        `json:"url"`    //相似问对应的url
-	Source BotSourceEnum `json:"source"` //回复的来源
-	Detail Detail        `json:"detail"` //回复的机器人:问答机器人/闲聊机器人/任务机器人/关键字机器人
+	URL    string    `json:"url"`    //相似问对应的url
+	Source BotSource `json:"source"` //回复的来源
+	Detail Detail    `json:"detail"` //回复的机器人:问答机器人/闲聊机器人/任务机器人/关键字机器人
+}
+
+//SimilarResponseParam 推荐知识点(给用户发消息参数)
+type SimilarResponseParam struct {
+	Source BotSource   `json:"source"` //回复的来源(必填项)
+	Detail interface{} `json:"detail"` //指针类型 qa / chitchat / task / keyword  (如果机器人回复兜底内容，则bot为空)(必填项)
 }
 
 //QA 问答机器人(标准)
@@ -306,13 +370,13 @@ type BotResponseTask struct {
 
 //Task 任务机器人
 type Task struct {
-	BlockType string   `json:"block_type"` //对话单元类型.
-	BlockID   int64    `json:"block_id"`   //任务型机器人对话单元id
-	TaskID    int64    `json:"task_id"`    //任务id
-	BlockName string   `json:"block_name"` //任务机器人对话单元名
-	Entities  []Entity `json:"entities"`   //抽取的实体列表
-	TaskName  string   `json:"task_name"`  //任务机器人任务名
-	RobotID   int64    `json:"robot_id"`   //机器人id
+	BlockType BlockType `json:"block_type"` //对话单元类型.
+	BlockID   int64     `json:"block_id"`   //任务型机器人对话单元id
+	TaskID    int64     `json:"task_id"`    //任务id
+	BlockName string    `json:"block_name"` //任务机器人对话单元名
+	Entities  []Entity  `json:"entities"`   //抽取的实体列表
+	TaskName  string    `json:"task_name"`  //任务机器人任务名
+	RobotID   int64     `json:"robot_id"`   //机器人id
 }
 
 //Entity 抽取的实体列表
@@ -371,8 +435,18 @@ type MsgReceive struct {
 	MsgID string `json:"msg_id"`
 }
 
+//MsgSend 给用户发消息
+type MsgSend struct {
+	MsgID string `json:"msg_id"`
+}
+
 //MsgSync 同步发给用户的消息
 type MsgSync struct {
+	MsgID string `json:"msg_id"`
+}
+
+//MsgTriggerLink 触发链接消息
+type MsgTriggerLink struct {
 	MsgID string `json:"msg_id"`
 }
 
@@ -417,4 +491,14 @@ type MessageRouteResponses struct {
 	IsDispatch        bool                `json:"is_dispatch"`        //是否转人工
 	SuggestedResponse []SuggestedResponse `json:"suggested_response"` //本次机器人应答内容列表
 	Extra             string              `json:"extra"`              //自定义字段
+}
+
+//MsgSuggestionResponse 获取用户输入联想响应
+type MsgSuggestionResponse struct {
+	UserSuggestions []UserSuggestion `json:"user_suggestions"` //在相同对话类型中，如有多条联想内容，按照置信度从高到低排序；在不同对话类型中，如有任务对话的联想，则不返回问答对话的联想内容
+}
+
+//UserSuggestion 联想内容
+type UserSuggestion struct {
+	Suggestion string `json:"suggestion"`
 }

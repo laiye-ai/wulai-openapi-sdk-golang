@@ -217,6 +217,44 @@ func (x *Client) MsgHistory(userID, msgID string, direction direction, num int) 
 	return model, nil
 }
 
+/*MsgSend 给用户发消息
+ */
+func (x *Client) MsgSend(userID string, msgBody interface{}, extra string, quickReply []string, similarResponse []SimilarResponseParam) (model *MsgSend, err error) {
+
+	if strings.ToUpper(x.Version) == "V1" {
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return nil, errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
+	}
+
+	//检查消息类型是否合法
+	msgType, ok := CheckMsgType(msgBody)
+	if !ok {
+		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "*"+msgType)
+		return nil, errors.NewClientError(errors.UnsupportedTypeErrorCode, errorMsg, nil)
+	}
+
+	msgBytes, err := json.Marshal(msgBody)
+	if err != nil {
+		return nil, errors.NewClientError(errors.JsonMarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	bytes, err := x.msgSendV2(userID, quickReply, msgType, msgBytes, extra, similarResponse)
+	if err != nil {
+		return nil, err
+	}
+
+	if x.Debug {
+		log.Debugf("[MsgSend Response]:%s\n", bytes)
+	}
+
+	model = &MsgSend{}
+	if err = json.Unmarshal(bytes, model); err != nil {
+		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	return model, nil
+}
+
 /*MsgReceive 接收用户发的消息
 @userID:用户唯一标识[1-128]characters
 @msgBody:消息体格式(指针类型)，任意选择一种消息类型（文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息）填充
@@ -309,6 +347,64 @@ func (x *Client) MsgSync(userID string, answerID int, msgTS int64, extra string,
 	}
 
 	model = &MsgSync{}
+	if err = json.Unmarshal(bytes, model); err != nil {
+		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	return model, nil
+}
+
+/*MsgSuggestion 获取用户输入联想
+@userID:用户唯一标识 [1-128]characters
+@query:用户输入 [1-128]characters
+*/
+func (x *Client) MsgSuggestion(userID, query string) (model *MsgSuggestionResponse, err error) {
+
+	if strings.ToUpper(x.Version) == "V1" {
+
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return nil, errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
+	}
+
+	bytes, err := x.msgSuggestionV2(userID, query)
+	if err != nil {
+		return nil, err
+	}
+
+	if x.Debug {
+		log.Debugf("[MsgSuggestion Response]:%s\n", bytes)
+	}
+
+	model = &MsgSuggestionResponse{}
+	if err = json.Unmarshal(bytes, model); err != nil {
+		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
+	}
+
+	return model, nil
+}
+
+/*MsgTriggerLink 触发链接消息
+@userType:用户的消息类型 PRIVATE / PUBLIC / PLATFORM / PRIVATE_GROUP / U_BOT_PRIVATE / U_BOT_GROUP / WORK_WECHAT / WORK_WECHAT_GROUP
+@hashID:随机字符串 [1-128]characters
+*/
+func (x *Client) MsgTriggerLink(userType MsgUserType, hashID string) (model *MsgTriggerLink, err error) {
+
+	if strings.ToUpper(x.Version) == "V1" {
+
+		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
+		return nil, errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
+	}
+
+	bytes, err := x.msgTriggerLinkV2(userType, hashID)
+	if err != nil {
+		return nil, err
+	}
+
+	if x.Debug {
+		log.Debugf("[MsgLinked Response]:%s\n", bytes)
+	}
+
+	model = &MsgTriggerLink{}
 	if err = json.Unmarshal(bytes, model); err != nil {
 		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
 	}
