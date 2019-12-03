@@ -23,7 +23,7 @@ func Test_QaKnowledgeTagList(t *testing.T) {
 
 	resp, err := wulaiClient.QaKnowledgeTagList(parentTagID, page, pageSize)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); ok {
+		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
 			t.Errorf("[Test_QaKnowledgeTagList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaKnowledgeTagList]=>%s\n", serErr.Error())
@@ -51,7 +51,7 @@ func Test_QaqaKnowledgeCreate(t *testing.T) {
 
 	resp, err := wulaiClient.QaqaKnowledgeCreate(knowledgeTagID, standardQuestion, status, respondAll, maintained)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); ok {
+		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
 			t.Errorf("[Test_QaqaKnowledgeCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaqaKnowledgeCreate]=>%s\n", serErr.Error())
@@ -79,7 +79,7 @@ func Test_QaqaKnowledgeUpdate(t *testing.T) {
 
 	resp, err := wulaiClient.QaqaKnowledgeUpdate(knowledgeID, standardQuestion, status, respondAll, maintained)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); ok {
+		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
 			t.Errorf("[Test_QaqaKnowledgeUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaqaKnowledgeUpdate]=>%s\n", serErr.Error())
@@ -103,7 +103,7 @@ func Test_QaKnowledgeItemList(t *testing.T) {
 	pageSize := 50 //每页的知识点数量[1 .. 200]
 	resp, err := wulaiClient.QaKnowledgeItemList(page, pageSize)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); ok {
+		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
 			t.Errorf("[Test_QaKnowledgeItemList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaKnowledgeItemList]=>%s\n", serErr.Error())
@@ -133,7 +133,7 @@ func Test_QaSimilarQuestionList(t *testing.T) {
 
 	resp, err := wulaiClient.QaSimilarQuestionList(knowledgeID, similarQuestionID, page, pageSize)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); ok {
+		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
 			t.Errorf("[Test_QaSimilarQuestionList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaSimilarQuestionList]=>%s\n", serErr.Error())
@@ -157,7 +157,7 @@ func Test_QaSimilarQuestionCreate(t *testing.T) {
 
 	resp, err := wulaiClient.QaSimilarQuestionCreate(knowledgeID, question)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); ok {
+		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
 			t.Errorf("[Test_QaSimilarQuestionCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaSimilarQuestionCreate]=>%s\n", serErr.Error())
@@ -182,7 +182,8 @@ func Test_QaSimilarQuestionUpdate(t *testing.T) {
 
 	resp, err := wulaiClient.QaSimilarQuestionUpdate(knowledgeID, question, id)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); ok {
+
+		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
 			t.Errorf("[Test_QaSimilarQuestionUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaSimilarQuestionUpdate]=>%s\n", serErr.Error())
@@ -202,7 +203,7 @@ func Test_QaSimilarQuestionDelete(t *testing.T) {
 	wulaiClient := NewClient(secret, pubkey)
 	err := wulaiClient.QaSimilarQuestionDelete("11648029")
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); ok {
+		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
 			t.Errorf("[Test_QaSimilarQuestionDelete]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaSimilarQuestionDelete]=>%s\n", serErr.Error())
@@ -228,7 +229,7 @@ func Test_QaUserAttributeGroupItemList(t *testing.T) {
 	pageSize := 10
 	_, err := wulaiClient.QaAttributeGroupItemList(page, pageSize)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); ok {
+		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
 			t.Errorf("[Test_QaListUserAttributeGroupItem]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaListUserAttributeGroupItem]=>%s\n", serErr.Error())
@@ -252,7 +253,7 @@ func Test_QaUserAttributeGroupCreate(t *testing.T) {
 
 	resp, err := wulaiClient.QaUserAttributeGroupCreate(groupName, attributeID, attributeName)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); ok {
+		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
 			t.Errorf("[Test_QaUserAttributeGroupCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaUserAttributeGroupCreate]=>%s\n", serErr.Error())
@@ -279,7 +280,7 @@ func Test_QaUserAttributeGroupUpdate(t *testing.T) {
 
 	_, err := wulaiClient.QaUserAttributeGroupUpdate(groupID, groupName, attributes)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); ok {
+		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
 			t.Errorf("[Test_QaUserAttributeGroupUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaUserAttributeGroupUpdate]=>%s\n", serErr.Error())
@@ -307,7 +308,7 @@ func Test_QaUserAttributeGroupAnswerList(t *testing.T) {
 
 	resp, err := wulaiClient.QaUserAttributeGroupAnswerList(knowledgeID, groupID, page, pageSize)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); ok {
+		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
 			t.Errorf("[Test_QaCreateUserAttributeGroup]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaCreateUserAttributeGroup]=>%s\n", serErr.Error())
@@ -331,7 +332,7 @@ func Test_QaUserAttributeGroupAnswerCreate(t *testing.T) {
 	text := &Text{"创建一个答案!"} //传入指针
 	resp, err := wulaiClient.QaUserAttributeGroupAnswerCreate(knowledgeID, groupID, text)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); ok {
+		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
 			t.Errorf("[Test_QaUserAttributeGroupAnswerCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaUserAttributeGroupAnswerCreate]=>%s\n", serErr.Error())
@@ -356,7 +357,7 @@ func Test_QaUserAttributeGroupAnswerUpdate(t *testing.T) {
 	text := &Text{"您好，我更新了答案!"} //传入指针
 	resp, err := wulaiClient.QaUserAttributeGroupAnswerUpdate(knowledgeID, groupID, answerID, text)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); ok {
+		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
 			t.Errorf("[Test_QaUserAttributeGroupAnswerUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaUserAttributeGroupAnswerUpdate]=>%s\n", serErr.Error())
@@ -378,7 +379,7 @@ func Test_QaUserAttributeGroupAnswerDelete(t *testing.T) {
 	answerID := "2919490"
 	err := wulaiClient.QaUserAttributeGroupAnswerDelete(answerID)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); ok {
+		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
 			t.Errorf("[Test_QaUserAttributeGroupAnswerDelete]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaUserAttributeGroupAnswerDelete]=>%s\n", serErr.Error())
@@ -404,7 +405,7 @@ func Test_QaSatisCreate(t *testing.T) {
 	msgID := "1"
 	err := wulaiClient.QaSatisCreate(satisType, userID, knowledgeID, msgID)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); ok {
+		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
 			t.Errorf("[Test_QaSatisCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_QaSatisCreate]=>%s\n", serErr.Error())
