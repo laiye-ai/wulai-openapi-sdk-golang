@@ -21,7 +21,7 @@ func Test_NLPEntitiesExtract(t *testing.T) {
 	query := "今天上海天气怎么样?" //待实体抽取query [1-1024]characters
 	resp, err := wulaiClient.NLPEntitiesExtract(query)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); ok {
+		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
 			t.Errorf("[Test_NLPEntitiesExtract]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_NLPEntitiesExtract]=>%s\n", serErr.Error())
@@ -45,7 +45,7 @@ func Test_NLPTokenize(t *testing.T) {
 	query := "今天上海天气怎么样?" //待实体抽取query [1-1024]characters
 	resp, err := wulaiClient.NLPTokenize(query)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); ok {
+		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
 			t.Errorf("[Test_NLPTokenize]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_NLPTokenize]=>%s\n", serErr.Error())
