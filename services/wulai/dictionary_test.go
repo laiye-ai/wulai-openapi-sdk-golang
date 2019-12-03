@@ -23,7 +23,7 @@ func Test_DicEntityList(t *testing.T) {
 
 	resp, err := wulaiClient.DicEntityList(page, pageSize)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_DicList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_DicList]=>%s\n", serErr.Error())
@@ -47,7 +47,7 @@ func Test_DicEntityGet(t *testing.T) {
 	entityID := 31646 //实体ID
 	resp, err := wulaiClient.DicEntityGet(entityID)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_DicEntityGet]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_DicEntityGet]=>%s\n", serErr.Error())
@@ -71,7 +71,7 @@ func Test_DicEntityDelete(t *testing.T) {
 	entityID := 31646 //实体ID
 	err := wulaiClient.DicEntityDelete(entityID)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_DicEntityDelete]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_DicEntityDelete]=>%s\n", serErr.Error())
@@ -92,7 +92,7 @@ func Test_DicEntityEnumCreate(t *testing.T) {
 	name := "枚举实体测试" //实体名称
 	resp, err := wulaiClient.DicEntityEnumCreate(name)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_DicEntityEnumCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_DicEntityEnumCreate]=>%s\n", serErr.Error())
@@ -118,7 +118,7 @@ func Test_DicEntityEnumValueCreate(t *testing.T) {
 	synonyms := []string{"相识问-1", "相识问-2", "相识问-3"} //相似说法
 	resp, err := wulaiClient.DicEntityEnumValueCreate(entityID, standardValue, synonyms)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_DicEntityEnumValueCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_DicEntityEnumValueCreate]=>%s\n", serErr.Error())
@@ -145,7 +145,7 @@ func Test_DicEntityEnumValueDelete(t *testing.T) {
 
 	err := wulaiClient.DicEntityEnumValueDelete(entityID, standardValue, synonyms)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_DicEntityEnumValueDelete]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_DicEntityEnumValueDelete]=>%s\n", serErr.Error())
@@ -167,7 +167,7 @@ func Test_DicEntityIntentCreate(t *testing.T) {
 	standardValue := "意图问题测试" //标准值
 	resp, err := wulaiClient.DicEntityIntentCreate(name, standardValue)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_DicEntityIntentCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_DicEntityIntentCreate]=>%s\n", serErr.Error())
@@ -192,7 +192,7 @@ func Test_DicEntityIntentValueCreate(t *testing.T) {
 	synonyms := []string{"相识问-1", "相识问-2", "相识问-3"} //相似说法
 	resp, err := wulaiClient.DicEntityIntentValueCreate(entityID, synonyms)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_DicEntityIntentValueCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_DicEntityIntentValueCreate]=>%s\n", serErr.Error())
@@ -217,7 +217,7 @@ func Test_DicEntityIntentValueDelete(t *testing.T) {
 	synonyms := []string{"相识问-1", "相识问-2"} //相似说法
 	err := wulaiClient.DicEntityIntentValueDelete(entityID, synonyms)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_DicEntityIntentValueDelete]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_DicEntityIntentValueDelete]=>%s\n", serErr.Error())
@@ -244,7 +244,7 @@ func Test_DicTermList(t *testing.T) {
 
 	resp, err := wulaiClient.DicTermList(page, pageSize)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_DicTermList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_DicTermList]=>%s\n", serErr.Error())
@@ -270,7 +270,7 @@ func Test_DicTermCreate(t *testing.T) {
 
 	resp, err := wulaiClient.DicTermCreate(name, synonyms)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_DicTermCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_DicTermCreate]=>%s\n", serErr.Error())
@@ -297,7 +297,7 @@ func Test_DicTermUpdate(t *testing.T) {
 
 	resp, err := wulaiClient.DicTermUpdate(id, name, synonyms)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_DicTermUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_DicTermUpdate]=>%s\n", serErr.Error())
@@ -322,7 +322,7 @@ func Test_DicTermDelete(t *testing.T) {
 
 	err := wulaiClient.DicTermDelete(id)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_DicTermDelete]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_DicTermDelete]=>%s\n", serErr.Error())

@@ -19,7 +19,7 @@ func Test_SceneList(t *testing.T) {
 
 	resp, err := wulaiClient.SceneList()
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneList]=>%s\n", serErr.Error())
@@ -46,7 +46,7 @@ func Test_SceneCreate(t *testing.T) {
 
 	resp, err := wulaiClient.SceneCreate(name, description, intentSwitchMode, smartSlotFillingThreshold)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneCreate]=>%s\n", serErr.Error())
@@ -76,7 +76,7 @@ func Test_SceneUpdate(t *testing.T) {
 
 	resp, err := wulaiClient.SceneUpdate(scens)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneUpdate]=>%s\n", serErr.Error())
@@ -98,7 +98,7 @@ func Test_SceneDelete(t *testing.T) {
 	id := 11424 //场景ID
 	err := wulaiClient.SceneDelete(id)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneDelete]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneDelete]=>%s\n", serErr.Error())
@@ -122,7 +122,7 @@ func Test_SceneIntentList(t *testing.T) {
 	sceneID := 11431 //意图所属的场景ID>=1
 	resp, err := wulaiClient.SceneIntentList(sceneID)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneIntentList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneIntentList]=>%s\n", serErr.Error())
@@ -147,7 +147,7 @@ func Test_SceneIntentCreate(t *testing.T) {
 	lifespanMins := 10 //意图闲置等待时长（分钟），默认3分钟) <= 60
 	resp, err := wulaiClient.SceneIntentCreate(sceneID, name, lifespanMins)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneIntentCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneIntentCreate]=>%s\n", serErr.Error())
@@ -172,7 +172,7 @@ func Test_SceneIntentUpdate(t *testing.T) {
 	lifespanMins := 10 //意图闲置等待时长（分钟），默认3分钟) <= 60
 	resp, err := wulaiClient.SceneIntentUpdate(id, name, lifespanMins)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneIntentUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneIntentUpdate]=>%s\n", serErr.Error())
@@ -198,7 +198,7 @@ func Test_SceneIntentStatusUpdate(t *testing.T) {
 
 	resp, err := wulaiClient.SceneIntentStatusUpdate(intentID, status, firstBlockID)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneIntentStatusUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneIntentStatusUpdate]=>%s\n", serErr.Error())
@@ -220,7 +220,7 @@ func Test_SceneIntentDelete(t *testing.T) {
 	id := 1419126 //意图ID >=1
 	err := wulaiClient.SceneIntentDelete(id)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneIntentDelete]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneIntentDelete]=>%s\n", serErr.Error())
@@ -248,7 +248,7 @@ func Test_SceneIntentTriggerList(t *testing.T) {
 
 	resp, err := wulaiClient.SceneIntentTriggerList(intentID, page, pageSize)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneIntentTriggerList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneIntentTriggerList]=>%s\n", serErr.Error())
@@ -274,7 +274,7 @@ func Test_SceneIntentTriggerCreate(t *testing.T) {
 
 	resp, err := wulaiClient.SceneIntentTriggerCreate(intentID, text, triggerType)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneIntentTriggerCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneIntentTriggerCreate]=>%s\n", serErr.Error())
@@ -298,7 +298,7 @@ func Test_SceneIntentTriggerUpdate(t *testing.T) {
 	text := "吃饭-update"  //触发文本[1-200]characters
 	resp, err := wulaiClient.SceneIntentTriggerUpdate(triggerID, text)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneIntentTriggerUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneIntentTriggerUpdate]=>%s\n", serErr.Error())
@@ -320,7 +320,7 @@ func Test_SceneIntentTriggerDelete(t *testing.T) {
 	triggerID := 1419126 //：触发器ID >=1
 	err := wulaiClient.SceneIntentTriggerDelete(triggerID)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneIntentTriggerDelete]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneIntentTriggerDelete]=>%s\n", serErr.Error())
@@ -348,7 +348,7 @@ func Test_SceneSlotList(t *testing.T) {
 
 	resp, err := wulaiClient.SceneSlotList(sceneID, page, pageSize)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneSlotList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneSlotList]=>%s\n", serErr.Error())
@@ -373,7 +373,7 @@ func Test_SceneSlotCreate(t *testing.T) {
 	querySlotFilling := false //是否允许整句填槽,默认关闭.true: 开启;false: 关闭
 	resp, err := wulaiClient.SceneSlotCreate(sceneID, name, querySlotFilling)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneSlotCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneSlotCreate]=>%s\n", serErr.Error())
@@ -397,7 +397,7 @@ func Test_SceneSlotGet(t *testing.T) {
 
 	resp, err := wulaiClient.SceneSlotGet(id)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneSlotGet]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneSlotGet]=>%s\n", serErr.Error())
@@ -422,7 +422,7 @@ func Test_SceneSlotUpdate(t *testing.T) {
 	querySlotFilling := false //是否允许整句填槽,默认关闭.true: 开启;false: 关闭
 	resp, err := wulaiClient.SceneSlotUpdate(id, name, querySlotFilling)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneSlotUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneSlotUpdate]=>%s\n", serErr.Error())
@@ -444,7 +444,7 @@ func Test_SceneSlotDelete(t *testing.T) {
 	id := 71031 //词槽ID >=1
 	err := wulaiClient.SceneSlotDelete(id)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneSlotDelete]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneSlotDelete]=>%s\n", serErr.Error())
@@ -469,7 +469,7 @@ func Test_SceneSlotDataSourceList(t *testing.T) {
 	id := 71034 //词槽ID >=1
 	resp, err := wulaiClient.SceneSlotDataSourceList(id)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneSlotDataSourceList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneSlotDataSourceList]=>%s\n", serErr.Error())
@@ -493,7 +493,7 @@ func Test_SceneSlotDataSourceCreate(t *testing.T) {
 	entityID := 9   //实体ID >=1
 	resp, err := wulaiClient.SceneSlotDataSourceCreate(slotID, entityID)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneSlotDataSourceCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneSlotDataSourceCreate]=>%s\n", serErr.Error())
@@ -520,7 +520,7 @@ func Test_SceneBlockRequestGet(t *testing.T) {
 	id := 250542 //单元ID >=1
 	resp, err := wulaiClient.SceneBlockRequestGet(id)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneBlockRequestGet]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockRequestGet]=>%s\n", serErr.Error())
@@ -550,7 +550,7 @@ func Test_SceneBlockRequestCreate(t *testing.T) {
 	param.RequestCount = 1
 	resp, err := wulaiClient.SceneBlockRequestCreate(param)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneBlockRequestCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockRequestCreate]=>%s\n", serErr.Error())
@@ -581,7 +581,7 @@ func Test_SceneBlockRequestUpdate(t *testing.T) {
 	param.RequestCount = 1
 	resp, err := wulaiClient.SceneBlockRequestUpdate(param)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneBlockRequestUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockRequestUpdate]=>%s\n", serErr.Error())
@@ -609,7 +609,7 @@ func Test_SceneBlockInformCreate(t *testing.T) {
 	model := RESPONSE_LOOP //单元回复类型
 	resp, err := wulaiClient.SceneBlockInformCreate(intentID, name, model)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneBlockInformCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockInformCreate]=>%s\n", serErr.Error())
@@ -634,7 +634,7 @@ func Test_SceneBlockInformUpdate(t *testing.T) {
 	model := RESPONSE_RANDOM //单元回复类型
 	resp, err := wulaiClient.SceneBlockInformUpdate(id, name, model)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneBlockInformUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockInformUpdate]=>%s\n", serErr.Error())
@@ -657,7 +657,7 @@ func Test_SceneBlockInformGet(t *testing.T) {
 	blockID := 250475 //单元ID>=1
 	resp, err := wulaiClient.SceneBlockInformGet(blockID)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneBlockInformGet]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockInformGet]=>%s\n", serErr.Error())
@@ -685,7 +685,7 @@ func Test_SceneIntentTriggerLearningList(t *testing.T) {
 	pageSize := 10 //每页的触发器数量[1-200]
 	resp, err := wulaiClient.SceneIntentTriggerLearningList(page, pageSize)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneIntentTriggerLearningList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneIntentTriggerLearningList]=>%s\n", serErr.Error())
@@ -707,7 +707,7 @@ func Test_SceneIntentTriggerLearningDelete(t *testing.T) {
 	id := 5 //待审核消息ID >=1
 	err := wulaiClient.SceneIntentTriggerLearningDelete(id)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneIntentTriggerLearningDelete]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneIntentTriggerLearningDelete]=>%s\n", serErr.Error())
@@ -733,7 +733,7 @@ func Test_SceneBlockResponseCreate(t *testing.T) {
 	msgBody := &Text{"您好!"} //传入指针.消息体格式，任意选择一种消息类型[文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息]
 	resp, err := wulaiClient.SceneBlockResponseCreate(blockID, msgBody)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneBlockResponseCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockResponseCreate]=>%s\n", serErr.Error())
@@ -757,7 +757,7 @@ func Test_SceneBlockResponseUpdate(t *testing.T) {
 	msgBody := &Text{"您好!"} //传入指针.消息体格式，任意选择一种消息类型[文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息]
 	resp, err := wulaiClient.SceneBlockResponseUpdate(id, msgBody)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneBlockResponseUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockResponseUpdate]=>%s\n", serErr.Error())
@@ -779,7 +779,7 @@ func Test_SceneBlockResponseDelete(t *testing.T) {
 	id := 5 //回复ID >=1
 	err := wulaiClient.SceneBlockResponseDelete(id)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneBlockResponseDelete]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockResponseDelete]=>%s\n", serErr.Error())
@@ -806,7 +806,7 @@ func Test_SceneBlockList(t *testing.T) {
 	pageSize := 10    //每页的触发器数量[1-200]
 	resp, err := wulaiClient.SceneBlockList(intentID, page, pageSize)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneBlockList]=>%s\n", cliErr.Message())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockList]=>%s\n", serErr.Message())
@@ -828,7 +828,7 @@ func Test_SceneBlockDelete(t *testing.T) {
 	id := 250475 //单元ID >=1
 	err := wulaiClient.SceneBlockDelete(id)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneBlockDelete]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockDelete]=>%s\n", serErr.Error())
@@ -856,7 +856,7 @@ func Test_SceneBlockRelationCreate(t *testing.T) {
 	condition := &Default{} //默认 单元跳转条件
 	resp, err := wulaiClient.SceneBlockRelationCreate(intentID, fromBlockID, toBlockID, condition)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneBlockRelationCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockRelationCreate]=>%s\n", serErr.Error())
@@ -878,7 +878,7 @@ func Test_SceneBlockRelationDelete(t *testing.T) {
 	id := 325651 //单元关系ID >=1
 	err := wulaiClient.SceneBlockRelationDelete(id)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneBlockRelationDelete]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockRelationDelete]=>%s\n", serErr.Error())
@@ -906,7 +906,7 @@ func Test_SceneBlockEndBlockCreate(t *testing.T) {
 	action := &End{}        //结束单元跳转方式 (指定意图 / 上个意图 / 不跳转)) 指针类型
 	resp, err := wulaiClient.SceneBlockEndBlockCreate(intentID, name, slotMemorizing, action)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneBlockEndBlockCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockEndBlockCreate]=>%s\n", serErr.Error())
@@ -933,7 +933,7 @@ func Test_SceneBlockEndBlockUpdate(t *testing.T) {
 	action := &End{}        //结束单元跳转方式 (指定意图 / 上个意图 / 不跳转)) 指针类型
 	resp, err := wulaiClient.SceneBlockEndBlockUpdate(intentID, id, name, slotMemorizing, action)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneBlockEndBlockUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockEndBlockUpdate]=>%s\n", serErr.Error())
@@ -956,7 +956,7 @@ func Test_SceneBlockEndBlockGet(t *testing.T) {
 	id := 254445 //单元ID>=1
 	resp, err := wulaiClient.SceneBlockEndBlockGet(id)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_SceneBlockEndBlockGet]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_SceneBlockEndBlockGet]=>%s\n", serErr.Error())

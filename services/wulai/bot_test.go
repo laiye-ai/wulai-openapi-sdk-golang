@@ -18,7 +18,7 @@ func Test_GetBotResponse(t *testing.T) {
 	text := &Text{"您好!"} //传入指针
 	model, err := wulaiClient.MsgBotResponse("xiao_lai", text, "")
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_GetBotResponse]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_GetBotResponse]=>%s\n", serErr.Error())
@@ -43,7 +43,7 @@ func Test_GetBotResponseV1(t *testing.T) {
 	text := &Text{"您好!"}
 	model, err := wulaiClient.MsgBotResponse("xiao_lai", text, "")
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_GetBotResponse]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_GetBotResponse]=>%s\n", serErr.Error())
@@ -67,7 +67,7 @@ func Test_GetBotResponseQA(t *testing.T) {
 	text := Text{"您好"}
 	model, err := wulaiClient.MsgBotResponseQa("xiao_lai", text, "")
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_GetBotResponseQAWithText]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_GetBotResponseQAWithText]=>%s\n", serErr.Error())
@@ -91,7 +91,7 @@ func Test_GetBotResponseKeyword(t *testing.T) {
 	text := &Text{"您好!"}
 	model, err := wulaiClient.MsgBotResponseKeyword("xiao_lai", text, "")
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_GetBotResponseKeyword]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_GetBotResponseKeyword]=>%s\n", serErr.Error())
@@ -115,7 +115,7 @@ func Test_GetBotResponseTask(t *testing.T) {
 	text := &Text{"您好!"}
 	resp, err := wulaiClient.MsgBotResponseTask("xiao_lai", text, "")
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_GetBotResponseTask]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_GetBotResponseTask]=>%s\n", serErr.Error())
@@ -138,7 +138,7 @@ func Test_GetBotResponseWitCustom(t *testing.T) {
 	custom := &Custom{"您好!"}
 	resp, err := wulaiClient.MsgBotResponse("xiao_lai", custom, "")
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_GetBotResponseWitCustom]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_GetBotResponseWitCustom]=>%s\n", serErr.Error())
@@ -182,7 +182,7 @@ func Test_MsgSend(t *testing.T) {
 
 	resp, err := wulaiClient.MsgSend(userID, msgBody, extra, quickReply, similarResponse)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_MsgSend]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_MsgSend]=>%s\n", serErr.Error())
@@ -205,7 +205,7 @@ func Test_MsgReceive(t *testing.T) {
 	text := &Text{"您好!"}
 	resp, err := wulaiClient.MsgReceive("xiao_lai", text, "third_msg_id_xxxx1", "预留信息")
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_MsgReceive]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_MsgReceive]=>%s\n", serErr.Error())
@@ -232,7 +232,7 @@ func Test_MsgSync(t *testing.T) {
 	msgTS := time.Now().UnixNano() / 1e6 //当前消息时间戳(毫秒级)
 	resp, err := wulaiClient.MsgSync("xiao_lai", answerID, msgTS, "预留信息", bot, text)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_MsgSync]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_MsgSync]=>%s\n", serErr.Error())
@@ -258,7 +258,7 @@ func Test_MsgSyncWithoutBot(t *testing.T) {
 	msgTS := time.Now().UnixNano() / 1e6 //当前消息时间戳(毫秒级)
 	resp, err := wulaiClient.MsgSync("xiao_lai", answerID, msgTS, "预留信息", nil, text)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_MsgSync]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_MsgSync]=>%s\n", serErr.Error())
@@ -280,7 +280,7 @@ func Test_MsgHistory(t *testing.T) {
 
 	resp, err := wulaiClient.MsgHistory("xiao_lai", "msg_id", BACKWARD, 10)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_MsgHistory]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_MsgHistory]=>%s\n", serErr.Error())
@@ -304,7 +304,7 @@ func Test_MsgSuggestion(t *testing.T) {
 	query := "您好"        //用户输入 [1-128]characters
 	resp, err := wulaiClient.MsgSuggestion(userID, query)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_MsgSuggestion]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_MsgSuggestion]=>%s\n", serErr.Error())
@@ -328,7 +328,7 @@ func Test_MsgLinked(t *testing.T) {
 	hashID := "zV5RxbXHtfVwErjaTZ707GTK7adQ8XrR"
 	resp, err := wulaiClient.MsgTriggerLink(userType, hashID)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_MsgLinked]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_MsgLinked]=>%s\n", serErr.Error())

@@ -15,7 +15,7 @@ func Test_UserCreate(t *testing.T) {
 	wulaiClient.Version = "v2"
 	model, err := wulaiClient.UserCreate("xiao_lai", "nickname", "avatarURL")
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_UserCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_UserCreate]=>%s\n", serErr.Error())
@@ -37,7 +37,7 @@ func Test_UserUpdate(t *testing.T) {
 	wulaiClient.Version = "v1"
 	model, err := wulaiClient.UserUpdate("xiao_lai", "nickname", "avatarURL")
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_UserUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_UserUpdate]=>%s\n", serErr.Error())
@@ -60,7 +60,7 @@ func Test_UserAttributeCreate(t *testing.T) {
 	//101521 从平台界面查看
 	err := wulaiClient.UserAttributeCreate("xiao_lai", "101521", "120")
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_UserAttributeCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_UserAttributeCreate]=>%s\n", serErr.Error())
@@ -76,7 +76,7 @@ func Test_GetUserAttribute(t *testing.T) {
 	wulaiClient.Version = "v2"
 	model, err := wulaiClient.UserAttributeList(true, 1, 100)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_GetUserAttribute]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_GetUserAttribute]=>%s\n", serErr.Error())
@@ -98,7 +98,7 @@ func Test_GetUserInfo(t *testing.T) {
 	wulaiClient.Version = "v1"
 	model, err := wulaiClient.UserInfo("xiao_lai")
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_GetUserInfo]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_GetUserInfo]=>%s\n", serErr.Error())
@@ -119,7 +119,7 @@ func Test_GetGroupMembers(t *testing.T) {
 	wulaiClient := NewClient(secret, pubkey)
 	_, err := wulaiClient.groupMembers(1, 10, "xiao_lai")
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_GetGroupMembers]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			fmt.Printf("[Test_GetGroupMembers]=>%s\n", serErr.Error())

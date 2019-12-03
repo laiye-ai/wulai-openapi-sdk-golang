@@ -19,7 +19,7 @@ func Test_StatsRecallDailyList(t *testing.T) {
 
 	resp, err := wulaiClient.StatsRecallDailyList(startDate, endDate)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_StatsRecallDailyList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_StatsRecallDailyList]=>%s\n", serErr.Error())
@@ -47,7 +47,7 @@ func Test_StatsRecallDailyKnowledgeList(t *testing.T) {
 
 	resp, err := wulaiClient.StatsRecallDailyKnowledgeList(startDate, endDate, page, pageSize)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_StatsRecallDailyKnowledgeList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_StatsRecallDailyKnowledgeList]=>%s\n", serErr.Error())
@@ -75,7 +75,7 @@ func Test_StatsDailyKnowledgeList(t *testing.T) {
 
 	resp, err := wulaiClient.StatsDailyKnowledgeList(startDate, endDate, page, pageSize)
 	if err != nil {
-		if cliErr, ok := err.(*errors.ClientError); cliErr.ErrorCode() != errors.NetWorkErrorCode && ok {
+		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_StatsDailyKnowledgeList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
 			log.Infof("[Test_StatsDailyKnowledgeList]=>%s\n", serErr.Error())
