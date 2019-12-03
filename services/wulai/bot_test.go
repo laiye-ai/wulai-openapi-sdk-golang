@@ -59,12 +59,12 @@ func Test_GetBotResponseV1(t *testing.T) {
 	}
 }
 
-func Test_GetBotResponseQAWithText(t *testing.T) {
+func Test_GetBotResponseQA(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.SetDebug(true)
 
-	text := &Text{"您好"}
+	text := Text{"您好"}
 	model, err := wulaiClient.MsgBotResponseQa("xiao_lai", text, "")
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
@@ -343,17 +343,209 @@ func Test_MsgLinked(t *testing.T) {
 	log.Infof("%+v\n", resp)
 }
 
-func Test_CheckMsgType(t *testing.T) {
-	text := &Text{"您好"}
-	_, ok := CheckMsgType(text)
+func Test_CheckMsgTypeText(t *testing.T) {
+	tp := &Text{"您好"}
+	_, ok := CheckMsgType(tp)
 	if !ok {
 		t.Fail()
 	}
 }
 
-func Test_CheckBotType(t *testing.T) {
+func Test_CheckMsgTypeImage(t *testing.T) {
+	tp := &Image{"url"}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeCustom(t *testing.T) {
+	tp := &Custom{"url"}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeVideo(t *testing.T) {
+	tp := &Video{}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeRichText(t *testing.T) {
+	tp := &RichText{}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeFile(t *testing.T) {
+	tp := &File{}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeVoice(t *testing.T) {
+	tp := &Voice{}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeEvent(t *testing.T) {
+	tp := &Event{}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeShareLink(t *testing.T) {
+	tp := &ShareLink{}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeText2(t *testing.T) {
+	tp := Text{"您好"}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeImage2(t *testing.T) {
+	tp := Image{"url"}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeCustom2(t *testing.T) {
+	tp := Custom{"url"}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeVideo2(t *testing.T) {
+	tp := Video{}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeRichText2(t *testing.T) {
+	tp := RichText{}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeFile2(t *testing.T) {
+	tp := File{}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeVoice2(t *testing.T) {
+	tp := Voice{}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeEvent2(t *testing.T) {
+	tp := Event{}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckMsgTypeShareLink2(t *testing.T) {
+	tp := ShareLink{}
+	_, ok := CheckMsgType(tp)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckBotTypeQA(t *testing.T) {
 	qa := &QA{}
 	_, ok := CheckBotType(qa)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckBotTypeQA2(t *testing.T) {
+	q := QA{}
+	_, ok := CheckBotType(q)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckBotTypeTask(t *testing.T) {
+	q := &Task{}
+	_, ok := CheckBotType(q)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckBotTypeTask2(t *testing.T) {
+	q := Task{}
+	_, ok := CheckBotType(q)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckBotTypeChitchat(t *testing.T) {
+	q := &Chitchat{}
+	_, ok := CheckBotType(q)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckBotTypeChitchat2(t *testing.T) {
+	q := Chitchat{}
+	_, ok := CheckBotType(q)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckBotTypeKeyword(t *testing.T) {
+	q := &Keyword{}
+	_, ok := CheckBotType(q)
+	if !ok {
+		t.Fail()
+	}
+}
+
+func Test_CheckBotTypeKeyword2(t *testing.T) {
+	q := Keyword{}
+	_, ok := CheckBotType(q)
 	if !ok {
 		t.Fail()
 	}

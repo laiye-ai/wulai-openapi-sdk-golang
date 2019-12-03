@@ -21,7 +21,7 @@ func (x *Client) MsgBotResponse(userID string, msgBody interface{}, extra string
 	//检查消息类型是否合法
 	msgType, ok := CheckMsgType(msgBody)
 	if !ok {
-		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "*"+msgType)
+		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "Text/Image/Custom/Video//File/RichText/Voice/Event/ShareLink")
 		return nil, errors.NewClientError(errors.UnsupportedTypeErrorCode, errorMsg, nil)
 	}
 
@@ -71,7 +71,7 @@ func (x *Client) MsgBotResponseQa(userID string, msgBody interface{}, extra stri
 	//检查消息类型是否合法
 	msgType, ok := CheckMsgType(msgBody)
 	if !ok {
-		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "*"+msgType)
+		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "Text/Image/Custom/Video//File/RichText/Voice/Event/ShareLink")
 		return nil, errors.NewClientError(errors.UnsupportedTypeErrorCode, errorMsg, nil)
 	}
 
@@ -113,7 +113,7 @@ func (x *Client) MsgBotResponseKeyword(userID string, msgBody interface{}, extra
 	//检查消息类型是否合法
 	msgType, ok := CheckMsgType(msgBody)
 	if !ok {
-		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "*"+msgType)
+		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "Text/Image/Custom/Video//File/RichText/Voice/Event/ShareLink")
 		return nil, errors.NewClientError(errors.UnsupportedTypeErrorCode, errorMsg, nil)
 	}
 
@@ -155,7 +155,7 @@ func (x *Client) MsgBotResponseTask(userID string, msgBody interface{}, extra st
 	//检查消息类型是否合法
 	msgType, ok := CheckMsgType(msgBody)
 	if !ok {
-		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "*"+msgType)
+		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "Text/Image/Custom/Video//File/RichText/Voice/Event/ShareLink")
 		return nil, errors.NewClientError(errors.UnsupportedTypeErrorCode, errorMsg, nil)
 	}
 
@@ -235,7 +235,7 @@ func (x *Client) MsgSend(userID string, msgBody interface{}, extra string, quick
 	//检查消息类型是否合法
 	msgType, ok := CheckMsgType(msgBody)
 	if !ok {
-		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "*"+msgType)
+		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "Text/Image/Custom/Video//File/RichText/Voice/Event/ShareLink")
 		return nil, errors.NewClientError(errors.UnsupportedTypeErrorCode, errorMsg, nil)
 	}
 
@@ -289,7 +289,7 @@ func (x *Client) MsgReceive(userID string, msgBody interface{}, thirdMsgID, extr
 	//检查消息类型是否合法
 	msgType, ok := CheckMsgType(msgBody)
 	if !ok {
-		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "*"+msgType)
+		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "Text/Image/Custom/Video//File/RichText/Voice/Event/ShareLink")
 		return nil, errors.NewClientError(errors.UnsupportedTypeErrorCode, errorMsg, nil)
 	}
 
@@ -334,7 +334,7 @@ func (x *Client) MsgSync(userID string, answerID int, msgTS int64, extra string,
 	//检查消息类型是否合法
 	msgType, ok := CheckMsgType(msgBody)
 	if !ok {
-		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "*"+msgType)
+		errorMsg := fmt.Sprintf(errors.UnsupportedTypeErrorMessage, msgType, "Text/Image/Custom/Video//File/RichText/Voice/Event/ShareLink")
 		return nil, errors.NewClientError(errors.UnsupportedTypeErrorCode, errorMsg, nil)
 	}
 
@@ -436,19 +436,35 @@ func CheckMsgType(msgType interface{}) (string, bool) {
 	switch msgType.(type) {
 	case *Text:
 		return "text", true
+	case Text:
+		return "text", true
 	case *Image:
+		return "image", true
+	case Image:
 		return "image", true
 	case *Custom:
 		return "custom", true
+	case Custom:
+		return "custom", true
 	case *Video:
+		return "video", true
+	case Video:
 		return "video", true
 	case *File:
 		return "file", true
+	case File:
+		return "file", true
 	case *Voice:
+		return "voice", true
+	case Voice:
 		return "voice", true
 	case *Event:
 		return "event", true
+	case Event:
+		return "event", true
 	case *ShareLink:
+		return "share_link", true
+	case ShareLink:
 		return "share_link", true
 	}
 	return "", false
@@ -460,11 +476,19 @@ func CheckBotType(botType interface{}) (string, bool) {
 	switch botType.(type) {
 	case *QA:
 		return "qa", true
+	case QA:
+		return "qa", true
 	case *Chitchat:
+		return "chitchat", true
+	case Chitchat:
 		return "chitchat", true
 	case *Task:
 		return "task", true
+	case Task:
+		return "task", true
 	case *Keyword:
+		return "keyword", true
+	case Keyword:
 		return "keyword", true
 	}
 	return "", false
