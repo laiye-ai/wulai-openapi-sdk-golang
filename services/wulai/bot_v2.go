@@ -14,11 +14,12 @@ import (
 */
 func (x *Client) msgBotResponseV2(userID, extra, msgType string, msgBody []byte) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/msg/bot-response", x.Endpoint, x.Version)
-	input := fmt.Sprintf(`{
+	input := fmt.Sprintf(`
+	{
 		"extra": %q,
 		"msg_body": {"%s": %s},
 		"user_id": "%s"
-	  }`, extra, msgType, msgBody, userID)
+	}`, extra, msgType, msgBody, userID)
 
 	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
@@ -36,11 +37,12 @@ func (x *Client) msgBotResponseV2(userID, extra, msgType string, msgBody []byte)
 func (x *Client) msgBotResponseQaV2(userID, extra, msgType string, msgBody []byte) ([]byte, error) {
 
 	url := fmt.Sprintf("%s/%s/msg/bot-response/qa", x.Endpoint, x.Version)
-	input := fmt.Sprintf(`{
+	input := fmt.Sprintf(`
+	{
 		"msg_body": {"%s": %s},
 		"user_id": "%s",
 		"extra": %q
-	  }`, msgType, msgBody, userID, extra)
+	}`, msgType, msgBody, userID, extra)
 
 	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
@@ -58,11 +60,12 @@ func (x *Client) msgBotResponseQaV2(userID, extra, msgType string, msgBody []byt
 func (x *Client) msgBotResponseKeywordV2(userID, extra, msgType string, msgBody []byte) ([]byte, error) {
 
 	url := fmt.Sprintf("%s/%s/msg/bot-response/keyword", x.Endpoint, x.Version)
-	input := fmt.Sprintf(`{
+	input := fmt.Sprintf(`
+	{
 		"msg_body": {"%s": %s},
 		"user_id": "%s",
 		"extra": %q
-	  }`, msgType, msgBody, userID, extra)
+	}`, msgType, msgBody, userID, extra)
 
 	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
@@ -79,11 +82,12 @@ func (x *Client) msgBotResponseKeywordV2(userID, extra, msgType string, msgBody 
 */
 func (x *Client) msgBotResponseTaskV2(userID, extra, msgType string, msgBody []byte) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/msg/bot-response/task", x.Endpoint, x.Version)
-	input := fmt.Sprintf(`{
+	input := fmt.Sprintf(`
+	{
 		"msg_body": {"%s": %s},
 		"user_id": "%s",
 		"extra": %q
-	  }`, msgType, msgBody, userID, extra)
+	}`, msgType, msgBody, userID, extra)
 
 	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
@@ -100,12 +104,13 @@ func (x *Client) msgBotResponseTaskV2(userID, extra, msgType string, msgBody []b
 */
 func (x *Client) msgHistoryV2(userID, msgID string, direction direction, num int) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/msg/history", x.Endpoint, x.Version)
-	input := fmt.Sprintf(`{
+	input := fmt.Sprintf(`
+	{
 		"direction": "%s",
 		"msg_id": "%s",
 		"user_id": "%s",
 		"num": %v
-	  }`, direction, msgID, userID, num)
+	}`, direction, msgID, userID, num)
 
 	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
@@ -124,9 +129,7 @@ func (x *Client) msgHistoryV2(userID, msgID string, direction direction, num int
 */
 func (x *Client) msgSendV2(userID string, quickReply []string, msgType string, msgBody []byte, extra string, similarResponse []SimilarResponseParam) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/msg/send", x.Endpoint, x.Version)
-
 	srBytes, _ := json.Marshal(similarResponse)
-
 	input := fmt.Sprintf(`
 	{
 		"similar_response": %s,
@@ -152,12 +155,13 @@ func (x *Client) msgSendV2(userID string, quickReply []string, msgType string, m
 */
 func (x *Client) msgReceiveV2(userID, thirdMsgID, extra, msgType string, msgBody []byte) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/msg/receive", x.Endpoint, x.Version)
-	input := fmt.Sprintf(`{
+	input := fmt.Sprintf(`
+	{
 		"msg_body": {"%s": %s},
 		"third_msg_id": "%s",
 		"user_id": "%s",
 		"extra": %q
-	  }`, msgType, msgBody, thirdMsgID, userID, extra)
+	}`, msgType, msgBody, thirdMsgID, userID, extra)
 
 	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
@@ -178,14 +182,15 @@ func (x *Client) msgReceiveV2(userID, thirdMsgID, extra, msgType string, msgBody
 */
 func (x *Client) msgSyncV2(userID string, answerID int, msgTS int64, extra, botType string, botBody []byte, msgType string, msgBody []byte) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/msg/sync", x.Endpoint, x.Version)
-	input := fmt.Sprintf(`{
+	input := fmt.Sprintf(`
+	{
 		"user_id": "%s",
 		"extra": %q,
 		"bot": {},
 		"msg_ts": %v,
 		"msg_body": {"%s": %s},
 		"answer_id": %v
-	  }`, userID, extra, msgTS, msgType, msgBody, answerID)
+	}`, userID, extra, msgTS, msgType, msgBody, answerID)
 
 	if botType != "" {
 		input = strings.Replace(input, `"bot": {}`, fmt.Sprintf(`"bot": {"%s": %s}`, botType, botBody), -1)
