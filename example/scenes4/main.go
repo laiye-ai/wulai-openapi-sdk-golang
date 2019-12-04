@@ -22,7 +22,7 @@ func main() {
 	log.Infof("[创建用户]: %+v\n", user)
 
 	//2:创建属性
-	err = wulaiClient.UserAttributeCreate(user.UserID, "101521", "120") //101521(属性ID):在平台查看
+	err = wulaiClient.UserAttributeCreate(user.UserID, 101521, "120") //101521(属性ID):在平台查看
 	if err != nil {
 		log.Errorf("[更新用户属性失败]: %s\n", err.Error())
 	}

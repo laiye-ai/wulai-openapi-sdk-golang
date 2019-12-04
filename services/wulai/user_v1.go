@@ -4,14 +4,15 @@ import (
 	"fmt"
 )
 
-//CreateV1 创建用户
-func (x *Client) createV1(nickname, avatarURL, userID string) ([]byte, error) {
+//userCreateV1 创建用户
+func (x *Client) userCreateV1(userID, nickname, avatarURL string) ([]byte, error) {
 	url := x.Endpoint + "/v1/user/create"
-	input := fmt.Sprintf(`{
+	input := fmt.Sprintf(`
+	{
 		"username": "%s",
 		"nickname": "%s",
 		"imgurl": "%s"
-	  }`, userID, nickname, avatarURL)
+	}`, userID, nickname, avatarURL)
 
 	resp, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
@@ -52,12 +53,13 @@ func (x *Client) groupMembers(pageIndex, pageSize int, userID string) ([]byte, e
 	return respBytes.ResponseBodyBytes, nil
 }
 
-//UserInfo 查询用户信息
-func (x *Client) userInfoV1(userID string) ([]byte, error) {
+//userGetV1 查询用户信息
+func (x *Client) userGetV1(userID string) ([]byte, error) {
 	url := x.Endpoint + "/v1/user/info/get"
-	input := fmt.Sprintf(`{
+	input := fmt.Sprintf(`
+	{
 		"user_id": "%s"
-		}`, userID)
+	}`, userID)
 
 	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
