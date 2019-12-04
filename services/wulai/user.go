@@ -119,7 +119,7 @@ func (x *Client) UserAttributeList(isAttrGroup bool, page, pageSize int) (model 
 @attrID:用户属性id  >=1
 @attrValue:用户属性值 [1 ~ 128] characters
 */
-func (x *Client) UserAttributeCreate(userID string, attrID int, attrValue string) error {
+func (x *Client) UserAttributeCreate(userID, attrID, attrValue string) error {
 
 	var bytes []byte
 

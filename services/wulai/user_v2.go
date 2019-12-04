@@ -94,17 +94,17 @@ func (x *Client) userAttributeListV2(isAttrGroup bool, page, pageSize int) ([]by
 
 /*UserAttributeCreate 给用户添加属性值
 @userID:用户id [1~128]characters
-@attrID:用户属性id  >=1
+@attrID:用户属性id
 @attrValue:用户属性值 [1 ~ 128] characters
 */
-func (x *Client) userAttributeCreateV2(userID string, attrID int, attrValue string) ([]byte, error) {
+func (x *Client) userAttributeCreateV2(userID, attrID, attrValue string) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/user/user-attribute/create", x.Endpoint, x.Version)
 	input := fmt.Sprintf(`
 	{
 		"user_attribute_user_attribute_value": [
 		  {
 			"user_attribute": {
-			  "id": "%v"
+			  "id": "%s"
 			},
 			"user_attribute_value": {
 			  "name": "%s"

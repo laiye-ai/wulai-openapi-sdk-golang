@@ -168,7 +168,7 @@ func Test_UserAttributeCreate(t *testing.T) {
 	wulaiClient.Version = "v2"
 
 	userID := "xiao_lai" //用户id [1~128]characters
-	attrID := 10000      //用户属性id  >=1
+	attrID := "10000"    //用户属性id  >=1
 	attrValue := "100"   //用户属性值 [1 ~ 128] characters
 	err := wulaiClient.UserAttributeCreate(userID, attrID, attrValue)
 	if err != nil {
