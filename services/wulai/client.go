@@ -36,6 +36,11 @@ func (x *Client) SetDebug(debug bool) {
 	x.HTTPClient.Debug = debug
 }
 
+//SetVersion 设置version
+func (x *Client) SetVersion(version string) {
+	x.Version = strings.ToLower(version)
+}
+
 /****************
 - tools
 ****************/

@@ -21,7 +21,7 @@ func main() {
 	log.Infof("[创建用户]: %+v\n", user)
 
 	//2:创建属性
-	err = wulaiClient.UserAttributeCreate(user.UserID, "体重", "120")
+	err = wulaiClient.UserAttributeCreate(user.UserID, 10000, "120")
 	if err != nil {
 		log.Errorf("[创建用户属性失败]: %s\n", err.Error())
 	}
