@@ -16,7 +16,7 @@ func Test_GetBotResponse(t *testing.T) {
 	wulaiClient.SetDebug(true)
 
 	text := &Text{"您好!"} //传入指针
-	model, err := wulaiClient.MsgBotResponse("xiao_lai", text, "")
+	resp, err := wulaiClient.MsgBotResponse("xiao_lai", text, "")
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_GetBotResponse]=>%s\n", cliErr.Error())
@@ -29,9 +29,8 @@ func Test_GetBotResponse(t *testing.T) {
 		return
 	}
 
-	if len(model.SuggestedResponse) <= 0 {
-		log.Warnf("result is empty. detail=>%+v\n", model)
-	}
+	log.Infoln("----------------------------------------------------------------------------------------")
+	log.Infof("%+v\n", resp)
 }
 
 func Test_GetBotResponseV1(t *testing.T) {
@@ -41,7 +40,7 @@ func Test_GetBotResponseV1(t *testing.T) {
 	wulaiClient.Version = "v1"
 
 	text := &Text{"您好!"}
-	model, err := wulaiClient.MsgBotResponse("xiao_lai", text, "")
+	resp, err := wulaiClient.MsgBotResponse("xiao_lai", text, "")
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_GetBotResponse]=>%s\n", cliErr.Error())
@@ -54,9 +53,8 @@ func Test_GetBotResponseV1(t *testing.T) {
 		return
 	}
 
-	if len(model.SuggestedResponse) <= 0 {
-		log.Warnf("result is empty. detail=>%+v\n", model)
-	}
+	log.Infoln("----------------------------------------------------------------------------------------")
+	log.Infof("%+v\n", resp)
 }
 
 func Test_GetBotResponseQA(t *testing.T) {
@@ -65,49 +63,47 @@ func Test_GetBotResponseQA(t *testing.T) {
 	wulaiClient.SetDebug(true)
 
 	text := Text{"您好"}
-	model, err := wulaiClient.MsgBotResponseQa("xiao_lai", text, "")
+	resp, err := wulaiClient.MsgBotResponseQa("xiao_lai", text, "")
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
-			t.Errorf("[Test_GetBotResponseQAWithText]=>%s\n", cliErr.Error())
+			t.Errorf("[Test_GetBotResponseQA]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
-			log.Infof("[Test_GetBotResponseQAWithText]=>%s\n", serErr.Error())
+			log.Infof("[Test_GetBotResponseQA]=>%s\n", serErr.Error())
 		} else {
-			log.Infof("[Test_GetBotResponseQAWithText]=>%s\n", err.Error())
+			log.Infof("[Test_GetBotResponseQA]=>%s\n", err.Error())
 		}
 
 		return
 	}
 
-	if len(model.QaSuggestedResponse) <= 0 {
-		log.Warnf("result is empty. detail=>%+v\n", model)
-	}
+	log.Infoln("----------------------------------------------------------------------------------------")
+	log.Infof("%+v\n", resp)
 }
 
-func Test_GetBotResponseKeyword(t *testing.T) {
+func Test_MsgBotResponseKeyword(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.SetDebug(true)
 
 	text := &Text{"您好!"}
-	model, err := wulaiClient.MsgBotResponseKeyword("xiao_lai", text, "")
+	resp, err := wulaiClient.MsgBotResponseKeyword("xiao_lai", text, "")
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
-			t.Errorf("[Test_GetBotResponseKeyword]=>%s\n", cliErr.Error())
+			t.Errorf("[Test_MsgBotResponseKeyword]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
-			log.Infof("[Test_GetBotResponseKeyword]=>%s\n", serErr.Error())
+			log.Infof("[Test_MsgBotResponseKeyword]=>%s\n", serErr.Error())
 		} else {
-			log.Infof("[Test_GetBotResponseKeyword]=>%s\n", err.Error())
+			log.Infof("[Test_MsgBotResponseKeyword]=>%s\n", err.Error())
 		}
 
 		return
 	}
 
-	if len(model.KeywordSuggestedResponse) <= 0 {
-		log.Warnf("result is empty. detail=>%+v\n", model)
-	}
+	log.Infoln("----------------------------------------------------------------------------------------")
+	log.Infof("%+v\n", resp)
 }
 
-func Test_GetBotResponseTask(t *testing.T) {
+func Test_BotResponseTask(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.SetDebug(true)
@@ -116,11 +112,11 @@ func Test_GetBotResponseTask(t *testing.T) {
 	resp, err := wulaiClient.MsgBotResponseTask("xiao_lai", text, "")
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
-			t.Errorf("[Test_GetBotResponseTask]=>%s\n", cliErr.Error())
+			t.Errorf("[Test_BotResponseTask]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
-			log.Infof("[Test_GetBotResponseTask]=>%s\n", serErr.Error())
+			log.Infof("[Test_BotResponseTask]=>%s\n", serErr.Error())
 		} else {
-			log.Infof("[Test_GetBotResponseTask]=>%s\n", err.Error())
+			log.Infof("[Test_BotResponseTask]=>%s\n", err.Error())
 		}
 
 		return
@@ -570,4 +566,97 @@ func Benchmark_CheckNilType(t *testing.B) {
 		var niltype interface{}
 		CheckBotType(niltype)
 	}
+}
+
+func Test_MsgBotResponseByte(t *testing.T) {
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.Version = "v2"
+	wulaiClient.SetDebug(true)
+
+	text := &Text{"您好!"} //传入指针
+	resp, err := wulaiClient.MsgBotResponseByte("xiao_lai", text, "")
+	if err != nil {
+		if cliErr, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_MsgBotResponseByte]=>%s\n", cliErr.Error())
+		} else if serErr, ok := err.(*errors.ServerError); ok {
+			log.Infof("[Test_MsgBotResponseByte]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_MsgBotResponseByte]=>%s\n", err.Error())
+		}
+
+		return
+	}
+
+	log.Infoln("----------------------------------------------------------------------------------------")
+	log.Infof("%s\n", resp)
+}
+
+func Test_MsgBotResponseQaByte(t *testing.T) {
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.SetDebug(true)
+
+	text := Text{"您好"}
+	resp, err := wulaiClient.MsgBotResponseQaByte("xiao_lai", text, "")
+	if err != nil {
+		if cliErr, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_MsgBotResponseQaByte]=>%s\n", cliErr.Error())
+		} else if serErr, ok := err.(*errors.ServerError); ok {
+			log.Infof("[Test_MsgBotResponseQaByte]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_MsgBotResponseQaByte]=>%s\n", err.Error())
+		}
+
+		return
+	}
+
+	log.Infoln("----------------------------------------------------------------------------------------")
+	log.Infof("%+v\n", resp)
+}
+
+func Test_MsgBotResponseKeywordByte(t *testing.T) {
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.SetDebug(true)
+
+	text := &Text{"您好!"}
+	resp, err := wulaiClient.MsgBotResponseKeywordByte("xiao_lai", text, "")
+	if err != nil {
+		if cliErr, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_MsgBotResponseKeywordByte]=>%s\n", cliErr.Error())
+		} else if serErr, ok := err.(*errors.ServerError); ok {
+			log.Infof("[Test_MsgBotResponseKeywordByte]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_MsgBotResponseKeywordByte]=>%s\n", err.Error())
+		}
+
+		return
+	}
+
+	log.Infoln("----------------------------------------------------------------------------------------")
+	log.Infof("%+v\n", resp)
+}
+
+func Test_MsgBotResponseTaskByte(t *testing.T) {
+	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
+	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.SetDebug(true)
+
+	text := &Text{"您好!"}
+	resp, err := wulaiClient.MsgBotResponseTaskByte("xiao_lai", text, "")
+	if err != nil {
+		if cliErr, ok := err.(*errors.ClientError); ok {
+			t.Errorf("[Test_MsgBotResponseTaskByte]=>%s\n", cliErr.Error())
+		} else if serErr, ok := err.(*errors.ServerError); ok {
+			log.Infof("[Test_MsgBotResponseTaskByte]=>%s\n", serErr.Error())
+		} else {
+			log.Infof("[Test_MsgBotResponseTaskByte]=>%s\n", err.Error())
+		}
+
+		return
+	}
+
+	log.Infoln("----------------------------------------------------------------------------------------")
+	log.Infof("%+v\n", resp)
 }

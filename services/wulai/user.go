@@ -16,7 +16,7 @@ import (
 */
 func (x *Client) UserCreate(userID, nickname, avatarURL string) (model *User, err error) {
 	var bytes []byte
-	if strings.ToUpper(x.Version) == "V1" {
+	if strings.ToLower(x.Version) == "v1" {
 		bytes, err = x.userCreateV1(userID, nickname, avatarURL)
 	} else {
 		bytes, err = x.userCreateV2(userID, nickname, avatarURL)

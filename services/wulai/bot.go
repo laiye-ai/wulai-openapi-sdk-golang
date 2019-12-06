@@ -430,6 +430,10 @@ func (x *Client) MsgTriggerLink(userType MsgUserType, hashID string) (model *Msg
 	return model, nil
 }
 
+/****************
+- 类型检查方法
+****************/
+
 //CheckMsgType 检查消息类型
 func CheckMsgType(msgType interface{}) (string, bool) {
 
