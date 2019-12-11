@@ -612,7 +612,7 @@ func Test_MsgBotResponseQaByte(t *testing.T) {
 	}
 
 	log.Infoln("----------------------------------------------------------------------------------------")
-	log.Infof("%+v\n", resp)
+	log.Infof("%s\n", resp)
 }
 
 func Test_MsgBotResponseKeywordByte(t *testing.T) {
@@ -635,7 +635,7 @@ func Test_MsgBotResponseKeywordByte(t *testing.T) {
 	}
 
 	log.Infoln("----------------------------------------------------------------------------------------")
-	log.Infof("%+v\n", resp)
+	log.Infof("%s\n", resp)
 }
 
 func Test_MsgBotResponseTaskByte(t *testing.T) {
@@ -658,5 +658,5 @@ func Test_MsgBotResponseTaskByte(t *testing.T) {
 	}
 
 	log.Infoln("----------------------------------------------------------------------------------------")
-	log.Infof("%+v\n", resp)
+	log.Infof("%s\n", resp)
 }
