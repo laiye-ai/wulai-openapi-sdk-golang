@@ -15,7 +15,9 @@ type Client struct {
 	Debug      bool
 }
 
-//NewClient 创建 NewWulaiClient
+/*NewClient 创建 NewWulaiClient
+@secret 和 @pubkey: 从吾来平台获取. 每个开放平台渠道有一组 pubkey 和 Secret
+*/
 func NewClient(secret, pubkey string) *Client {
 	wulai := &Client{}
 	//实例化凭证

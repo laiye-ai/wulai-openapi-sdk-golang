@@ -323,7 +323,7 @@ func (x *Client) MsgReceive(userID string, msgBody interface{}, thirdMsgID, extr
 @botBody:机器人类型qa / chitchat / task / keyword.如果机器人回复兜底内容，则bot为空
 @msgBody:消息体格式，任意选择一种消息类型（文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息）填充
 */
-func (x *Client) MsgSync(userID string, answerID int, msgTS int64, extra string, botBody, msgBody interface{}) (model *MsgSync, err error) {
+func (x *Client) MsgSync(userID string, answerID, msgTS int64, extra string, botBody, msgBody interface{}) (model *MsgSync, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
 

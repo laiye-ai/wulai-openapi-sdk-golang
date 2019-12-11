@@ -224,7 +224,7 @@ func Test_MsgSync(t *testing.T) {
 
 	bot := &QA{}
 	text := &Text{"您好!"}
-	answerID := 0                        //answer_id 的值从机器人的回复中获取
+	answerID := int64(0)                 //answer_id 的值从机器人的回复中获取
 	msgTS := time.Now().UnixNano() / 1e6 //当前消息时间戳(毫秒级)
 	resp, err := wulaiClient.MsgSync("xiao_lai", answerID, msgTS, "预留信息", bot, text)
 	if err != nil {
@@ -250,7 +250,7 @@ func Test_MsgSyncWithoutBot(t *testing.T) {
 	wulaiClient.SetDebug(true)
 
 	text := &Text{"您好!"}
-	answerID := 0                        //answer_id 的值从机器人的回复中获取
+	answerID := int64(0)                 //answer_id 的值从机器人的回复中获取
 	msgTS := time.Now().UnixNano() / 1e6 //当前消息时间戳(毫秒级)
 	resp, err := wulaiClient.MsgSync("xiao_lai", answerID, msgTS, "预留信息", nil, text)
 	if err != nil {
@@ -612,7 +612,7 @@ func Test_MsgBotResponseQaByte(t *testing.T) {
 	}
 
 	log.Infoln("----------------------------------------------------------------------------------------")
-	log.Infof("%+v\n", resp)
+	log.Infof("%s\n", resp)
 }
 
 func Test_MsgBotResponseKeywordByte(t *testing.T) {
@@ -635,7 +635,7 @@ func Test_MsgBotResponseKeywordByte(t *testing.T) {
 	}
 
 	log.Infoln("----------------------------------------------------------------------------------------")
-	log.Infof("%+v\n", resp)
+	log.Infof("%s\n", resp)
 }
 
 func Test_MsgBotResponseTaskByte(t *testing.T) {
@@ -658,5 +658,5 @@ func Test_MsgBotResponseTaskByte(t *testing.T) {
 	}
 
 	log.Infoln("----------------------------------------------------------------------------------------")
-	log.Infof("%+v\n", resp)
+	log.Infof("%s\n", resp)
 }

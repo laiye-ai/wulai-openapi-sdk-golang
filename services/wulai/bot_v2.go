@@ -180,7 +180,7 @@ func (x *Client) msgReceiveV2(userID, thirdMsgID, extra, msgType string, msgBody
 @msgType:消息体格式，任意选择一种消息类型（文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息）填充
 @msgBody:消息内容
 */
-func (x *Client) msgSyncV2(userID string, answerID int, msgTS int64, extra, botType string, botBody []byte, msgType string, msgBody []byte) ([]byte, error) {
+func (x *Client) msgSyncV2(userID string, answerID, msgTS int64, extra, botType string, botBody []byte, msgType string, msgBody []byte) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/msg/sync", x.Endpoint, x.Version)
 	input := fmt.Sprintf(`
 	{

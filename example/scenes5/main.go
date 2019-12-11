@@ -31,7 +31,7 @@ func main() {
 	}
 
 	//2:同步消息给吾来平台
-	answerID := 0                        //answer_id 的值从机器人的回复中获取
+	answerID := int64(0)                 //answer_id 的值从机器人的回复中获取
 	msgTS := time.Now().UnixNano() / 1e6 //当前消息时间戳(毫秒级)
 	msgSync, _ := wulaiClient.MsgSync("xiao_lai", answerID, msgTS, "预留信息", botType, textMsg)
 
