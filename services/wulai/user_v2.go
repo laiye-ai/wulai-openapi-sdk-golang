@@ -136,7 +136,8 @@ func (x *Client) userAttributeCreateV2(userID, attrID, attrValue string) ([]byte
 @userID:用户id [1~128]characters
 */
 func (x *Client) userAttributePairListV2(userID string) ([]byte, error) {
-	url := fmt.Sprintf("%s/%s/user-attribute/pair/list", x.Endpoint, x.Version)
+	//https://openapi.wul.ai/v2/user/user-attribute/pair/list
+	url := fmt.Sprintf("%s/%s/user/user-attribute/pair/list", x.Endpoint, x.Version)
 	input := fmt.Sprintf(`
 	{
 		"user_id": "%s"
