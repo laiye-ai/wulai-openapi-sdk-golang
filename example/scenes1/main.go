@@ -10,7 +10,7 @@ func main() {
 	//实例化客户端
 	wulaiClient := wulai.NewClient("secret", "pubkey")
 	wulaiClient.Version = "v2"
-	log.Infof("[wulaiClient]%+v\n", wulaiClient)
+	wulaiClient.SetDebug(true)
 
 	//1:创建用户
 	user, err := wulaiClient.UserCreate("xiao_lai", "", "")

@@ -27,7 +27,7 @@ func (x *Client) qaKnowledgeTagListV2(parentTagID, page, pageSize int) ([]byte, 
 }
 
 //qaKnowledgeCreateV2 创建知识点
-func (x *Client) qaKnowledgeCreateV2(knowledgeTagID int, standardQuestion string, status, respondAll, maintained bool) ([]byte, error) {
+func (x *Client) qaKnowledgeCreateV2(knowledgeTagID int64, standardQuestion string, status, respondAll, maintained bool) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/qa/knowledge-tag-knowledge/create", x.Endpoint, x.Version)
 	input := fmt.Sprintf(`{
 		"knowledge_tag_knowledge": {
@@ -66,7 +66,7 @@ func (x *Client) qaKnowledgeItemListV2(page, pageSize int) ([]byte, error) {
 }
 
 //qaKnowledgeUpdateV2 更新知识点
-func (x *Client) qaKnowledgeUpdateV2(knowledgeID int, standardQuestion string, status, respondAll, maintained bool) ([]byte, error) {
+func (x *Client) qaKnowledgeUpdateV2(knowledgeID int64, standardQuestion string, status, respondAll, maintained bool) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/qa/knowledge/update", x.Endpoint, x.Version)
 	input := fmt.Sprintf(`{
 		"knowledge": {
@@ -178,8 +178,12 @@ func (x *Client) qaUserAttributeGroupItemListV2(page, pageSize int) ([]byte, err
 	return respBytes.ResponseBodyBytes, nil
 }
 
-//qaUserAttributeGroupCreateV2 创建属性组
-func (x *Client) qaUserAttributeGroupCreateV2(groupName, attributeID, attributeName string) ([]byte, error) {
+/*qaUserAttributeGroupCreateV2 创建属性组
+@groupName:属性组名称 [1~128]characters
+@attributeID:用户属性ID
+@attributeValue:用户属性值 [1~128]characters
+*/
+func (x *Client) qaUserAttributeGroupItemCreateV2(groupName, attributeID, attributeValue string) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/qa/user-attribute-group-items/create", x.Endpoint, x.Version)
 	input := fmt.Sprintf(`
 	{
@@ -198,7 +202,7 @@ func (x *Client) qaUserAttributeGroupCreateV2(groupName, attributeID, attributeN
 			"name": "%s"
 		  }
 		}
-	}`, attributeID, attributeName, groupName)
+	}`, attributeID, attributeValue, groupName)
 
 	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
@@ -209,7 +213,7 @@ func (x *Client) qaUserAttributeGroupCreateV2(groupName, attributeID, attributeN
 }
 
 //qaUserAttributeGroupUpdateV2 更新属性组
-func (x *Client) qaUserAttributeGroupUpdateV2(groupID, groupName string, attributes map[string]string) ([]byte, error) {
+func (x *Client) qaUserAttributeGroupItemUpdateV2(groupID, groupName string, attributes map[string]string) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/qa/user-attribute-group-items/update", x.Endpoint, x.Version)
 
 	//拼接属性json字符串
@@ -255,16 +259,41 @@ func (x *Client) qaUserAttributeGroupUpdateV2(groupID, groupName string, attribu
 ****************/
 
 //qaUserAttributeGroupAnswerListV2 查询属性组回复列表
-func (x *Client) qaUserAttributeGroupAnswerListV2(knowledgeID, groupID string, page, pageSize int) ([]byte, error) {
+func (x *Client) qaUserAttributeGroupAnswerListV2(knowledgeID, groupID int64, page, pageSize int) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/qa/user-attribute-group-answers/list", x.Endpoint, x.Version)
-	input := fmt.Sprintf(`{
-		"filter": {
-		  "knowledge_id": "%s",
-		  "user_attribute_group_id": "%s"
-		},
+	//@filter 可选
+	input := fmt.Sprintf(`
+	 {
+		@filter
 		"page": %v,
 		"page_size": %v
-	  }`, knowledgeID, groupID, page, pageSize)
+	  }`, page, pageSize)
+
+	if knowledgeID > 0 && groupID > 0 {
+		filter := fmt.Sprintf(`
+		"filter": {
+			"knowledge_id": %v,
+			"user_attribute_group_id": %v
+		},`, knowledgeID, groupID)
+
+		input = strings.Replace(input, "@filter", filter, -1)
+	} else if knowledgeID > 0 && groupID <= 0 {
+		filter := fmt.Sprintf(`
+		"filter": {
+			"knowledge_id": %v
+		},`, knowledgeID)
+
+		input = strings.Replace(input, "@filter", filter, -1)
+	} else if knowledgeID <= 0 && groupID > 0 {
+		filter := fmt.Sprintf(`
+		"filter": {
+			"user_attribute_group_id": %v
+		},`, groupID)
+
+		input = strings.Replace(input, "@filter", filter, -1)
+	} else {
+		input = strings.Replace(input, "@filter", "", -1)
+	}
 
 	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
@@ -274,7 +303,12 @@ func (x *Client) qaUserAttributeGroupAnswerListV2(knowledgeID, groupID string, p
 	return respBytes.ResponseBodyBytes, nil
 }
 
-//qaUserAttributeGroupAnswerCreateV2 创建属性组回复(v2)
+/*qaUserAttributeGroupAnswerCreateV2 创建属性组回复(v2)
+@knowledgeID:知识点id
+@groupID:属性组ID
+@msgType:消息类型（文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息）填充)
+@msgBody:消息
+*/
 func (x *Client) qaUserAttributeGroupAnswerCreateV2(knowledgeID, groupID, msgType string, msgBody []byte) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/qa/user-attribute-group-answer/create", x.Endpoint, x.Version)
 	input := fmt.Sprintf(`

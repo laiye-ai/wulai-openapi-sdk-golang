@@ -2,6 +2,7 @@ package wulai
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/laiye-ai/wulai-openapi-sdk-golang/services/common/errors"
 )
@@ -69,20 +70,29 @@ func (x *Client) userGetV2(userID string) ([]byte, error) {
 }
 
 /*userAttributeListV2 获取用户属性列表
-@isAttrGroup:是否可以作为属性组属性
+@filter:是否可以作为属性组属性.如果为空,则不过滤
 @page:页码，代表查看第几页的数据，从1开始 >=1
 @pageSize:每页的属性组数量 [1~200]
 */
-func (x *Client) userAttributeListV2(isAttrGroup bool, page, pageSize int) ([]byte, error) {
+func (x *Client) userAttributeListV2(filter *UserAttributeFilter, page, pageSize int) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/user-attribute/list", x.Endpoint, x.Version)
 	input := fmt.Sprintf(`
 	{
-		"filter": {
-		  "use_in_user_attribute_group": %v
-		},
+		@filter
 		"page": %v,
 		"page_size": %v
-	}`, isAttrGroup, page, pageSize)
+	}`, page, pageSize)
+
+	//添加filter
+	if filter != nil {
+		filter := fmt.Sprintf(`
+		"filter": {
+			"use_in_user_attribute_group": %v
+		},`, filter.HasAttribute)
+		input = strings.Replace(input, "@filter", filter, -1)
+	} else {
+		input = strings.Replace(input, "@filter", "", -1)
+	}
 
 	resp, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {

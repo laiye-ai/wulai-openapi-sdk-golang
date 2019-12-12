@@ -86,18 +86,18 @@ func (x *Client) UserGet(userID string) (model *User, err error) {
 }
 
 /*UserAttributeList 获取用户属性列表
-@isAttrGroup:是否可以作为属性组属性
+@UserAttributeFilter:用户属性过滤条件。如果填写，代表需要过滤；反之不过滤
 @page:页码，代表查看第几页的数据，从1开始 >=1
 @pageSize:每页的属性组数量 [1~200]
 */
-func (x *Client) UserAttributeList(isAttrGroup bool, page, pageSize int) (model *UserAttributeList, err error) {
+func (x *Client) UserAttributeList(filter *UserAttributeFilter, page, pageSize int) (model *UserAttributeList, err error) {
 	if strings.ToUpper(x.Version) == "V1" {
 
 		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
 		return nil, errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
 	}
 
-	bytes, err := x.userAttributeListV2(isAttrGroup, page, pageSize)
+	bytes, err := x.userAttributeListV2(filter, page, pageSize)
 	if err != nil {
 		return nil, err
 	}

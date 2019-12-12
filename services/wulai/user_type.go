@@ -15,7 +15,7 @@ type UserAttributeList struct {
 
 //UserAttribute 用户属性
 type UserAttribute struct {
-	ID                      string             `json:"id"`                          //属性id
+	ID                      string             `json:"id"`                          //属性id  TODO: 如果修改为int64 则抛出 unmarshal string错误
 	Name                    string             `json:"name"`                        //属性名
 	Lifespan                int                `json:"lifespan"`                    //属性的有效期(单位为秒)。如果为永久, 则有效期为0
 	ValueType               AttributeValueType `json:"value_type"`                  //用户属性值类型.
