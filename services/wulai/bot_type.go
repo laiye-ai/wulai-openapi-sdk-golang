@@ -502,3 +502,8 @@ type MsgSuggestionResponse struct {
 type UserSuggestion struct {
 	Suggestion string `json:"suggestion"`
 }
+
+//UserAttributeFilter 用户属性过滤条件。如果填写，代表需要过滤；反之不过滤。
+type UserAttributeFilter struct {
+	HasAttribute bool `json:"use_in_user_attribute_group"` //是否可以作为属性组属性
+}

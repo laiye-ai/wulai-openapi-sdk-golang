@@ -40,8 +40,8 @@ func (x *Client) QaKnowledgeTagList(parentTagID, page, pageSize int) (model *QaK
 	return model, nil
 }
 
-//QaqaKnowledgeCreate 创建知识点
-func (x *Client) QaqaKnowledgeCreate(knowledgeTagID int, standardQuestion string, status, respondAll, maintained bool) (model *QaKnowledgeTagResponse, err error) {
+//QaKnowledgeCreate 创建知识点
+func (x *Client) QaKnowledgeCreate(knowledgeTagID int64, standardQuestion string, status, respondAll, maintained bool) (model *QaKnowledgeTagResponse, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
 
@@ -55,7 +55,7 @@ func (x *Client) QaqaKnowledgeCreate(knowledgeTagID int, standardQuestion string
 	}
 
 	if x.Debug {
-		log.Debugf("[QaqaKnowledgeCreate Response]:%s\n", bytes)
+		log.Debugf("[QaKnowledgeCreate Response]:%s\n", bytes)
 	}
 
 	//返回结果
@@ -67,8 +67,8 @@ func (x *Client) QaqaKnowledgeCreate(knowledgeTagID int, standardQuestion string
 	return model, nil
 }
 
-//QaqaKnowledgeUpdate 更新知识点
-func (x *Client) QaqaKnowledgeUpdate(knowledgeID int, standardQuestion string, status, respondAll, maintained bool) (model *QaKnowledgeResponse, err error) {
+//QaKnowledgeUpdate 更新知识点
+func (x *Client) QaKnowledgeUpdate(knowledgeID int64, standardQuestion string, status, respondAll, maintained bool) (model *QaKnowledgeResponse, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
 
@@ -82,7 +82,7 @@ func (x *Client) QaqaKnowledgeUpdate(knowledgeID int, standardQuestion string, s
 	}
 
 	if x.Debug {
-		log.Debugf("[QaqaKnowledgeUpdate Response]:%s\n", bytes)
+		log.Debugf("[QaKnowledgeUpdate Response]:%s\n", bytes)
 	}
 
 	//返回结果
@@ -232,8 +232,8 @@ func (x *Client) QaSimilarQuestionDelete(id string) (err error) {
 - 用户属性组
 ****************/
 
-//QaAttributeGroupItemList 查询属性组及属性列表
-func (x *Client) QaAttributeGroupItemList(page, pageSize int) (model *QaUserAttributeGroupItemList, err error) {
+//QaUserAttributeGroupItemList 查询属性组及属性列表
+func (x *Client) QaUserAttributeGroupItemList(page, pageSize int) (model *QaUserAttributeGroupItemList, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
 
@@ -247,7 +247,7 @@ func (x *Client) QaAttributeGroupItemList(page, pageSize int) (model *QaUserAttr
 		return nil, err
 	}
 	if x.Debug {
-		log.Debugf("[QaAttributeGroupItemList Response]:%s\n", bytes)
+		log.Debugf("[QaUserAttributeGroupItemList Response]:%s\n", bytes)
 	}
 
 	//返回结果
@@ -259,8 +259,12 @@ func (x *Client) QaAttributeGroupItemList(page, pageSize int) (model *QaUserAttr
 	return model, nil
 }
 
-//QaUserAttributeGroupCreate 创建属性组
-func (x *Client) QaUserAttributeGroupCreate(groupName, attributeID, attributeName string) (model *QaUserAttributeGroupResponse, err error) {
+/*QaUserAttributeGroupItemCreate 创建属性组
+@groupName:属性组名称 [1~128]characters
+@attributeID:用户属性 用户属性ID
+@attributeValue:用户属性值 [1~128]characters
+*/
+func (x *Client) QaUserAttributeGroupItemCreate(groupName, attributeID, attributeValue string) (model *QaUserAttributeGroupResponse, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
 
@@ -269,12 +273,12 @@ func (x *Client) QaUserAttributeGroupCreate(groupName, attributeID, attributeNam
 	}
 
 	//发起调用
-	bytes, err := x.qaUserAttributeGroupCreateV2(groupName, attributeID, attributeName)
+	bytes, err := x.qaUserAttributeGroupItemCreateV2(groupName, attributeID, attributeValue)
 	if err != nil {
 		return nil, err
 	}
 	if x.Debug {
-		log.Debugf("[QaUserAttributeGroupCreate Response]:%s\n", bytes)
+		log.Debugf("[QaUserAttributeGroupItemCreate Response]:%s\n", bytes)
 	}
 
 	//返回结果
@@ -286,8 +290,8 @@ func (x *Client) QaUserAttributeGroupCreate(groupName, attributeID, attributeNam
 	return model, nil
 }
 
-//QaUserAttributeGroupUpdate 更新属性组
-func (x *Client) QaUserAttributeGroupUpdate(groupID, groupName string, attributes map[string]string) (model *QaUserAttributeGroupResponse, err error) {
+//QaUserAttributeGroupItemUpdate 更新属性组
+func (x *Client) QaUserAttributeGroupItemUpdate(groupID, groupName string, attributes map[string]string) (model *QaUserAttributeGroupResponse, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
 
@@ -296,12 +300,12 @@ func (x *Client) QaUserAttributeGroupUpdate(groupID, groupName string, attribute
 	}
 
 	//发起调用
-	bytes, err := x.qaUserAttributeGroupUpdateV2(groupID, groupName, attributes)
+	bytes, err := x.qaUserAttributeGroupItemUpdateV2(groupID, groupName, attributes)
 	if err != nil {
 		return nil, err
 	}
 	if x.Debug {
-		log.Debugf("[QaUserAttributeGroupUpdate Response]:%s\n", bytes)
+		log.Debugf("[QaUserAttributeGroupItemUpdate Response]:%s\n", bytes)
 	}
 
 	//返回结果
@@ -318,7 +322,7 @@ func (x *Client) QaUserAttributeGroupUpdate(groupID, groupName string, attribute
 ****************/
 
 //QaUserAttributeGroupAnswerList 查询属性组回复列表
-func (x *Client) QaUserAttributeGroupAnswerList(knowledgeID, groupID string, page, pageSize int) (model *QaUserAttributeGroupAnswerList, err error) {
+func (x *Client) QaUserAttributeGroupAnswerList(knowledgeID, groupID int64, page, pageSize int) (model *QaUserAttributeGroupAnswerList, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
 		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
@@ -343,7 +347,11 @@ func (x *Client) QaUserAttributeGroupAnswerList(knowledgeID, groupID string, pag
 	return model, nil
 }
 
-//QaUserAttributeGroupAnswerCreate 创建属性组回复
+/*QaUserAttributeGroupAnswerCreate 创建属性组回复
+@knowledgeID:知识点id
+@groupID:属性组ID
+@msgBody:消息（文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息）填充)
+*/
 func (x *Client) QaUserAttributeGroupAnswerCreate(knowledgeID, groupID string, msgBody interface{}) (model *QaUserAttributeGroupAnswer, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
@@ -382,7 +390,7 @@ func (x *Client) QaUserAttributeGroupAnswerCreate(knowledgeID, groupID string, m
 }
 
 //QaUserAttributeGroupAnswerUpdate 更新属性组回复
-func (x *Client) QaUserAttributeGroupAnswerUpdate(knowledgeID, groupID, answerID string, msgBody interface{}) (model *QaUserAttributeGroupAnswer, err error) {
+func (x *Client) QaUserAttributeGroupAnswerUpdate(knowledgeID, groupID string, answerID string, msgBody interface{}) (model *QaUserAttributeGroupAnswer, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
 		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")

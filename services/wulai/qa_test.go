@@ -17,9 +17,9 @@ func Test_QaKnowledgeTagList(t *testing.T) {
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.SetDebug(true)
 
-	parentTagID := 139256 //父节点分类id，如果不传值，代表获取根节点下的知识点分类
-	page := 1             //页码，代表查看第几页的数据，从1开始
-	pageSize := 100       //每页的属性组数量
+	parentTagID := 0 //父节点分类id，如果不传值(或 0)，代表获取根节点下的知识点分类
+	page := 1        //页码，代表查看第几页的数据，从1开始
+	pageSize := 100  //每页的属性组数量
 
 	resp, err := wulaiClient.QaKnowledgeTagList(parentTagID, page, pageSize)
 	if err != nil {
@@ -37,26 +37,26 @@ func Test_QaKnowledgeTagList(t *testing.T) {
 	log.Infof("%+v\n", resp)
 }
 
-func Test_QaqaKnowledgeCreate(t *testing.T) {
+func Test_QaKnowledgeCreate(t *testing.T) {
 
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.SetDebug(true)
 
-	knowledgeTagID := 139258           //知识点分类id >=1
+	knowledgeTagID := int64(139258)    //知识点分类id >=1
 	standardQuestion := "GOSDK-添加知识点2" //知识点标题
 	status := true                     //知识点状态:true: 已生效;false: 未生效
 	respondAll := true                 //发送全部回复 true: 已生效;false: 随机一条发送
 	maintained := true                 //true: 是;false: 否
 
-	resp, err := wulaiClient.QaqaKnowledgeCreate(knowledgeTagID, standardQuestion, status, respondAll, maintained)
+	resp, err := wulaiClient.QaKnowledgeCreate(knowledgeTagID, standardQuestion, status, respondAll, maintained)
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
-			t.Errorf("[Test_QaqaKnowledgeCreate]=>%s\n", cliErr.Error())
+			t.Errorf("[Test_QaKnowledgeCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
-			log.Infof("[Test_QaqaKnowledgeCreate]=>%s\n", serErr.Error())
+			log.Infof("[Test_QaKnowledgeCreate]=>%s\n", serErr.Error())
 		} else {
-			log.Infof("[Test_QaqaKnowledgeCreate]=>%s\n", err.Error())
+			log.Infof("[Test_QaKnowledgeCreate]=>%s\n", err.Error())
 		}
 
 		return
@@ -65,26 +65,26 @@ func Test_QaqaKnowledgeCreate(t *testing.T) {
 	log.Infof("%+v\n", resp)
 }
 
-func Test_QaqaKnowledgeUpdate(t *testing.T) {
+func Test_QaKnowledgeUpdate(t *testing.T) {
 
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.SetDebug(true)
 
-	knowledgeID := 1257716                   //知识点id >=1
+	knowledgeID := int64(1257716)            //知识点id >=1
 	standardQuestion := "GOSDK-添加知识点-update" //知识点标题
 	status := true                           //知识点状态:true: 已生效;false: 未生效
 	respondAll := true                       //发送全部回复 true: 已生效;false: 随机一条发送
 	maintained := true                       //true: 是;false: 否
 
-	resp, err := wulaiClient.QaqaKnowledgeUpdate(knowledgeID, standardQuestion, status, respondAll, maintained)
+	resp, err := wulaiClient.QaKnowledgeUpdate(knowledgeID, standardQuestion, status, respondAll, maintained)
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
-			t.Errorf("[Test_QaqaKnowledgeUpdate]=>%s\n", cliErr.Error())
+			t.Errorf("[Test_QaKnowledgeUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
-			log.Infof("[Test_QaqaKnowledgeUpdate]=>%s\n", serErr.Error())
+			log.Infof("[Test_QaKnowledgeUpdate]=>%s\n", serErr.Error())
 		} else {
-			log.Infof("[Test_QaqaKnowledgeUpdate]=>%s\n", err.Error())
+			log.Infof("[Test_QaKnowledgeUpdate]=>%s\n", err.Error())
 		}
 
 		return
@@ -228,7 +228,7 @@ func Test_QaUserAttributeGroupItemList(t *testing.T) {
 
 	page := 1
 	pageSize := 10
-	_, err := wulaiClient.QaAttributeGroupItemList(page, pageSize)
+	_, err := wulaiClient.QaUserAttributeGroupItemList(page, pageSize)
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_QaListUserAttributeGroupItem]=>%s\n", cliErr.Error())
@@ -242,24 +242,23 @@ func Test_QaUserAttributeGroupItemList(t *testing.T) {
 	}
 }
 
-func Test_QaUserAttributeGroupCreate(t *testing.T) {
+func Test_QaUserAttributeGroupItemCreate(t *testing.T) {
 
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.SetDebug(true)
 
-	groupName := "GO 属性组-2"
-	attributeID := "101669"
-	attributeName := "2"
-
-	resp, err := wulaiClient.QaUserAttributeGroupCreate(groupName, attributeID, attributeName)
+	groupName := "GO 属性组-2" //属性组名称 [1~128]characters
+	attributeID := "101669" //用户属性ID
+	attributeValue := "2"   //用户属性值 [1~128]characters
+	resp, err := wulaiClient.QaUserAttributeGroupItemCreate(groupName, attributeID, attributeValue)
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
-			t.Errorf("[Test_QaUserAttributeGroupCreate]=>%s\n", cliErr.Error())
+			t.Errorf("[Test_QaUserAttributeGroupItemCreate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
-			log.Infof("[Test_QaUserAttributeGroupCreate]=>%s\n", serErr.Error())
+			log.Infof("[Test_QaUserAttributeGroupItemCreate]=>%s\n", serErr.Error())
 		} else {
-			log.Infof("[Test_QaUserAttributeGroupCreate]=>%s\n", err.Error())
+			log.Infof("[Test_QaUserAttributeGroupItemCreate]=>%s\n", err.Error())
 		}
 
 		return
@@ -268,7 +267,7 @@ func Test_QaUserAttributeGroupCreate(t *testing.T) {
 	log.Infof("%+v\n", resp)
 }
 
-func Test_QaUserAttributeGroupUpdate(t *testing.T) {
+func Test_QaUserAttributeGroupItemUpdate(t *testing.T) {
 
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
@@ -279,14 +278,14 @@ func Test_QaUserAttributeGroupUpdate(t *testing.T) {
 	attributes := make(map[string]string)
 	attributes["101669"] = "shzy2012-update"
 
-	_, err := wulaiClient.QaUserAttributeGroupUpdate(groupID, groupName, attributes)
+	_, err := wulaiClient.QaUserAttributeGroupItemUpdate(groupID, groupName, attributes)
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
-			t.Errorf("[Test_QaUserAttributeGroupUpdate]=>%s\n", cliErr.Error())
+			t.Errorf("[Test_QaUserAttributeGroupItemUpdate]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
-			log.Infof("[Test_QaUserAttributeGroupUpdate]=>%s\n", serErr.Error())
+			log.Infof("[Test_QaUserAttributeGroupItemUpdate]=>%s\n", serErr.Error())
 		} else {
-			log.Infof("[Test_QaUserAttributeGroupUpdate]=>%s\n", err.Error())
+			log.Infof("[Test_QaUserAttributeGroupItemUpdate]=>%s\n", err.Error())
 		}
 
 		return
@@ -302,19 +301,19 @@ func Test_QaUserAttributeGroupAnswerList(t *testing.T) {
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.SetDebug(true)
 
-	knowledgeID := "1257716"
-	groupID := "6180"
+	knowledgeID := int64(1257716) //知识点id，如=0，返回所有知识点
+	groupID := int64(6180)        //属性组id，如=0，返回所有属性组
 	page := 1
 	pageSize := 10
 
 	resp, err := wulaiClient.QaUserAttributeGroupAnswerList(knowledgeID, groupID, page, pageSize)
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
-			t.Errorf("[Test_QaCreateUserAttributeGroup]=>%s\n", cliErr.Error())
+			t.Errorf("[Test_QaUserAttributeGroupAnswerList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
-			log.Infof("[Test_QaCreateUserAttributeGroup]=>%s\n", serErr.Error())
+			log.Infof("[Test_QaUserAttributeGroupAnswerList]=>%s\n", serErr.Error())
 		} else {
-			log.Infof("[Test_QaCreateUserAttributeGroup]=>%s\n", err.Error())
+			log.Infof("[Test_QaUserAttributeGroupAnswerList]=>%s\n", err.Error())
 		}
 
 		return
@@ -328,10 +327,10 @@ func Test_QaUserAttributeGroupAnswerCreate(t *testing.T) {
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.SetDebug(true)
 
-	knowledgeID := "1257716"
-	groupID := "6180"
-	text := &Text{"创建一个答案!"} //传入指针
-	resp, err := wulaiClient.QaUserAttributeGroupAnswerCreate(knowledgeID, groupID, text)
+	knowledgeID := "1257716"  //知识点id
+	groupID := "6180"         //属性组ID
+	msgBody := &Text{"创建答案!"} //消息（文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息）
+	resp, err := wulaiClient.QaUserAttributeGroupAnswerCreate(knowledgeID, groupID, msgBody)
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_QaUserAttributeGroupAnswerCreate]=>%s\n", cliErr.Error())

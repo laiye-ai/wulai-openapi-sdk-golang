@@ -187,22 +187,24 @@ func Test_UserAttributeCreate(t *testing.T) {
 	log.Infoln("创建用户成功")
 }
 
-func Test_GetUserAttribute(t *testing.T) {
+func Test_UserAttributeList(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.SetDebug(true)
 
-	isAttrGroup := true //是否可以作为属性组属性
-	page := 1           //页码，代表查看第几页的数据，从1开始 >=1
-	pageSize := 10      //每页的属性组数量 [1~200]
-	resp, err := wulaiClient.UserAttributeList(isAttrGroup, page, pageSize)
+	filter := &UserAttributeFilter{
+		HasAttribute: true,
+	} //用户属性过滤条件。如果填写，代表需要过滤；反之不过滤
+	page := 1      //页码，代表查看第几页的数据，从1开始 >=1
+	pageSize := 10 //每页的属性组数量 [1~200]
+	resp, err := wulaiClient.UserAttributeList(filter, page, pageSize)
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
-			t.Errorf("[Test_GetUserAttribute]=>%s\n", cliErr.Error())
+			t.Errorf("[Test_UserAttributeList]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
-			log.Infof("[Test_GetUserAttribute]=>%s\n", serErr.Error())
+			log.Infof("[Test_UserAttributeList]=>%s\n", serErr.Error())
 		} else {
-			log.Infof("[Test_GetUserAttribute]=>%s\n", err.Error())
+			log.Infof("[Test_UserAttributeList]=>%s\n", err.Error())
 		}
 
 		return
