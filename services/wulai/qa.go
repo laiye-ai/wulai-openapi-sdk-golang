@@ -41,7 +41,7 @@ func (x *Client) QaKnowledgeTagList(parentTagID, page, pageSize int) (model *QaK
 }
 
 //QaKnowledgeCreate 创建知识点
-func (x *Client) QaKnowledgeCreate(knowledgeTagID int64, standardQuestion string, status, respondAll, maintained bool) (model *QaKnowledgeTagResponse, err error) {
+func (x *Client) QaKnowledgeCreate(knowledgeTagID, standardQuestion string, status, respondAll, maintained bool) (model *QaKnowledgeTagResponse, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
 

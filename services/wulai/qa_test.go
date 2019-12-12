@@ -43,7 +43,7 @@ func Test_QaKnowledgeCreate(t *testing.T) {
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.SetDebug(true)
 
-	knowledgeTagID := int64(139258)    //知识点分类id >=1
+	knowledgeTagID := "139258"         //知识点分类id >=1
 	standardQuestion := "GOSDK-添加知识点2" //知识点标题
 	status := true                     //知识点状态:true: 已生效;false: 未生效
 	respondAll := true                 //发送全部回复 true: 已生效;false: 随机一条发送
