@@ -27,7 +27,7 @@ func (x *Client) qaKnowledgeTagListV2(parentTagID, page, pageSize int) ([]byte, 
 }
 
 //qaKnowledgeCreateV2 创建知识点
-func (x *Client) qaKnowledgeCreateV2(knowledgeTagID int64, standardQuestion string, status, respondAll, maintained bool) ([]byte, error) {
+func (x *Client) qaKnowledgeCreateV2(knowledgeTagID, standardQuestion string, status, respondAll, maintained bool) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/qa/knowledge-tag-knowledge/create", x.Endpoint, x.Version)
 	input := fmt.Sprintf(`{
 		"knowledge_tag_knowledge": {
@@ -37,7 +37,7 @@ func (x *Client) qaKnowledgeCreateV2(knowledgeTagID int64, standardQuestion stri
 			"respond_all": %v,
 			"maintained_by_user_attribute_group": %v
 		  },
-		  "knowledge_tag_id": %v
+		  "knowledge_tag_id": "%s"
 		}
 	  }`, status, standardQuestion, respondAll, maintained, knowledgeTagID)
 

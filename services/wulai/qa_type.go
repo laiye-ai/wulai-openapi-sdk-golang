@@ -79,7 +79,7 @@ type QaKnowledgeTagList struct {
 //KnowledgeTag 知识点分类
 type KnowledgeTag struct {
 	ParentKnowledgeTagID string `json:"parent_knowledge_tag_id"`
-	ID                   int64  `json:"id"`
+	ID                   string `json:"id"` //Do not change int
 	Name                 string `json:"name"`
 }
 
@@ -91,7 +91,7 @@ type QaKnowledgeTagResponse struct {
 //KnowledgeTagKnowledge 知识点
 type KnowledgeTagKnowledge struct {
 	Knowledge      Knowledge `json:"knowledge"`
-	KnowledgeTagID int64     `json:"knowledge_tag_id"`
+	KnowledgeTagID string    `json:"knowledge_tag_id"`
 }
 
 //Knowledge 知识点详情
@@ -102,7 +102,7 @@ type Knowledge struct {
 	StandardQuestion               string `json:"standard_question"`
 	CreateTime                     string `json:"create_time"`
 	RespondAll                     bool   `json:"respond_all"`
-	ID                             int64  `json:"id"`
+	ID                             string `json:"id"` //TODO:如果修改int或int64，导致unmarshal错误
 }
 
 //QaKnowledgeItemListResponse 知识点列表
@@ -122,7 +122,7 @@ type KnowledgeItem struct {
 type SimilarQuestion struct {
 	KnowledgeID string `json:"knowledge_id"` //知识点id
 	Question    string `json:"question"`     //相似问
-	ID          int64  `json:"id"`           //相似问id
+	ID          string `json:"id"`           //相似问id
 }
 
 //QaKnowledgeResponse 更新知识点返回结构体
