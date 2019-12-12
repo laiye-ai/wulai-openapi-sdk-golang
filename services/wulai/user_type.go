@@ -31,8 +31,8 @@ type UserAttributeValue struct {
 
 //UserAttributeUserAttributeValue 属性列表
 type UserAttributeUserAttributeValue struct {
-	UserAttribute      UserAttribute        `json:"user_attribute"`       //用户属性
-	UserAttributeValue []UserAttributeValue `json:"user_attribute_value"` //枚举类型属性的合法枚举值
+	UserAttribute      UserAttribute      `json:"user_attribute"`       //用户属性
+	UserAttributeValue UserAttributeValue `json:"user_attribute_value"` //枚举类型属性的合法枚举值
 }
 
 //UserAttributePairListResponse 获取用户的属性结构体
