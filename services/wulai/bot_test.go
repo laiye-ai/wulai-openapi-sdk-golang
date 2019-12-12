@@ -315,7 +315,7 @@ func Test_MsgSuggestion(t *testing.T) {
 	log.Infof("%+v\n", resp)
 }
 
-func Test_MsgLinked(t *testing.T) {
+func Test_MsgTriggerLink(t *testing.T) {
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.SetDebug(true)
@@ -325,11 +325,11 @@ func Test_MsgLinked(t *testing.T) {
 	resp, err := wulaiClient.MsgTriggerLink(userType, hashID)
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
-			t.Errorf("[Test_MsgLinked]=>%s\n", cliErr.Error())
+			t.Errorf("[Test_MsgTriggerLink]=>%s\n", cliErr.Error())
 		} else if serErr, ok := err.(*errors.ServerError); ok {
-			log.Infof("[Test_MsgLinked]=>%s\n", serErr.Error())
+			log.Infof("[Test_MsgTriggerLink]=>%s\n", serErr.Error())
 		} else {
-			log.Infof("[Test_MsgLinked]=>%s\n", err.Error())
+			log.Infof("[Test_MsgTriggerLink]=>%s\n", err.Error())
 		}
 
 		return
