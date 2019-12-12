@@ -419,7 +419,7 @@ func (x *Client) MsgTriggerLink(userType MsgUserType, hashID string) (model *Msg
 	}
 
 	if x.Debug {
-		log.Debugf("[MsgLinked Response]:%s\n", bytes)
+		log.Debugf("[MsgTriggerLink Response]:%s\n", bytes)
 	}
 
 	model = &MsgTriggerLink{}
