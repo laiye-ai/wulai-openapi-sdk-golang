@@ -9,14 +9,19 @@ import (
 - 知识点
 ****************/
 
-//qaKnowledgeTagListV2 知识点分类列表
+/*qaKnowledgeTagListV2 知识点分类列表
+@parentTagID：父节点分类id，如果值为0，代表获取根节点下的知识点分类
+@page：页码，代表查看第几页的数据，从1开始
+@pageSize：每页的触发器数量[1-200]
+*/
 func (x *Client) qaKnowledgeTagListV2(parentTagID, page, pageSize int) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/qa/knowledge-tags/list", x.Endpoint, x.Version)
-	input := fmt.Sprintf(`{
+	input := fmt.Sprintf(`
+	{
 		"parent_k_tag_id": %v,
 		"page": %v,
 		"page_size": %v
-	  }`, parentTagID, page, pageSize)
+	}`, parentTagID, page, pageSize)
 
 	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
@@ -26,10 +31,17 @@ func (x *Client) qaKnowledgeTagListV2(parentTagID, page, pageSize int) ([]byte, 
 	return respBytes.ResponseBodyBytes, nil
 }
 
-//qaKnowledgeCreateV2 创建知识点
+/*qaKnowledgeCreateV2 创建知识点
+@knowledgeTagID：知识点分类id >=1
+@standardQuestion：知识点标题 <= 100 characters
+@status：知识点状态. [true:生效 false:未生效]
+@respondAll：发送全部回复. [true:发送全部回复 false:随机一条发送]
+@maintained：该属性是否被用于定义属性组。True：该属性是定义属性组所使用的属性之一。False：该属性不被用于定义属性组。[true:是 false:否]
+*/
 func (x *Client) qaKnowledgeCreateV2(knowledgeTagID, standardQuestion string, status, respondAll, maintained bool) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/qa/knowledge-tag-knowledge/create", x.Endpoint, x.Version)
-	input := fmt.Sprintf(`{
+	input := fmt.Sprintf(`
+	{
 		"knowledge_tag_knowledge": {
 		  "knowledge": {
 			"status": %v,
@@ -39,7 +51,7 @@ func (x *Client) qaKnowledgeCreateV2(knowledgeTagID, standardQuestion string, st
 		  },
 		  "knowledge_tag_id": "%s"
 		}
-	  }`, status, standardQuestion, respondAll, maintained, knowledgeTagID)
+	}`, status, standardQuestion, respondAll, maintained, knowledgeTagID)
 
 	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
@@ -49,13 +61,17 @@ func (x *Client) qaKnowledgeCreateV2(knowledgeTagID, standardQuestion string, st
 	return respBytes.ResponseBodyBytes, nil
 }
 
-//qaKnowledgeItemListV2 知识点列表
+/*qaKnowledgeItemListV2 知识点列表
+@page：页码，代表查看第几页的数据，从1开始
+@pageSize：每页的触发器数量[1-200]
+*/
 func (x *Client) qaKnowledgeItemListV2(page, pageSize int) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/qa/knowledge-items/list", x.Endpoint, x.Version)
-	input := fmt.Sprintf(`{
+	input := fmt.Sprintf(`
+	{
 		"page": %v,
 		"page_size": %v
-	  }`, page, pageSize)
+	}`, page, pageSize)
 
 	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
@@ -65,10 +81,17 @@ func (x *Client) qaKnowledgeItemListV2(page, pageSize int) ([]byte, error) {
 	return respBytes.ResponseBodyBytes, nil
 }
 
-//qaKnowledgeUpdateV2 更新知识点
+/*qaKnowledgeUpdateV2 更新知识点
+@knowledgeID：知识点id
+@standardQuestion：知识点标题 <= 100 characters
+@status：知识点状态. [true:生效 false:未生效]
+@respondAll：发送全部回复. [true:发送全部回复 false:随机一条发送]
+@maintained：该属性是否被用于定义属性组。True：该属性是定义属性组所使用的属性之一。False：该属性不被用于定义属性组。[true:是 false:否]
+*/
 func (x *Client) qaKnowledgeUpdateV2(knowledgeID int64, standardQuestion string, status, respondAll, maintained bool) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/qa/knowledge/update", x.Endpoint, x.Version)
-	input := fmt.Sprintf(`{
+	input := fmt.Sprintf(`
+	{
 		"knowledge": {
 		  "status": %v,
 		  "standard_question": %q,
@@ -76,7 +99,7 @@ func (x *Client) qaKnowledgeUpdateV2(knowledgeID int64, standardQuestion string,
 		  "id": %v,
 		  "maintained_by_user_attribute_group": %v
 		}
-	  }`, status, standardQuestion, respondAll, knowledgeID, maintained)
+	}`, status, standardQuestion, respondAll, knowledgeID, maintained)
 
 	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
@@ -90,7 +113,12 @@ func (x *Client) qaKnowledgeUpdateV2(knowledgeID int64, standardQuestion string,
 - 相识问
 ****************/
 
-//qaSimilarQuestionListV2 相似问列表
+/*qaSimilarQuestionListV2 相似问列表
+@knowledgeID：知识点id（为空：查询所有）
+@similarQuestionID：相似问id（为空：查询所有）
+@page：页码，代表查看第几页的数据，从1开始
+@pageSize：每页的触发器数量[1-200]
+*/
 func (x *Client) qaSimilarQuestionListV2(knowledgeID, similarQuestionID string, page, pageSize int) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/qa/similar-question/list", x.Endpoint, x.Version)
 	input := fmt.Sprintf(`{
@@ -108,7 +136,10 @@ func (x *Client) qaSimilarQuestionListV2(knowledgeID, similarQuestionID string, 
 	return respBytes.ResponseBodyBytes, nil
 }
 
-//qaSimilarQuestionCreateV2 创建相似问
+/*qaSimilarQuestionCreateV2 创建相似问
+@knowledgeID：知识点id
+@question：相似问 <=100 characters
+*/
 func (x *Client) qaSimilarQuestionCreateV2(knowledgeID, question string) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/qa/similar-question/create", x.Endpoint, x.Version)
 	input := fmt.Sprintf(`{
@@ -126,7 +157,11 @@ func (x *Client) qaSimilarQuestionCreateV2(knowledgeID, question string) ([]byte
 	return respBytes.ResponseBodyBytes, nil
 }
 
-//qaSimilarQuestionUpdateV2 更新相似问
+/*qaSimilarQuestionUpdateV2 更新相似问
+@knowledgeID：知识点id
+@question：相似问 <=100 characters
+@id：相识问id
+*/
 func (x *Client) qaSimilarQuestionUpdateV2(knowledgeID, question, id string) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/qa/similar-question/update", x.Endpoint, x.Version)
 	input := fmt.Sprintf(`{
@@ -145,7 +180,9 @@ func (x *Client) qaSimilarQuestionUpdateV2(knowledgeID, question, id string) ([]
 	return respBytes.ResponseBodyBytes, nil
 }
 
-//qaSimilarQuestionDeleteV2 删除相似问
+/*qaSimilarQuestionDeleteV2 删除相似问
+@id：相似问id
+*/
 func (x *Client) qaSimilarQuestionDeleteV2(id string) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/qa/similar-question/delete", x.Endpoint, x.Version)
 	input := fmt.Sprintf(`{"id": "%s"}`, id)
@@ -162,7 +199,10 @@ func (x *Client) qaSimilarQuestionDeleteV2(id string) ([]byte, error) {
 - 用户属性组
 ****************/
 
-//qaUserAttributeGroupItemListV2 查询属性组及属性列表
+/*qaUserAttributeGroupItemListV2 查询属性组及属性列表
+@page：页码，代表查看第几页的数据，从1开始
+@pageSize：每页的触发器数量[1-200]
+*/
 func (x *Client) qaUserAttributeGroupItemListV2(page, pageSize int) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/qa/user-attribute-group-items/list", x.Endpoint, x.Version)
 	input := fmt.Sprintf(`{
@@ -212,7 +252,11 @@ func (x *Client) qaUserAttributeGroupItemCreateV2(groupName, attributeID, attrib
 	return respBytes.ResponseBodyBytes, nil
 }
 
-//qaUserAttributeGroupUpdateV2 更新属性组
+/*qaUserAttributeGroupUpdateV2 更新属性组
+@groupID：属性组id
+@groupName：属性组名称 [1~128] characters
+@attributes：用户属性组及属性
+*/
 func (x *Client) qaUserAttributeGroupItemUpdateV2(groupID, groupName string, attributes map[string]string) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/qa/user-attribute-group-items/update", x.Endpoint, x.Version)
 
@@ -258,42 +302,24 @@ func (x *Client) qaUserAttributeGroupItemUpdateV2(groupID, groupName string, att
 - 属性组回复
 ****************/
 
-//qaUserAttributeGroupAnswerListV2 查询属性组回复列表
-func (x *Client) qaUserAttributeGroupAnswerListV2(knowledgeID, groupID int64, page, pageSize int) ([]byte, error) {
+/*qaUserAttributeGroupAnswerListV2 查询属性组回复列表(v2)
+@knowledgeID：知识点id，如不为空，返回所有知识点
+@groupID：属性组id，如不为空，返回所有属性组
+@page：页码，代表查看第几页的数据，从1开始
+@pageSize：每页的触发器数量[1-200]
+*/
+func (x *Client) qaUserAttributeGroupAnswerListV2(knowledgeID, groupID string, page, pageSize int) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/qa/user-attribute-group-answers/list", x.Endpoint, x.Version)
 	//@filter 可选
 	input := fmt.Sprintf(`
 	 {
-		@filter
+		"filter": {
+			"knowledge_id": "%s",
+			"user_attribute_group_id": "%s"
+			},
 		"page": %v,
 		"page_size": %v
-	  }`, page, pageSize)
-
-	if knowledgeID > 0 && groupID > 0 {
-		filter := fmt.Sprintf(`
-		"filter": {
-			"knowledge_id": %v,
-			"user_attribute_group_id": %v
-		},`, knowledgeID, groupID)
-
-		input = strings.Replace(input, "@filter", filter, -1)
-	} else if knowledgeID > 0 && groupID <= 0 {
-		filter := fmt.Sprintf(`
-		"filter": {
-			"knowledge_id": %v
-		},`, knowledgeID)
-
-		input = strings.Replace(input, "@filter", filter, -1)
-	} else if knowledgeID <= 0 && groupID > 0 {
-		filter := fmt.Sprintf(`
-		"filter": {
-			"user_attribute_group_id": %v
-		},`, groupID)
-
-		input = strings.Replace(input, "@filter", filter, -1)
-	} else {
-		input = strings.Replace(input, "@filter", "", -1)
-	}
+	 }`, knowledgeID, groupID, page, pageSize)
 
 	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {
@@ -304,10 +330,10 @@ func (x *Client) qaUserAttributeGroupAnswerListV2(knowledgeID, groupID int64, pa
 }
 
 /*qaUserAttributeGroupAnswerCreateV2 创建属性组回复(v2)
-@knowledgeID:知识点id
-@groupID:属性组ID
-@msgType:消息类型（文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息）填充)
-@msgBody:消息
+@knowledgeID：知识点id
+@groupID：属性组ID
+@msgType：消息类型（文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息）
+@msgBody：消息
 */
 func (x *Client) qaUserAttributeGroupAnswerCreateV2(knowledgeID, groupID, msgType string, msgBody []byte) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/qa/user-attribute-group-answer/create", x.Endpoint, x.Version)
@@ -329,7 +355,13 @@ func (x *Client) qaUserAttributeGroupAnswerCreateV2(knowledgeID, groupID, msgTyp
 	return respBytes.ResponseBodyBytes, nil
 }
 
-//qaUserAttributeGroupAnswerUpdateV2 更新属性组回复(v2)
+/*qaUserAttributeGroupAnswerUpdateV2 更新属性组回复(v2)
+@knowledgeID：知识点id
+@groupID：属性组ID
+@answerID：回复id
+@msgType：消息类型（文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息）
+@msgBody：消息
+*/
 func (x *Client) qaUserAttributeGroupAnswerUpdateV2(knowledgeID, groupID, answerID, msgType string, msgBody []byte) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/qa/user-attribute-group-answer/update", x.Endpoint, x.Version)
 	input := fmt.Sprintf(`
@@ -351,7 +383,9 @@ func (x *Client) qaUserAttributeGroupAnswerUpdateV2(knowledgeID, groupID, answer
 	return respBytes.ResponseBodyBytes, nil
 }
 
-//qaUserAttributeGroupAnswerUpdateV2 删除属性组回复(v2)
+/*qaUserAttributeGroupAnswerUpdateV2 删除属性组回复(v2)
+@answerID：属性组回复ID
+*/
 func (x *Client) qaUserAttributeGroupAnswerDeleteV2(answerID string) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/qa/user-attribute-group-answer/delete", x.Endpoint, x.Version)
 	input := fmt.Sprintf(`{"id": "%s"}`, answerID)
@@ -368,10 +402,10 @@ func (x *Client) qaUserAttributeGroupAnswerDeleteV2(answerID string) ([]byte, er
 ****************/
 
 /*qaSatisCreateV2 添加用户满意度评价
-@satisType：满意度枚举类型
-@userID：用户id
-@knowledgeID：知识点id
-@msgID：机器人回复的消息id
+@satisType:满意度枚举类型
+@userID:用户id
+@knowledgeID:知识点id
+@msgID:机器人回复的消息id
 */
 func (x *Client) qaSatisCreateV2(satisType SatisType, userID, knowledgeID, msgID string) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/qa/satisfaction/create", x.Endpoint, x.Version)

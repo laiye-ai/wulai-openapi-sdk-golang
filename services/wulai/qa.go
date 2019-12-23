@@ -13,7 +13,11 @@ import (
 - 知识点
 ****************/
 
-//QaKnowledgeTagList 获取知识点分类列表
+/*QaKnowledgeTagList 获取知识点分类列表
+@parentTagID：父节点分类id，如果值为0，代表获取根节点下的知识点分类
+@page：页码，代表查看第几页的数据，从1开始
+@pageSize：每页的触发器数量[1-200]
+*/
 func (x *Client) QaKnowledgeTagList(parentTagID, page, pageSize int) (model *QaKnowledgeTagList, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
@@ -40,7 +44,13 @@ func (x *Client) QaKnowledgeTagList(parentTagID, page, pageSize int) (model *QaK
 	return model, nil
 }
 
-//QaKnowledgeCreate 创建知识点
+/*QaKnowledgeCreate 创建知识点
+@knowledgeTagID：知识点分类id >=1
+@standardQuestion：知识点标题 <= 100 characters
+@status：知识点状态. [true:生效 false:未生效]
+@respondAll：发送全部回复. [true:发送全部回复 false:随机一条发送]
+@maintained：该属性是否被用于定义属性组。True：该属性是定义属性组所使用的属性之一。False：该属性不被用于定义属性组。[true:是 false:否]
+*/
 func (x *Client) QaKnowledgeCreate(knowledgeTagID, standardQuestion string, status, respondAll, maintained bool) (model *QaKnowledgeTagResponse, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
@@ -67,7 +77,13 @@ func (x *Client) QaKnowledgeCreate(knowledgeTagID, standardQuestion string, stat
 	return model, nil
 }
 
-//QaKnowledgeUpdate 更新知识点
+/*QaKnowledgeUpdate 更新知识点
+@knowledgeID：知识点id
+@standardQuestion：知识点标题 <= 100 characters
+@status：知识点状态. [true:生效 false:未生效]
+@respondAll：发送全部回复. [true:发送全部回复 false:随机一条发送]
+@maintained：该属性是否被用于定义属性组。True：该属性是定义属性组所使用的属性之一。False：该属性不被用于定义属性组。[true:是 false:否]
+*/
 func (x *Client) QaKnowledgeUpdate(knowledgeID int64, standardQuestion string, status, respondAll, maintained bool) (model *QaKnowledgeResponse, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
@@ -94,7 +110,10 @@ func (x *Client) QaKnowledgeUpdate(knowledgeID int64, standardQuestion string, s
 	return model, nil
 }
 
-//QaKnowledgeItemList 获取知识点列表
+/*QaKnowledgeItemList 获取知识点列表
+@page：页码，代表查看第几页的数据，从1开始
+@pageSize：每页的触发器数量[1-200]
+*/
 func (x *Client) QaKnowledgeItemList(page, pageSize int) (model *QaKnowledgeItemListResponse, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
@@ -109,7 +128,7 @@ func (x *Client) QaKnowledgeItemList(page, pageSize int) (model *QaKnowledgeItem
 	}
 
 	if x.Debug {
-		log.Debugf("[QaqaKnowledgeCreate Response]:%s\n", bytes)
+		log.Debugf("[QaKnowledgeItemList Response]:%s\n", bytes)
 	}
 
 	//返回结果
@@ -125,7 +144,12 @@ func (x *Client) QaKnowledgeItemList(page, pageSize int) (model *QaKnowledgeItem
 - 相似问
 ****************/
 
-//QaSimilarQuestionList 获取相似问列表
+/*QaSimilarQuestionList 获取相似问列表
+@knowledgeID：知识点id
+@similarQuestionID：相似问id
+@page：页码，代表查看第几页的数据，从1开始
+@pageSize：每页的触发器数量[1-200]
+*/
 func (x *Client) QaSimilarQuestionList(knowledgeID, similarQuestionID string, page, pageSize int) (model *QaSimilarQuestionList, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
@@ -152,7 +176,10 @@ func (x *Client) QaSimilarQuestionList(knowledgeID, similarQuestionID string, pa
 	return model, nil
 }
 
-//QaSimilarQuestionCreate 创建相似问
+/*QaSimilarQuestionCreate 创建相似问
+@knowledgeID：知识点id
+@question：相似问 <=100 characters
+*/
 func (x *Client) QaSimilarQuestionCreate(knowledgeID, question string) (model *QaSimilarQuestionResponse, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
@@ -179,7 +206,11 @@ func (x *Client) QaSimilarQuestionCreate(knowledgeID, question string) (model *Q
 	return model, nil
 }
 
-//QaSimilarQuestionUpdate 更新相似问
+/*QaSimilarQuestionUpdate 更新相似问
+@knowledgeID：知识点id
+@question：相似问 <=100 characters
+@id：相识问id
+*/
 func (x *Client) QaSimilarQuestionUpdate(knowledgeID, question, id string) (model *QaSimilarQuestionResponse, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
@@ -206,7 +237,9 @@ func (x *Client) QaSimilarQuestionUpdate(knowledgeID, question, id string) (mode
 	return model, nil
 }
 
-//QaSimilarQuestionDelete 删除相似问
+/*QaSimilarQuestionDelete 删除相似问
+@id：相似问id
+*/
 func (x *Client) QaSimilarQuestionDelete(id string) (err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
@@ -232,7 +265,10 @@ func (x *Client) QaSimilarQuestionDelete(id string) (err error) {
 - 用户属性组
 ****************/
 
-//QaUserAttributeGroupItemList 查询属性组及属性列表
+/*QaUserAttributeGroupItemList 查询属性组及属性列表
+@page：页码，代表查看第几页的数据，从1开始
+@pageSize：每页的触发器数量[1-200]
+*/
 func (x *Client) QaUserAttributeGroupItemList(page, pageSize int) (model *QaUserAttributeGroupItemList, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
@@ -290,7 +326,11 @@ func (x *Client) QaUserAttributeGroupItemCreate(groupName, attributeID, attribut
 	return model, nil
 }
 
-//QaUserAttributeGroupItemUpdate 更新属性组
+/*QaUserAttributeGroupItemUpdate 更新属性组
+@groupID：属性组id
+@groupName：属性组名称 [1~128] characters
+@attributes：用户属性组及属性
+*/
 func (x *Client) QaUserAttributeGroupItemUpdate(groupID, groupName string, attributes map[string]string) (model *QaUserAttributeGroupResponse, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
@@ -321,8 +361,13 @@ func (x *Client) QaUserAttributeGroupItemUpdate(groupID, groupName string, attri
 - 属性组回复
 ****************/
 
-//QaUserAttributeGroupAnswerList 查询属性组回复列表
-func (x *Client) QaUserAttributeGroupAnswerList(knowledgeID, groupID int64, page, pageSize int) (model *QaUserAttributeGroupAnswerList, err error) {
+/*QaUserAttributeGroupAnswerList 查询属性组回复列表
+@knowledgeID：知识点id，如不为空，返回所有知识点
+@groupID：属性组id，如不为空，返回所有属性组
+@page：页码，代表查看第几页的数据，从1开始
+@pageSize：每页的触发器数量[1-200]
+*/
+func (x *Client) QaUserAttributeGroupAnswerList(knowledgeID, groupID string, page, pageSize int) (model *QaUserAttributeGroupAnswerList, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
 		errMsg := fmt.Sprintf(errors.UnsupportedMethodErrorMessage, "V1", "V2")
@@ -389,7 +434,12 @@ func (x *Client) QaUserAttributeGroupAnswerCreate(knowledgeID, groupID string, m
 	return model, nil
 }
 
-//QaUserAttributeGroupAnswerUpdate 更新属性组回复
+/*QaUserAttributeGroupAnswerUpdate 更新属性组回复
+@knowledgeID：知识点id
+@groupID：属性组ID
+@answerID：回复id
+@msgBody：消息类型（文本 / 图片 / 语音 / 视频 / 文件 / 图文 / 自定义消息）
+*/
 func (x *Client) QaUserAttributeGroupAnswerUpdate(knowledgeID, groupID string, answerID string, msgBody interface{}) (model *QaUserAttributeGroupAnswer, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
@@ -427,7 +477,9 @@ func (x *Client) QaUserAttributeGroupAnswerUpdate(knowledgeID, groupID string, a
 	return model, nil
 }
 
-//QaUserAttributeGroupAnswerDelete 删除属性组回复
+/*QaUserAttributeGroupAnswerDelete 删除属性组回复
+@answerID：属性组回复ID
+*/
 func (x *Client) QaUserAttributeGroupAnswerDelete(answerID string) error {
 
 	if strings.ToUpper(x.Version) == "V1" {

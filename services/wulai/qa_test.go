@@ -17,7 +17,7 @@ func Test_QaKnowledgeTagList(t *testing.T) {
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.SetDebug(true)
 
-	parentTagID := 0 //父节点分类id，如果不传值(或 0)，代表获取根节点下的知识点分类
+	parentTagID := 0 //父节点分类id，如果值为0，代表获取根节点下的知识点分类
 	page := 1        //页码，代表查看第几页的数据，从1开始
 	pageSize := 100  //每页的属性组数量
 
@@ -125,11 +125,12 @@ func Test_QaSimilarQuestionList(t *testing.T) {
 
 	secret, pubkey := os.Getenv("secret"), os.Getenv("pubkey")
 	wulaiClient := NewClient(secret, pubkey)
+	wulaiClient.SetDebug(true)
 
-	knowledgeID := "12"     //知识点id
-	similarQuestionID := "" //相似问id
-	page := 1               //页码，代表查看第几页的数据，从1开始
-	pageSize := 50          //每页的属性组数量
+	knowledgeID := "1276766" //知识点id
+	similarQuestionID := "1" //相似问id
+	page := 1                //页码，代表查看第几页的数据，从1开始
+	pageSize := 50           //每页的属性组数量
 
 	resp, err := wulaiClient.QaSimilarQuestionList(knowledgeID, similarQuestionID, page, pageSize)
 	if err != nil {
@@ -301,8 +302,8 @@ func Test_QaUserAttributeGroupAnswerList(t *testing.T) {
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.SetDebug(true)
 
-	knowledgeID := int64(1257716) //知识点id，如=0，返回所有知识点
-	groupID := int64(6180)        //属性组id，如=0，返回所有属性组
+	knowledgeID := string(1257716) //知识点id，如=0，返回所有知识点
+	groupID := string(6180)        //属性组id，如=0，返回所有属性组
 	page := 1
 	pageSize := 10
 
