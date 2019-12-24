@@ -262,6 +262,7 @@ type MsgBody struct {
 	Text      *Text      `json:"text"`       //文本消息
 	Image     *Image     `json:"image"`      //图片消息
 	Custom    *Custom    `json:"custom"`     //自定义消息
+	RichText  *RichText  `json:"rich_text"`  //图文消息
 	Video     *Video     `json:"video"`      //视频消息
 	File      *File      `json:"file"`       //文件消息
 	Voice     *Voice     `json:"voice"`      //语音消息
