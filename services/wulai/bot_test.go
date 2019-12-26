@@ -177,6 +177,7 @@ func Test_MsgSend(t *testing.T) {
 	similarResponse := []SimilarResponseParam{sr1, sr2} //推荐知识点 <=5 items
 
 	resp, err := wulaiClient.MsgSend(userID, msgBody, extra, quickReply, similarResponse)
+	//resp, err := wulaiClient.MsgSend(userID, msgBody, extra, nil, nil)
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_MsgSend]=>%s\n", cliErr.Error())
