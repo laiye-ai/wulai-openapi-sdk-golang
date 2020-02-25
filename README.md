@@ -89,7 +89,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("user Create test reuslt:%s", err.Error())
 	}
-	log.Infof("[机器人回复]%s\n", botResp)
+	log.Infof("[机器人回复]%+v\n", botResp)
 }
 
 ```
@@ -102,13 +102,4 @@ func main() {
 请求方式: POST
 
 请求、响应数据格式: JSON
-```
-
-### 常见问题分析
-
-
-1. 以SDK.ServerError开头的错误：是服务端返回的错误信息，即吾来平台
-```text
-错误日志：
-SDK.ServerError         Message: {"error":"invalid GetBotResponseRequest.MsgBody: embedded message failed validation | caused by: invalid MessageBody.Text: embedded message failed validation | caused by: invalid TextMessage.Content: value length must be between 1 and 2048 runes, inclusive","message":"invalid GetBotResponseRequest.MsgBody: embedded message failed validation | caused by: invalid MessageBody.Text: embedded message failed validation | caused by: invalid TextMessage.Content: value length must be between 1 and 2048 runes, inclusive","code":3,"details":[]}
 ```
