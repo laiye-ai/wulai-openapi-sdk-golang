@@ -32,6 +32,24 @@ func NewClient(secret, pubkey string) *Client {
 	return wulai
 }
 
+/*NewClient 创建 NewWulaiClient
+@secret 和 @pubkey: 从吾来平台获取. 每个开放平台渠道有一组 pubkey 和 Secret
+@endpoint. 方便支持私有化地址
+*/
+func NewClient2(secret, pubkey, endpoint string) *Client {
+	wulai := &Client{}
+	//实例化凭证
+	credential := common.NewCredential(secret, pubkey)
+	//实例化http client
+	client := common.NewClient(credential)
+	wulai.HTTPClient = client
+
+	//默认版本:V2
+	wulai.Version = "v2"
+	wulai.Endpoint = endpoint
+	return wulai
+}
+
 //SetDebug 设置debug
 func (x *Client) SetDebug(debug bool) {
 	x.Debug = debug
