@@ -302,8 +302,8 @@ func Test_QaUserAttributeGroupAnswerList(t *testing.T) {
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.SetDebug(true)
 
-	knowledgeID := string(1257716) //知识点id，如=0，返回所有知识点
-	groupID := string(6180)        //属性组id，如=0，返回所有属性组
+	knowledgeID := "1257716" //知识点id，如=0，返回所有知识点
+	groupID := "6180"        //属性组id，如=0，返回所有属性组
 	page := 1
 	pageSize := 10
 
