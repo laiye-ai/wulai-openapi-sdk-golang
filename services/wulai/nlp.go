@@ -15,8 +15,9 @@ import (
 
 /*NLPEntitiesExtract 实体抽取
 @query：待实体抽取query [1-1024]characters
+@referenced_system_entity：抽取被引用的预设实体,默认未生效. false: 未生效; true: 已生效
 */
-func (x *Client) NLPEntitiesExtract(query string) (model *NLPEntitiesExtractReponse, err error) {
+func (x *Client) NLPEntitiesExtract(query string, referenced_system_entity bool) (model *NLPEntitiesExtractReponse, err error) {
 
 	if strings.ToUpper(x.Version) == "V1" {
 
@@ -24,7 +25,7 @@ func (x *Client) NLPEntitiesExtract(query string) (model *NLPEntitiesExtractRepo
 		return nil, errors.NewClientError(errors.UnsupportedMethodErrorCode, errMsg, nil)
 	}
 
-	bytes, err := x.nlpEntitiesExtractV2(query)
+	bytes, err := x.nlpEntitiesExtractV2(query, referenced_system_entity)
 	if err != nil {
 		return nil, err
 	}
@@ -34,7 +35,6 @@ func (x *Client) NLPEntitiesExtract(query string) (model *NLPEntitiesExtractRepo
 	}
 
 	//返回结果
-	model = &NLPEntitiesExtractReponse{}
 	if err = json.Unmarshal(bytes, model); err != nil {
 		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
 	}

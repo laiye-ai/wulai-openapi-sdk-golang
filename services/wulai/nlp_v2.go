@@ -8,10 +8,11 @@ import "fmt"
 
 /*nlpEntitiesExtractV2 实体抽取
 @query：待实体抽取query [1-1024]characters
+@referenced_system_entity：抽取被引用的预设实体,默认未生效. false: 未生效; true: 已生效
 */
-func (x *Client) nlpEntitiesExtractV2(query string) ([]byte, error) {
+func (x *Client) nlpEntitiesExtractV2(query string, referenced_system_entity bool) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s/nlp/entities/extract", x.Endpoint, x.Version)
-	input := fmt.Sprintf(`{"query": %q}`, query)
+	input := fmt.Sprintf(`{"query": %q,"referenced_system_entity_only": %v}`, query, referenced_system_entity)
 
 	respBytes, err := x.HTTPClient.Request("POST", url, []byte(input), 1)
 	if err != nil {

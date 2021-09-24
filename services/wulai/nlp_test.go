@@ -18,8 +18,9 @@ func Test_NLPEntitiesExtract(t *testing.T) {
 	wulaiClient := NewClient(secret, pubkey)
 	wulaiClient.SetDebug(true)
 
-	query := "今天上海天气怎么样?" //待实体抽取query [1-1024]characters
-	resp, err := wulaiClient.NLPEntitiesExtract(query)
+	query := "今天上海天气怎么样?"             //待实体抽取query [1-1024]characters
+	referenced_system_entity := false //
+	resp, err := wulaiClient.NLPEntitiesExtract(query, referenced_system_entity)
 	if err != nil {
 		if cliErr, ok := err.(*errors.ClientError); ok {
 			t.Errorf("[Test_NLPEntitiesExtract]=>%s\n", cliErr.Error())
