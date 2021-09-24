@@ -35,7 +35,6 @@ func (x *Client) NLPEntitiesExtract(query string, referenced_system_entity bool)
 	}
 
 	//返回结果
-	model = &NLPEntitiesExtractReponse{}
 	if err = json.Unmarshal(bytes, model); err != nil {
 		return nil, errors.NewClientError(errors.JsonUnmarshalErrorCode, errors.JsonMarshalErrorMessage, err)
 	}

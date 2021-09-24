@@ -28,9 +28,9 @@ type Entities struct {
 
 //NLPEntity NLP实体
 type NLPEntity struct {
-	EnumerateEntity EnumerateEntity `json:"enumerate_entity"` //枚举实体
-	SystemEntity    SystemEntity    `json:"system_entity"`    //系统实体
-	RegularEntity   RegularEntity   `json:"regular_entity"`   //正则实体
+	EnumerationEntity EnumerationEntity `json:"enumeration_entity"` //枚举实体
+	SystemEntity      SystemEntity      `json:"system_entity"`      //系统实体
+	RegularEntity     RegularEntity     `json:"regular_entity"`     //正则实体
 }
 
 //SystemEntity 系统实体
@@ -40,8 +40,8 @@ type SystemEntity struct {
 	Name          string `json:"name"`           //实体名称
 }
 
-//EnumerateEntity 枚举实体
-type EnumerateEntity struct {
+//EnumerationEntity 枚举实体
+type EnumerationEntity struct {
 	Text          string   `json:"text"`           //文本
 	Synonyms      []string `json:"synonyms"`       //标准值的相似说法,不含text以及standard_value
 	StandardValue string   `json:"standard_value"` //标准值(归一化值)
