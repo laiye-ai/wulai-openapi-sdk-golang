@@ -28,9 +28,9 @@ type Entities struct {
 
 //NLPEntity NLP实体
 type NLPEntity struct {
-	EnumerationEntity EnumerationEntity `json:"enumeration_entity"` //枚举实体
-	SystemEntity      SystemEntity      `json:"system_entity"`      //系统实体
-	RegularEntity     RegularEntity     `json:"regular_entity"`     //正则实体
+	EnumerationEntity EnumerationEntity `json:"enumeration_entity,omitempty"` //枚举实体
+	SystemEntity      SystemEntity      `json:"system_entity,omitempty"`      //系统实体
+	RegularEntity     RegularEntity     `json:"regular_entity,omitempty"`     //正则实体
 }
 
 //SystemEntity 系统实体
