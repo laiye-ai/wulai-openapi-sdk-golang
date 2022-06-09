@@ -9,18 +9,20 @@ import (
 )
 
 /*ChannelReplyService 获取机器人回复
+@agentID:针对指定机器人，机器人id可在机器人设置中查看
+@channelID:渠道ID
 @username:用户唯一标识[1-128]characters,如果不存在,则由系统自动创建
 @question:消息内容
 @environment:UNSPECIFIED,SKETCH,PRODUCT
 参考: https://poc-chatbot.laiye.com/chatbot-openapi/swagger-ui/#/ChannelReplyService/ChannelReplyService_GetReply
 */
-func (x *Client) ChannelReplyService(username, question string, environment Environment) (*ChannelReplyServiceResponse, error) {
+func (x *Client) ChannelReplyService(agentID, channelID, username, question string, environment Environment) (*ChannelReplyServiceResponse, error) {
 	if environment == "" {
 		environment = UNSPECIFIED
 	}
 
 	model := &ChannelReplyServiceResponse{}
-	url := fmt.Sprintf("%s/chatbot/v1alpha1/agents/%s/channels/%s/getReply", x.Endpoint, x.AgentID, x.ChannelID)
+	url := fmt.Sprintf("%s/chatbot/v1alpha1/agents/%s/channels/%s/getReply", x.Endpoint, agentID, channelID)
 	input := fmt.Sprintf(`{
 		"username": "%s",
 		"query": {
